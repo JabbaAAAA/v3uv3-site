@@ -62,10 +62,18 @@
     `C:\Users\loicm\v3uv3-master\ASSET PLUGIN V3UV3 MASTER .jpg` (portrait, à tourner de 90°).
     Argumentaire de vente déjà rédigé : artefact `https://claude.ai/artifact/GQc2UCDhTEBLGK37G9AZ1i`.
     Récap complet côté plugin : `C:\Users\loicm\v3uv3-master\ETAT-DU-PROJET.md`.
-  - **Dès le feu vert utilisateur :** construire la fiche dans `#p-catalog` (remplacer
-    `.plug-soon`), corriger la FAQ (`a1`, retirer AAX), intégrer le script Moonbase, committer et
-    prévenir la session "README.md plugin master" du commit pour qu'elle teste les boutons en mode
-    démo.
+  - **Fait (2026-11-12, commit `2085090`) :** fiche construite dans `#p-catalog` (remplace
+    `.plug-soon`), image `img/plugin-master-ui.jpg` (capture d'interface, recompressée depuis
+    `C:\Users\loicm\v3uv3-master\ui-snapshot.png`), 7 modules en liste, 2 cartes tarif (89€ à vie /
+    9€ mois) avec liens directs Moonbase (`/buy/v3uv3-master`, `/download/v3uv3-master` — mêmes
+    URLs que la fiche de référence du projet plugin, pas les appels JS `Moonbase.purchase()` dont
+    le `variation_id` n'est pas vérifié), script Moonbase chargé en filet de sécurité (défensif
+    comme le chargement GSAP), FAQ `a1` corrigée (plus d'AAX) dans les 8 langues. Vérifié desktop +
+    mobile (375px), aucune erreur console propre à ce changement. Session "README.md plugin
+    master" prévenue du commit pour tester les boutons en mode démo.
+  - **Pas encore fait :** le croquis original (`img/plugin-master-sketch.jpg`, déjà converti et
+    redressé, mais pas encore committé/utilisé dans la page) pourrait illustrer "Fait main" si
+    l'utilisateur veut l'ajouter.
 
 ## Ce qui a été fait lors de la session précédente (2026-11-??, remplacement vidéo + nettoyage)
 
