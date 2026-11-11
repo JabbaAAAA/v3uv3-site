@@ -23,11 +23,49 @@
   le fondu démarre dès que la vidéo atteint ~55% de sa durée (ou après 1,1s max en filet de sécurité),
   et c'est un fondu+flou rapide de 0,55s (`.landing.leaving{opacity:0;filter:blur(22px)}`) au lieu
   d'une simple opacité lente.
-- **En attente : décision sur le vrai plugin à vendre.** L'utilisateur veut vendre un vrai plugin
-  ("Veuve Master", nom déjà connu depuis une session précédente) et l'intégrer avec un service
-  appelé "Moonbase" dans sa demande — **à clarifier** : nom exact du service de vente/livraison
-  (Lemonsqueezy ? Gumroad ? Payhip ? autre ?), comment le plugin doit être livré (lien externe,
-  formulaire, achat intégré), et les assets (image, description, formats, prix).
+- **Infos Moonbase/Veuve Master reçues de la session plugin ("README.md plugin master",
+  2026-11-12) — prêtes à l'emploi, en attente du feu vert utilisateur pour construire la fiche :**
+  - **Service :** Moonbase (`moonbase.sh`), plateforme de vente pour plugins audio (encaissement,
+    TVA, compte client, téléchargement, licences). Compte vendeur :
+    `https://v3uv3-prodution.moonbase.sh` (« prodution » sans C — nom technique du compte, ne pas
+    corriger). Produit : `v3uv3-master`. **Compte en mode démo** (faux paiements, pas encore de
+    « Go live »). Il faudra ajouter `jabbaaaaa.github.io` aux domaines autorisés côté Moonbase
+    (fait par l'utilisateur ou la session plugin, pas ce site).
+  - **Intégration technique :** achat intégré via une fenêtre de paiement Moonbase par-dessus le
+    site, pas de serveur requis.
+    ```html
+    <script src="https://assets.moonbase.sh/storefront/moonbase.js"></script>
+    <script>Moonbase.setup('https://v3uv3-prodution.moonbase.sh')</script>
+    ```
+    - Acheter : `Moonbase.purchase({ product_id: 'v3uv3-master', variation_id: 'achat' })`
+    - S'abonner : `Moonbase.purchase({ product_id: 'v3uv3-master', variation_id: 'mensuel' })`
+    - Essai/Télécharger : `Moonbase.download_product({ product_id: 'v3uv3-master' })` ou lien direct
+      `https://v3uv3-prodution.moonbase.sh/download/v3uv3-master` (**vide pour l'instant**, aucun
+      installeur envoyé côté Moonbase). Lien de repli pour acheter :
+      `https://v3uv3-prodution.moonbase.sh/buy/v3uv3-master`.
+    - Non vérifié : les valeurs exactes de `variation_id` (doc Moonbase incomplète) — à tester une
+      fois le script en place.
+  - **Fiche produit :** nom **V3UV3 MASTER** (l'utilisateur dit « Veuve Master »), marque
+    V3UV3 PRODUCTION, accroche « Fait main. Sonne pro. ». Prix : 89 € TTC licence à vie, OU
+    abonnement 9 €/mois sans fin (pas de formule annuelle/location-achat). Essai gratuit 14 jours
+    sans compte, 2 ordinateurs par licence. Formats : VST3 + AU macOS (11+, Apple Silicon et Intel),
+    VST3 Windows 10+ 64 bits — **pas d'AAX** (la FAQ actuelle du site mentionne AAX par erreur,
+    réponse `a1`, à corriger en même temps).
+    Description courte : « Le plugin de mastering dessiné à la main. Sept modules, un bouton AUTO
+    qui vise -14, -9 ou -6 LUFS, une référence à glisser pour copier la couleur d'un son, un
+    limiteur true peak. »
+    7 modules : Spectral (5 bandes dynamiques déplaçables) · Bus comp (Glue + Detail) ·
+    Saturation (Clean/Tube/Tape/Transfo, circuit à diodes modélisé) · Width (+ basses en mono) ·
+    Low/Air (+ Sub) · Clipper · Limiteur true peak.
+  - **Visuels (hors de ce dossier, côté repo du plugin) :** capture d'interface
+    `C:\Users\loicm\v3uv3-master\ui-snapshot.png` (2640×1520) ; croquis original
+    `C:\Users\loicm\v3uv3-master\ASSET PLUGIN V3UV3 MASTER .jpg` (portrait, à tourner de 90°).
+    Argumentaire de vente déjà rédigé : artefact `https://claude.ai/artifact/GQc2UCDhTEBLGK37G9AZ1i`.
+    Récap complet côté plugin : `C:\Users\loicm\v3uv3-master\ETAT-DU-PROJET.md`.
+  - **Dès le feu vert utilisateur :** construire la fiche dans `#p-catalog` (remplacer
+    `.plug-soon`), corriger la FAQ (`a1`, retirer AAX), intégrer le script Moonbase, committer et
+    prévenir la session "README.md plugin master" du commit pour qu'elle teste les boutons en mode
+    démo.
 
 ## Ce qui a été fait lors de la session précédente (2026-11-??, remplacement vidéo + nettoyage)
 
