@@ -1,0 +1,536 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>V3UV3 MASTER · plugin de mastering dessiné à la main</title>
+<meta name="description" content="V3UV3 MASTER : plugin de mastering en sept modules, avec réglage automatique, dessiné à la main. VST3 et AU, macOS et Windows. Essai gratuit 24 heures.">
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<meta property="og:title" content="V3UV3 MASTER · Fait main. Sonne pro.">
+<meta property="og:description" content="Le plugin de mastering dessiné à la main. Sept modules, un bouton AUTO, une référence à glisser, un limiteur true peak.">
+<meta property="og:type" content="product">
+<meta property="og:image" content="img/plugin-master-ui.jpg">
+<link rel="preload" href="fonts/V3UV3Hand.ttf" as="font" type="font/ttf" crossorigin>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Karla:ital,wght@0,400;0,600;1,400&display=swap">
+<style>
+/* Layout: one sheet of paper. Hero, the whole plugin with clickable parts, then each part zoomed in, in signal order. */
+@font-face {
+  font-family: "V3UV3Hand";
+  src: url("fonts/V3UV3Hand.ttf") format("truetype");
+  font-display: block;
+}
+:root {
+  /* the plugin's own palette (Source/UI/Style.h) */
+  --paper: #fbf8f1;
+  --ink: #161514;
+  --pencil: #77736b;
+  --light: #d9d3c7;
+  --wash: #f1ece1;
+  --hand: "V3UV3Hand", "Karla", "Segoe UI", sans-serif;
+  --text: "Karla", "Segoe UI", "Helvetica Neue", Arial, sans-serif;
+  --ui: url("img/master-ui.webp");
+  color-scheme: light;
+}
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+@media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
+body {
+  background: var(--paper);
+  color: var(--ink);
+  font-family: var(--text);
+  font-size: 17px;
+  line-height: 1.6;
+}
+.sheet {
+  max-width: 1160px;
+  margin: 0 auto;
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
+  padding-block: 40px 64px;
+  display: grid;
+  gap: 88px;
+}
+h1, h2, h3, .hand { font-family: var(--hand); font-weight: 400; letter-spacing: 0.02em; }
+/* the hand font's lower case is hard to read (n looks like m): capitals only, like in the plugin */
+h1, h2, h3, .eyebrow, .title .sub, .tagline, .btn, .formats, .hint, .spot span, .kicker, .target, .card .num, .verdict, .specs dt, .price .per, footer { text-transform: uppercase; }
+h1, h2, h3 { margin: 0; line-height: 1.05; text-wrap: balance; }
+p { margin: 0; max-width: 62ch; }
+a { color: inherit; }
+a:focus-visible, .spot:focus-visible { outline: 2px dashed var(--ink); outline-offset: 4px; }
+
+/* A pen frame: the border lives on a pseudo-element, so only the line wobbles, never the text. */
+.pen { position: relative; isolation: isolate; }
+.pen::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  border: 2px solid var(--ink);
+  border-radius: 16px;
+  filter: url(#wobble);
+  pointer-events: none;
+}
+
+/* ---------- hero ---------- */
+.hero { display: grid; gap: 28px; }
+.eyebrow { font-family: var(--hand); color: var(--pencil); font-size: 20px; letter-spacing: 0.08em; }
+.title { display: flex; flex-wrap: wrap; align-items: baseline; gap: 4px 22px; }
+h1 { font-size: clamp(64px, 13vw, 150px); }
+.title .sub { font-family: var(--hand); font-size: clamp(30px, 5vw, 54px); }
+.tagline { font-family: var(--hand); font-size: clamp(26px, 3.4vw, 36px); }
+.lede { font-size: 19px; }
+.actions { display: flex; flex-wrap: wrap; gap: 14px; }
+.btn {
+  display: inline-flex; align-items: center; gap: 10px;
+  padding: 12px 24px;
+  font-family: var(--hand); font-size: 22px; letter-spacing: 0.04em;
+  text-decoration: none; color: var(--ink);
+}
+.btn .eur { font-family: var(--text); font-size: 19px; }
+.btn.solid { color: var(--paper); }
+.btn.solid::before { background: var(--ink); }
+.btn::before { border-radius: 12px; }
+.btn:hover::before { border-width: 3px; }
+.formats { font-family: var(--hand); font-size: 19px; color: var(--pencil); display: flex; flex-wrap: wrap; gap: 6px 18px; }
+
+/* ---------- the whole plugin, clickable ---------- */
+.plugin { display: grid; gap: 14px; }
+.hint { font-family: var(--hand); font-size: 20px; color: var(--pencil); }
+.board { position: relative; max-width: 100%; aspect-ratio: 2000 / 1152; border-radius: 10px; overflow: hidden; }
+.board img { display: block; width: 100%; height: 100%; }
+.spot {
+  position: absolute;
+  left: calc(var(--x) * 100% / 2000);
+  top: calc(var(--y) * 100% / 1152);
+  width: calc(var(--w) * 100% / 2000);
+  height: calc(var(--h) * 100% / 1152);
+  border-radius: 14px;
+}
+.spot::before { border-color: transparent; border-width: 3px; border-radius: 14px; }
+.spot:hover::before, .spot:focus-visible::before { border-color: var(--ink); }
+.spot span {
+  position: absolute; left: 50%; bottom: calc(100% + 4px); transform: translateX(-50%);
+  font-family: var(--hand); font-size: 18px; white-space: nowrap;
+  background: var(--paper); padding: 0 8px; border-radius: 6px;
+  opacity: 0; pointer-events: none;
+}
+.spot:hover span, .spot:focus-visible span { opacity: 1; }
+
+/* A zoom on part of the plugin: one shared picture, cropped by its region in a 2000 x 1152 frame. */
+.crop {
+  aspect-ratio: var(--w) / var(--h);
+  max-width: 100%;
+  background-image: var(--ui);
+  background-repeat: no-repeat;
+  background-size: calc(200000% / var(--w)) auto;
+  background-position: calc(var(--x) * 100% / (2000 - var(--w))) calc(var(--y) * 100% / (1152 - var(--h)));
+  border-radius: 10px;
+}
+
+/* ---------- sections ---------- */
+.block { display: grid; gap: 28px; scroll-margin-top: 24px; }
+.block > header { display: grid; gap: 10px; }
+h2 { font-size: clamp(42px, 6vw, 68px); }
+h3 { font-size: 30px; }
+.kicker { font-family: var(--hand); font-size: 19px; color: var(--pencil); letter-spacing: 0.06em; }
+
+.split { display: grid; grid-template-columns: minmax(0, 1.25fr) minmax(0, 1fr); gap: 36px; align-items: start; }
+@media (max-width: 820px) { .split { grid-template-columns: minmax(0, 1fr); } }
+
+.steps { list-style: none; margin: 0; padding: 0; display: grid; gap: 22px; }
+.steps li { display: grid; grid-template-columns: 52px minmax(0, 1fr); gap: 16px; align-items: start; }
+.steps .n {
+  width: 48px; height: 48px; display: grid; place-items: center;
+  font-family: var(--hand); font-size: 26px;
+}
+.steps .n::before { border-radius: 50%; }
+.steps h3 { font-size: 26px; margin-bottom: 4px; }
+
+.targets { display: flex; flex-wrap: wrap; gap: 12px; }
+.target { padding: 10px 18px; display: grid; justify-items: center; min-width: 120px; }
+.target b { font-family: var(--hand); font-weight: 400; font-size: 34px; line-height: 1; }
+.target small { font-family: var(--hand); font-size: 17px; color: var(--pencil); }
+.target.on::before { border-radius: 50%; border-width: 2.5px; }
+.note { font-size: 15px; color: var(--pencil); }
+
+.list { margin: 0; padding-left: 22px; display: grid; gap: 8px; }
+.list li::marker { content: "- "; font-family: var(--hand); }
+
+/* module cards: tall cell on the left, words on the right */
+.chain { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 330px), 1fr)); gap: 22px; }
+.card {
+  display: grid; grid-template-columns: 116px minmax(0, 1fr); gap: 18px; align-items: start;
+  padding: 18px; scroll-margin-top: 24px;
+}
+.card .crop { width: 116px; }
+.card.wide { grid-template-columns: 180px minmax(0, 1fr); }
+.card.wide .crop { width: 180px; }
+.card .num { font-family: var(--hand); font-size: 18px; color: var(--pencil); }
+.card h3 { margin: 2px 0 8px; font-size: 24px; overflow-wrap: anywhere; }
+.card p { font-size: 16px; }
+.card:target::before, .meter:target::before { border-width: 3.5px; }
+.card:target, .meter:target { background: var(--wash); border-radius: 16px; }
+@media (max-width: 420px) {
+  .card, .card.wide { grid-template-columns: 92px minmax(0, 1fr); gap: 14px; }
+  .card .crop, .card.wide .crop { width: 92px; }
+}
+
+.meters { display: grid; grid-template-columns: minmax(0, 1.7fr) minmax(0, 1fr) minmax(0, 0.6fr); gap: 22px; align-items: start; }
+@media (max-width: 900px) { .meters { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); } }
+@media (max-width: 560px) { .meters { grid-template-columns: minmax(0, 1fr); } }
+.meter { display: grid; gap: 14px; padding: 18px; scroll-margin-top: 24px; }
+.meter p { font-size: 16px; }
+.meter.tp .crop { max-width: 150px; }
+.verdict { display: flex; flex-wrap: wrap; gap: 10px; }
+.verdict span { font-family: var(--hand); font-size: 22px; padding: 4px 14px; }
+.verdict span::before { border-radius: 10px; }
+
+/* specs: label / value rows */
+.specs { margin: 0; display: grid; grid-template-columns: max-content minmax(0, 1fr); gap: 0 28px; }
+.specs dt, .specs dd { margin: 0; padding: 12px 0; border-bottom: 1.5px solid var(--light); }
+.specs dt { font-family: var(--hand); font-size: 20px; letter-spacing: 0.04em; }
+@media (max-width: 520px) {
+  .specs { grid-template-columns: minmax(0, 1fr); }
+  .specs dt { border-bottom: 0; padding-bottom: 0; }
+}
+
+.prices { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 300px), 1fr)); gap: 22px; }
+.price { padding: 28px; display: grid; gap: 14px; align-content: start; }
+.price .amount { font-family: var(--hand); font-size: 72px; line-height: 1; }
+.price .amount .eur { font-family: var(--text); font-size: 40px; }
+.price .per { font-family: var(--hand); font-size: 26px; color: var(--pencil); }
+.price .btn { justify-self: start; }
+.trial { display: flex; flex-wrap: wrap; align-items: center; gap: 14px 24px; }
+
+/* ---------- back to the site ---------- */
+.top { display: flex; justify-content: space-between; align-items: center; gap: 12px; flex-wrap: wrap; margin-bottom: -48px; }
+.top a { font-family: var(--hand); font-size: 20px; letter-spacing: 0.04em; text-transform: uppercase; text-decoration: none; padding: 6px 14px; }
+.top a::before { border-radius: 10px; border-color: transparent; }
+.top a:hover::before { border-color: var(--ink); }
+
+/* ---------- made by hand ---------- */
+.pair { display: grid; grid-template-columns: minmax(0, 1fr) 64px minmax(0, 1.25fr); gap: 18px; align-items: center; }
+.pair .arrow { width: 64px; height: 40px; }
+@media (max-width: 760px) {
+  .pair { grid-template-columns: minmax(0, 1fr); justify-items: center; }
+  .pair .arrow { transform: rotate(90deg); }
+}
+.shot { margin: 0; padding: 14px; display: grid; gap: 10px; width: 100%; }
+.shot img { display: block; width: 100%; height: auto; border-radius: 8px; mix-blend-mode: multiply; }
+.shot figcaption { font-family: var(--hand); font-size: 19px; color: var(--pencil); text-transform: uppercase; letter-spacing: 0.04em; }
+.sample { font-family: var(--hand); font-size: clamp(30px, 4.6vw, 52px); line-height: 1.15; overflow-wrap: anywhere; }
+.facts { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 320px), 1fr)); gap: 22px; }
+.fact { padding: 22px; display: grid; gap: 10px; align-content: start; }
+.fact h3 { font-size: 26px; }
+.fact p { font-size: 16px; }
+.checks { list-style: none; margin: 0; padding: 0; display: grid; gap: 12px; }
+.checks li { display: grid; grid-template-columns: 30px minmax(0, 1fr); gap: 12px; align-items: start; }
+.checks svg { width: 26px; height: 26px; margin-top: 1px; }
+.footlinks { display: flex; gap: 18px; flex-wrap: wrap; font-family: var(--text); font-size: 14px; text-transform: none; }
+
+footer { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 10px; font-family: var(--hand); font-size: 20px; color: var(--pencil); border-top: 1.5px solid var(--light); padding-top: 22px; }
+.sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+</style>
+
+</head>
+<body style="margin:0">
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <filter id="wobble" x="-5%" y="-5%" width="110%" height="110%">
+    <feTurbulence type="fractalNoise" baseFrequency="0.035" numOctaves="2" seed="7"/>
+    <feDisplacementMap in="SourceGraphic" scale="3.2"/>
+  </filter>
+</svg>
+
+<main class="sheet">
+
+  <nav class="top" aria-label="Navigation">
+    <a class="pen" href="index.html#p-catalog">&larr; V3UV3</a>
+    <a class="pen" href="#prix">PRIX</a>
+  </nav>
+
+  <section class="hero">
+    <div class="eyebrow">V3UV3 PRODUCTION - PLUGIN DE MASTERING</div>
+    <div class="title">
+      <h1>V3UV3</h1>
+      <span class="sub">MASTER</span>
+    </div>
+    <div class="tagline">Fait main. Sonne pro.</div>
+    <p class="lede">Une chaîne de mastering complète en sept modules, avec un réglage automatique qui amène ton morceau au volume que tu choisis. Toute l'interface est dessinée au stylo, sur papier, jusqu'aux lettres.</p>
+    <div class="actions">
+      <a class="btn pen solid" href="https://v3uv3-prodution.moonbase.sh/download/v3uv3-master" target="_blank" rel="noopener">ESSAI GRATUIT 24 HEURES</a>
+      <a class="btn pen" href="#prix">VOIR LES PRIX</a>
+    </div>
+    <div class="formats"><span>VST3 - AU</span><span>MACOS (APPLE SILICON ET INTEL)</span><span>WINDOWS</span></div>
+  </section>
+
+  <section class="plugin" aria-labelledby="plugin-h">
+    <h2 id="plugin-h" class="sr">Le plugin en entier</h2>
+    <div class="hint">Clique sur une partie du plugin pour voir ce qu'elle fait</div>
+    <div class="board">
+      <img src="img/master-ui.webp" alt="L'interface de V3UV3 MASTER : spectre en haut, sept modules en bas, compteurs de volume, de stéréo et de crêtes à droite. Tout est dessiné au trait noir sur papier." width="2000" height="1152">
+      <a class="spot pen" href="#auto" style="--x:630;--y:14;--w:1335;--h:64"><span>AUTO, REF, AVEC / SANS</span></a>
+      <a class="spot pen" href="#spectre" style="--x:22;--y:98;--w:1440;--h:656"><span>SPECTRE</span></a>
+      <a class="spot pen" href="#loudness" style="--x:1478;--y:98;--w:500;--h:456"><span>LOUDNESS</span></a>
+      <a class="spot pen" href="#stereo" style="--x:1478;--y:572;--w:315;--h:562"><span>STEREO</span></a>
+      <a class="spot pen" href="#truepeak" style="--x:1812;--y:572;--w:166;--h:562"><span>TRUE PEAK</span></a>
+      <a class="spot pen" href="#input" style="--x:22;--y:772;--w:138;--h:362"><span>INPUT</span></a>
+      <a class="spot pen" href="#spectral" style="--x:170;--y:772;--w:154;--h:362"><span>SPECTRAL</span></a>
+      <a class="spot pen" href="#buscomp" style="--x:336;--y:772;--w:204;--h:362"><span>BUS COMP</span></a>
+      <a class="spot pen" href="#saturation" style="--x:553;--y:772;--w:228;--h:362"><span>SATURATION</span></a>
+      <a class="spot pen" href="#width" style="--x:793;--y:772;--w:140;--h:362"><span>WIDTH</span></a>
+      <a class="spot pen" href="#lowair" style="--x:943;--y:772;--w:204;--h:362"><span>LOW / AIR</span></a>
+      <a class="spot pen" href="#clipper" style="--x:1158;--y:772;--w:140;--h:362"><span>CLIPPER</span></a>
+      <a class="spot pen" href="#limiter" style="--x:1308;--y:772;--w:150;--h:362"><span>LIMITER</span></a>
+    </div>
+  </section>
+
+  <section class="block" id="auto">
+    <header>
+      <div class="kicker">LE BOUTON</div>
+      <h2>AUTO</h2>
+      <p>Mets en boucle le passage le plus fort de ton morceau et clique sur AUTO. En 10 à 20 secondes, le plugin règle toute la chaîne pour toi.</p>
+    </header>
+    <div class="crop" role="img" aria-label="La barre du haut du plugin : REF, cibles -14, -9, -6, AUTO, AVEC (A/B) et le verdict LOUD." style="--x:630;--y:14;--w:1335;--h:64"></div>
+    <div class="split">
+      <ol class="steps">
+        <li><span class="n pen">1</span><div><h3>ECOUTE</h3><p>Il écoute 6 secondes et garde les 3 plus fortes : volume, crêtes, part de basses, part d'aigus et largeur stéréo.</p></div></li>
+        <li><span class="n pen">2</span><div><h3>REGLE</h3><p>Il règle chaque module d'après ce qu'il a entendu. Un mix très dynamique reçoit plus de compression et de clip. Un mix trop étroit est élargi.</p></div></li>
+        <li><span class="n pen">3</span><div><h3>AJUSTE</h3><p>Il mesure la vraie sortie et corrige le volume d'entrée, jusqu'à trois fois, pour tomber sur la cible à 0,5 LU près.</p></div></li>
+      </ol>
+      <div class="block" style="gap:18px">
+        <h3>CHOISIS TA CIBLE</h3>
+        <div class="targets">
+          <div class="target pen"><b>-14</b><small>STREAMING</small></div>
+          <div class="target pen on"><b>-9</b><small>CLUB</small></div>
+          <div class="target pen"><b>-6</b><small>TRES FORT</small></div>
+        </div>
+        <p class="note">En LUFS. -9 est la cible par défaut. Si AUTO n'entend rien, il affiche PAS DE SIGNAL et ne touche à rien.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="block" id="ref">
+    <header>
+      <div class="kicker">SONNER COMME UN MORCEAU QUE TU AIMES</div>
+      <h2>REF</h2>
+    </header>
+    <div class="split">
+      <div style="display:grid;gap:16px">
+        <p>Glisse un morceau de référence sur le plugin : wav, aiff, flac, mp3, m4a ou ogg. Avec une référence chargée, AUTO copie trois choses :</p>
+        <ul class="list">
+          <li><strong>la couleur</strong>, avec un EQ de correspondance de 10 bandes, une par octave ;</li>
+          <li><strong>le volume</strong> du passage le plus fort de la référence ;</li>
+          <li><strong>la largeur</strong> stéréo.</li>
+        </ul>
+        <p class="note">Ton projet garde seulement l'analyse de la référence, pas le fichier audio.</p>
+      </div>
+      <div class="crop" role="img" aria-label="Le bouton REF avec une référence chargée." style="--x:636;--y:18;--w:336;--h:50"></div>
+    </div>
+  </section>
+
+  <section class="block" id="spectre">
+    <header>
+      <div class="kicker">TU VOIS CE QUE TU FAIS</div>
+      <h2>SPECTRE</h2>
+      <p>L'entrée est tracée au crayon, la sortie au stylo. La ligne épaisse montre en direct ce que coupe le module Spectral, et la ligne en pointillés la correction vers ta référence. La bande TONE, dessous, montre ce que la chaîne change dans le son, à volume égal.</p>
+    </header>
+    <div class="crop" role="img" aria-label="Le spectre du plugin avec les cinq points de bande, la courbe de correspondance en pointillés et la bande TONE." style="--x:22;--y:98;--w:1440;--h:656"></div>
+  </section>
+
+  <section class="block" id="chaine">
+    <header>
+      <div class="kicker">DANS L'ORDRE DU SIGNAL</div>
+      <h2>LA CHAINE</h2>
+      <p>Sept modules. Chacun s'allume et s'éteint d'un clic sur son rond, sans craquement.</p>
+    </header>
+    <div class="chain">
+      <article class="card pen" id="input">
+        <div class="crop" role="img" aria-label="Module Input" style="--x:22;--y:772;--w:138;--h:362"></div>
+        <div><div class="num">ENTREE</div><h3>INPUT</h3><p>Le volume qui entre dans la chaîne, de -18 à +18 dB. Le compteur montre la crête d'entrée.</p></div>
+      </article>
+      <article class="card pen" id="spectral">
+        <div class="crop" role="img" aria-label="Module Spectral" style="--x:170;--y:772;--w:154;--h:362"></div>
+        <div><div class="num">1</div><h3>SPECTRAL</h3><p>Cinq bandes qui coupent seulement quand une zone ressort trop. Tu les déplaces à la souris, directement sur le spectre.</p></div>
+      </article>
+      <article class="card pen wide" id="buscomp">
+        <div class="crop" role="img" aria-label="Module Bus comp" style="--x:336;--y:772;--w:204;--h:362"></div>
+        <div><div class="num">2</div><h3>BUS COMP</h3><p>GLUE soude le mix, sur trois bandes. DETAIL remonte les petits détails cachés sous le seuil.</p></div>
+      </article>
+      <article class="card pen wide" id="saturation">
+        <div class="crop" role="img" aria-label="Module Saturation" style="--x:553;--y:772;--w:228;--h:362"></div>
+        <div><div class="num">3</div><h3>SATURATION</h3><p>Quatre couleurs : CLEAN, TUBE, TAPE et TRANSFO. Un vrai circuit à diodes modélisé, suréchantillonné 8 fois, à volume compensé.</p></div>
+      </article>
+      <article class="card pen" id="width">
+        <div class="crop" role="img" aria-label="Module Width" style="--x:793;--y:772;--w:140;--h:362"></div>
+        <div><div class="num">4</div><h3>WIDTH</h3><p>Élargit les médiums et les aigus sans toucher au centre. LM met tout ce qui est sous 150 Hz en mono.</p></div>
+      </article>
+      <article class="card pen wide" id="lowair">
+        <div class="crop" role="img" aria-label="Module Low / Air" style="--x:943;--y:772;--w:204;--h:362"></div>
+        <div><div class="num">5</div><h3>LOW / AIR</h3><p>LOW ajoute du poids avec des harmoniques, et SUB une octave plus bas. AIR fait briller tout ce qui est au-dessus de 7 kHz.</p></div>
+      </article>
+      <article class="card pen" id="clipper">
+        <div class="crop" role="img" aria-label="Module Clipper" style="--x:1158;--y:772;--w:140;--h:362"></div>
+        <div><div class="num">6</div><h3>CLIPPER</h3><p>Arrondit les crêtes avant le limiteur, pour gagner du volume sans que le son pompe.</p></div>
+      </article>
+      <article class="card pen" id="limiter">
+        <div class="crop" role="img" aria-label="Module Limiter" style="--x:1308;--y:772;--w:150;--h:362"></div>
+        <div><div class="num">7</div><h3>LIMITER</h3><p>Limiteur true peak qui anticipe de 1,5 ms. Il mesure les crêtes comme un vrai compteur true peak, donc rien ne dépasse ton plafond.</p></div>
+      </article>
+    </div>
+  </section>
+
+  <section class="block" id="compteurs">
+    <header>
+      <div class="kicker">TOUT EST MESURE</div>
+      <h2>LES COMPTEURS</h2>
+    </header>
+    <div class="meters">
+      <article class="meter pen" id="loudness">
+        <div class="crop" role="img" aria-label="Compteur de loudness" style="--x:1478;--y:98;--w:500;--h:456"></div>
+        <h3>LOUDNESS</h3>
+        <p>LUFS court terme, momentané et intégré, crête true peak maximale, et 60 secondes d'historique avec les repères -9, -14 et -23.</p>
+      </article>
+      <article class="meter pen" id="stereo">
+        <div class="crop" role="img" aria-label="Vectorscope stéréo" style="--x:1478;--y:572;--w:315;--h:562"></div>
+        <h3>STEREO</h3>
+        <p>Vectorscope et corrélation : tu vois tout de suite si ton mix risque de disparaître en mono.</p>
+      </article>
+      <article class="meter pen tp" id="truepeak">
+        <div class="crop" role="img" aria-label="Barres true peak gauche et droite" style="--x:1812;--y:572;--w:166;--h:562"></div>
+        <h3>TRUE PEAK</h3>
+        <p>Les crêtes gauche et droite face au plafond.</p>
+      </article>
+    </div>
+    <div class="split" style="align-items:center">
+      <p>En haut à droite, un mot résume l'état de ton master :</p>
+      <div class="verdict"><span class="pen">GOOD</span><span class="pen">LOUD</span><span class="pen">QUIET</span><span class="pen">PHASE</span></div>
+    </div>
+  </section>
+
+  <section class="block" id="avec">
+    <header>
+      <div class="kicker">COMPARER HONNETEMENT</div>
+      <h2>AVEC / SANS</h2>
+      <p>Un clic pour réentendre le son d'origine, retardé exactement comme le son traité. Tu compares ton master au mix de départ sans décalage.</p>
+    </header>
+  </section>
+
+  <section class="block" id="fait-main">
+    <header>
+      <div class="kicker">DESSINE AU STYLO, CODE A LA MAIN</div>
+      <h2>FAIT MAIN</h2>
+      <p>Pas de banque d'images, pas de modèle tout fait. V3UV3 MASTER est parti d'une feuille et d'un stylo.</p>
+    </header>
+
+    <div class="pair">
+      <figure class="shot pen">
+        <img src="img/plugin-master-sketch.jpg" width="1200" height="900" loading="lazy" alt="Le croquis d'origine : l'interface du plugin dessinée au stylo noir sur une feuille blanche, avec le spectre, les compteurs et les sept modules.">
+        <figcaption>LE CROQUIS</figcaption>
+      </figure>
+      <svg class="arrow" viewBox="0 0 64 40" aria-hidden="true"><path d="M4 21 C 20 18, 38 23, 56 20 M44 9 L57 20 L45 31" fill="none" stroke="#161514" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" filter="url(#wobble)"/></svg>
+      <figure class="shot pen">
+        <img src="img/master-ui.webp" width="2000" height="1152" loading="lazy" alt="Le plugin terminé, qui reprend le croquis trait pour trait.">
+        <figcaption>LE PLUGIN</figcaption>
+      </figure>
+    </div>
+    <p>L'interface suit le croquis trait pour trait. Chaque cadre, chaque potard est tracé avec un léger tremblement, comme une ligne à la main, mais fixe : rien ne bouge ni ne scintille pendant que tu travailles.</p>
+
+    <div class="pair">
+      <figure class="shot pen">
+        <img src="img/master-typo.jpg" width="900" height="741" loading="lazy" alt="L'alphabet écrit à la main, majuscules et minuscules, qui a servi à créer la police du plugin.">
+        <figcaption>L'ALPHABET, ECRIT A LA MAIN</figcaption>
+      </figure>
+      <svg class="arrow" viewBox="0 0 64 40" aria-hidden="true"><path d="M4 21 C 20 18, 38 23, 56 20 M44 9 L57 20 L45 31" fill="none" stroke="#161514" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" filter="url(#wobble)"/></svg>
+      <figure class="shot pen" style="align-content:center;min-height:100%">
+        <div class="sample" aria-label="L'alphabet dans la police du plugin">ABCDEFGHIJKLM<br>NOPQRSTUVWXYZ<br>0123456789 %</div>
+        <figcaption>LA POLICE DU PLUGIN</figcaption>
+      </figure>
+    </div>
+    <p>Chaque lettre a été découpée dans cette feuille, épaissie pour rester lisible en tout petit, puis transformée en vraie police. C'est elle qui écrit tout dans le plugin, et tous les titres de cette page.</p>
+
+    <header style="margin-top:24px">
+      <div class="kicker">SOUS LE CAPOT</div>
+      <h3 style="font-size:clamp(32px,4vw,44px)">LE SON, LUI, NE TREMBLE PAS</h3>
+    </header>
+    <div class="facts">
+      <article class="fact pen">
+        <h3>UN VRAI CIRCUIT A DIODES</h3>
+        <p>TUBE, TAPE et TRANSFO ne sont pas de simples courbes : c'est un écrêteur à diodes modélisé composant par composant, suréchantillonné 8 fois pour ne pas créer de parasites dans les aigus. Le volume est compensé : tu entends la couleur, pas juste « plus fort ».</p>
+      </article>
+      <article class="fact pen">
+        <h3>UN LIMITEUR TRUE PEAK</h3>
+        <p>Il voit les crêtes entre les échantillons, celles qui saturent après conversion en MP3 ou sur le streaming. Il les mesure par suréchantillonnage 4 fois, la même méthode qu'un compteur true peak de référence, et anticipe de 1,5 ms.</p>
+      </article>
+      <article class="fact pen">
+        <h3>UN LOUDNESS AUX NORMES</h3>
+        <p>Le compteur suit la norme de mesure du streaming et de la télé (ITU BS.1770-4). Sur les fichiers de test officiels de l'EBU, il tombe juste à 0,02 LU près.</p>
+      </article>
+      <article class="fact pen">
+        <h3>TON PROJET NE CASSE JAMAIS</h3>
+        <p>Essai fini ou abonnement arrêté : le plugin laisse passer ton son intact. Pas de silence, pas de bruit, pas de bip. Ta session se rouvre telle quelle.</p>
+      </article>
+    </div>
+
+    <header style="margin-top:24px">
+      <div class="kicker">AVANT DE TE LE VENDRE</div>
+      <h3 style="font-size:clamp(32px,4vw,44px)">TESTE ET VALIDE</h3>
+    </header>
+    <ul class="checks">
+      <li><svg viewBox="0 0 26 26" aria-hidden="true"><path d="M4 14 L10 20 L22 5" fill="none" stroke="#161514" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" filter="url(#wobble)"/></svg><p><strong>pluginval</strong> au niveau le plus sévère (10), en VST3 et en AU.</p></li>
+      <li><svg viewBox="0 0 26 26" aria-hidden="true"><path d="M4 14 L10 20 L22 5" fill="none" stroke="#161514" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" filter="url(#wobble)"/></svg><p><strong>Le validateur officiel de Steinberg</strong>, qui a inventé le VST3 : 47 tests sur 47, et 537 sur 537 en mode étendu.</p></li>
+      <li><svg viewBox="0 0 26 26" aria-hidden="true"><path d="M4 14 L10 20 L22 5" fill="none" stroke="#161514" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" filter="url(#wobble)"/></svg><p><strong>auval</strong>, la validation d'Apple pour les plugins AU.</p></li>
+      <li><svg viewBox="0 0 26 26" aria-hidden="true"><path d="M4 14 L10 20 L22 5" fill="none" stroke="#161514" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" filter="url(#wobble)"/></svg><p><strong>Des tests automatiques sur le son</strong> : AUTO atteint chaque cible à 1 LU près sans dépasser le plafond, aucune crête ne passe le limiteur, aucun clic quand tu changes de couleur de saturation en pleine lecture, et le repliement reste sous -80 dB.</p></li>
+    </ul>
+  </section>
+
+  <section class="block" id="details">
+    <header><h2>EN DETAIL</h2></header>
+    <dl class="specs">
+      <dt>FORMATS</dt><dd>VST3 et AU</dd>
+      <dt>SYSTEMES</dt><dd>macOS 11 ou plus récent (Apple Silicon et Intel), Windows 64 bits</dd>
+      <dt>LATENCE</dt><dd>2,5 ms (121 échantillons à 48 kHz), compensée automatiquement par ton logiciel</dd>
+      <dt>FENETRE</dt><dd>Redimensionnable de 60 à 200 %, taille gardée dans ton projet</dd>
+      <dt>ACTIVATION</dt><dd>2 ordinateurs par licence. Activation en un clic depuis le plugin, aussi possible hors ligne</dd>
+      <dt>ESSAI</dt><dd>24 heures, plugin complet, sans créer de compte</dd>
+      <dt>SANS LICENCE</dt><dd>Le son passe intact, ton projet ne casse pas</dd>
+    </dl>
+  </section>
+
+  <section class="block" id="prix">
+    <header>
+      <div class="kicker">DEUX FORMULES, C'EST TOUT</div>
+      <h2>PRIX</h2>
+    </header>
+    <div class="prices">
+      <div class="price pen">
+        <h3>ACHAT</h3>
+        <div class="amount">89 <span class="eur">€</span></div>
+        <div class="per">UNE FOIS</div>
+        <p>La licence est à toi pour toujours.</p>
+        <a class="btn pen solid" href="https://v3uv3-prodution.moonbase.sh/buy/v3uv3-master" target="_blank" rel="noopener">ACHETER</a>
+      </div>
+      <div class="price pen">
+        <h3>ABONNEMENT</h3>
+        <div class="amount">9 <span class="eur">€</span></div>
+        <div class="per">PAR MOIS</div>
+        <p>Sans engagement : tu arrêtes quand tu veux. Le plugin marche tant que l'abonnement est actif.</p>
+        <a class="btn pen" href="https://v3uv3-prodution.moonbase.sh/buy/v3uv3-master?variation=mensuel" target="_blank" rel="noopener">S'ABONNER</a>
+      </div>
+    </div>
+    <div class="trial">
+      <a class="btn pen solid" href="https://v3uv3-prodution.moonbase.sh/download/v3uv3-master" target="_blank" rel="noopener">ESSAI GRATUIT 24 HEURES</a>
+      <p class="note">Installe, ouvre le plugin dans ton logiciel, clique sur « Activer ». Pas de clé à taper.</p>
+    </div>
+  </section>
+
+  <footer>
+    <span>V3UV3 PRODUCTION</span>
+    <span>Dessine et code a la main.</span>
+    <span class="footlinks"><a href="index.html#p-catalog">Retour au site</a><a href="mentions-legales.html">Mentions légales</a><a href="confidentialite.html">Confidentialité</a></span>
+  </footer>
+</main>
+
+</body>
+</html>

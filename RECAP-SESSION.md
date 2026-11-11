@@ -11,7 +11,25 @@
   l'outil SendMessage (nom de session visible dans ListAgents, ex. "Site internet skills et
   optimisation") en décrivant le changement voulu — elle éditera `index.html` et poussera.
 
-## Session en cours (2026-11-12, nettoyage DarkFairyGranullar + transition accueil)
+## Session 2026-11-12 (suite) — fiche produit complète + essai 24 h
+- **Essai gratuit : 24 heures** (plus 14 jours), décision de l'utilisateur. Changé sur le site (8 langues :
+  `pm_trial`, `pm_trial_note`), dans `master.html`, et côté plugin (`Source/PluginProcessor.cpp`
+  `trialLengthDays = 1`, README, ETAT-DU-PROJET — non commité côté plugin, rebuild nécessaire).
+  **La vraie durée se règle dans Moonbase** (réglages du produit `v3uv3-master`) : à faire par l'utilisateur.
+- **Nouvelle page `master.html`** : la fiche produit « dessinée » (look du plugin, police manuscrite),
+  ouverte au clic sur la photo du plugin dans `#p-catalog` ou sur « Voir la fiche complète » (clé i18n
+  `pm_more`, 8 langues). Contenu : hero, plugin cliquable par zones, AUTO, REF, SPECTRE, la chaîne (7 modules),
+  compteurs, AVEC/SANS, **FAIT MAIN** (croquis → interface, alphabet → police, sous le capot : diodes,
+  true peak, loudness BS.1770, projet jamais cassé ; validations pluginval/Steinberg/auval/tests), détails,
+  prix. Charte : voir DESIGN.md, dernière section. Français seulement.
+- `index.html#p-xxx` (ex. `#p-catalog`) ouvre maintenant directement le mode plugin sans l'écran d'accueil
+  (utilisé par le lien retour de `master.html`).
+- Corrigé : bouton « S'abonner » → `/buy/v3uv3-master?variation=mensuel` (site + fiche) ; « AAX » retiré du
+  texte FAQ a1 par défaut et du pied de page du mode plugin.
+- Vu en passant, pas touché : le script Moonbase ajoute en haut à droite des boutons « Log in / Cart » qui
+  chevauchent la navigation ; `img/hero-jpeg.jpg` est en 404 (référencé mais absent).
+
+## Session précédente (2026-11-12, nettoyage DarkFairyGranullar + transition accueil)
 - Le test produit "DarkFairyGranullar" (fiche modale avec tilt 3D/zoom, CSS `.plugfeat`/`.pmodal`,
   JS associé, et les chaînes `pl_m_*`/`pl_new`/`pl_sculpt_*` dans les 8 langues) a été **entièrement
   supprimé** — il ne restait que des vestiges orphelins après le retrait du placeholder honnête
