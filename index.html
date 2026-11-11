@@ -388,11 +388,7 @@
   .landing::before{content:"";position:absolute;inset:0;pointer-events:none;opacity:.05;mix-blend-mode:overlay;
     background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='220'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")}
   .landing__mark{width:min(1040px,92vw);height:min(572px,50.6vw);flex:none;position:relative;z-index:1}
-  .landing__mark::before{content:"";position:absolute;inset:-6%;z-index:-1;border-radius:50%;
-    background:radial-gradient(circle,transparent 42%,rgba(255,106,61,.24) 58%,rgba(45,212,168,.16) 72%,transparent 86%);
-    filter:blur(16px);pointer-events:none}
-  #introGlass{display:block;width:100%;height:100%}
-  .landing__fallback{display:none;width:60%;height:60%;margin:20% auto;object-fit:contain}
+  .landing__video{display:block;width:100%;height:100%;object-fit:contain}
   .landing__nav{display:flex;width:min(760px,90vw);justify-content:space-between;align-items:center;position:relative;z-index:1}
   .landing__btn{font-family:"Nunito";font-weight:700;font-size:.72rem;letter-spacing:.08em;text-transform:uppercase;color:var(--dim);border:1px solid var(--line);border-radius:var(--radius);padding:9px 24px;background:transparent;transition:border-color .2s var(--ease),color .2s var(--ease)}
   .landing__btn:hover{border-color:var(--btn-acc);color:var(--btn-acc)}
@@ -453,8 +449,9 @@
 
   <section class="landing" id="landing" aria-label="Accueil V3UV3">
     <div class="landing__mark" role="img" aria-label="V3UV3, studio créatif indépendant">
-      <canvas id="introGlass"></canvas>
-      <img class="landing__fallback" src="img/landing-mark.png" alt="">
+      <video id="introGlass" class="landing__video" poster="img/landing-poster.jpg" muted playsinline preload="auto">
+        <source src="img/landing-break.mp4" type="video/mp4">
+      </video>
     </div>
     <nav class="landing__nav">
       <button class="landing__btn" style="--btn-acc:#FF6A3D" data-enter="jpeg">.JPEG</button>
@@ -751,23 +748,12 @@
       <div class="scrolldown" data-i18n="scroll">DÉFILER</div>
     </section>
 
-    <!-- CATALOGUE <<< MODIFIER : un 2e plugin réel ? copie le bloc .plugfeat, donne-lui un nouvel id de modale (#plugModal2...) et son propre jeu de clés i18n pl_*. -->
+    <!-- CATALOGUE <<< MODIFIER : prochain plugin réel (Veuve Master) à venir. Le bloc .plugfeat/.pmodal (tilt 3D, zoom, fiche modale) reste prêt plus bas dans le CSS/JS — remettre un <div class="plugfeat reveal">... dès que les assets arrivent, au lieu de .plug-soon. -->
     <section id="p-catalog">
       <div class="sec-head reveal"><div class="eyebrow" data-i18n="ey_catalog">01 / Catalogue</div><h2 data-i18n="catalog_h">Les plugins</h2></div>
-      <div class="plugfeat reveal">
-        <div class="eyebrow" style="justify-content:center" data-i18n="pl_badge_new">Premier plugin</div>
-        <button type="button" class="plugfeat__art" id="plugArt" aria-label="Agrandir le visuel du plugin">
-          <img src="img/plugin-darkfairygranullar.png" alt="DarkFairyGranullar" loading="lazy">
-        </button>
-        <h2 class="plugfeat__name">DarkFairyGranullar</h2>
-        <p class="plugfeat__formats" data-i18n="pl_formats_short">Granular · Bitcrusher · Stéréo</p>
-        <div class="plugfeat__info">
-          <div class="eyebrow" data-i18n="pl_sculpt_ey">Sculptez votre son</div>
-          <h3 data-i18n="pl_sculpt_h">Du grain. Du caractère. De la largeur.</h3>
-          <p data-i18n="pl_sculpt_p">Un instrument de sound design qui combine synthèse granulaire, textures lo-fi et contrôle de l'espace stéréo.</p>
-          <div class="plugfeat__badges"><span>Granular</span><span>Bitcrush</span><span data-i18n="pl_badge_stereo">Stéréo</span></div>
-          <button type="button" class="plugfeat__more" id="plugMore" aria-haspopup="dialog" aria-controls="plugModal" aria-label="Voir la fiche complète">···</button>
-        </div>
+      <div class="plug-soon reveal">
+        <h3 data-i18n="plug_soon_h">Premiers plugins en préparation</h3>
+        <p data-i18n="plug_soon_p">Le catalogue n'est pas encore en ligne. Écris-moi via le formulaire plus bas pour être prévenu dès la sortie du premier plugin.</p>
       </div>
     </section>
 
@@ -848,7 +834,6 @@
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
-<script type="module" src="js/intro-glass.js"></script>
 <script type="module" src="js/motion.js"></script>
 <script>
   // GSAP est optionnel : si le CDN est hors-ligne, le site reste utilisable
@@ -1514,20 +1499,19 @@
   });
   $$('[data-goto]').forEach(b=>b.addEventListener('click',()=>setMode(b.dataset.goto)));
 
-  // ---- Page d'accueil : le V en verre (moteur premium-3d-glass) éclate au clic ----
+  // ---- Page d'accueil : le logo éclate (vidéo Blender) pendant que la page choisie apparaît derrière ----
   (function(){
     const landing=$('#landing');
     if(!landing)return;
-    // le logo part en éclats pendant que la page choisie apparaît derrière, en même temps (pas de retour en place)
+    const vid=$('#introGlass');
     $$('.landing__btn').forEach(b=>b.addEventListener('click',()=>{
       const m=b.dataset.enter,reduced=matchMedia('(prefers-reduced-motion:reduce)').matches;
-      if(reduced){setMode(m,true);document.body.classList.remove('pre-entry');landing.remove();document.dispatchEvent(new CustomEvent('v3:modechange',{detail:{mode:m}}));return;}
       setMode(m,true);
       document.body.classList.remove('pre-entry');
       document.dispatchEvent(new CustomEvent('v3:modechange',{detail:{mode:m}}));
-      window.__v3glass&&window.__v3glass.explode();
-      landing.classList.add('leaving');
-      setTimeout(()=>landing.remove(),1750);
+      if(reduced||!vid){landing.remove();return;}
+      vid.play();
+      vid.addEventListener('ended',()=>{landing.classList.add('leaving');setTimeout(()=>landing.remove(),1750);},{once:true});
     }));
   })();
   // boutons Acheter : tant que le lien est "#", on ne fait rien (à remplacer par ton lien de paiement)
