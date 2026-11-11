@@ -822,9 +822,11 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
 <script type="module" src="js/motion.js"></script>
 <!-- Moonbase (vente du plugin V3UV3 MASTER) : optionnel, les liens d'achat/essai pointent
-     directement vers Moonbase donc le site reste utilisable si ce script est hors-ligne. -->
+     directement vers Moonbase donc le site reste utilisable si ce script est hors-ligne.
+     toolbar désactivée : sa barre flottante « Log in / Cart » (en haut à droite, z-index 9999)
+     recouvrait la navigation du site. -->
 <script src="https://assets.moonbase.sh/storefront/moonbase.js"></script>
-<script>if(typeof Moonbase!=='undefined')Moonbase.setup('https://v3uv3-prodution.moonbase.sh');</script>
+<script>if(typeof Moonbase!=='undefined')Moonbase.setup('https://v3uv3-prodution.moonbase.sh',{toolbar:{enabled:false}});</script>
 <script>
   // GSAP est optionnel : si le CDN est hors-ligne, le site reste utilisable
   // (nav, formulaires, lecteur audio...), seules les animations avancées
@@ -1519,7 +1521,9 @@
     document.body.classList.remove('pre-entry');
     document.dispatchEvent(new CustomEvent('v3:modechange',{detail:{mode:'plugin'}}));
     const l=$('#landing');if(l)l.remove();
-    requestAnimationFrame(()=>document.querySelector(h).scrollIntoView());
+    // setMode remet en haut et ScrollTrigger se recalcule : on descend seulement une fois tout chargé
+    const go=()=>setTimeout(()=>document.querySelector(h).scrollIntoView(),150);
+    if(document.readyState==='complete')go();else addEventListener('load',go,{once:true});
   })();
   // boutons Acheter : tant que le lien est "#", on ne fait rien (à remplacer par ton lien de paiement)
   $$('.plug .cta').forEach(a=>a.addEventListener('click',e=>{if(a.getAttribute('href')==='#')e.preventDefault();}));

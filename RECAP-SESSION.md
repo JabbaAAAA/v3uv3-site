@@ -26,8 +26,9 @@
   (utilisé par le lien retour de `master.html`).
 - Corrigé : bouton « S'abonner » → `/buy/v3uv3-master?variation=mensuel` (site + fiche) ; « AAX » retiré du
   texte FAQ a1 par défaut et du pied de page du mode plugin.
-- Vu en passant, pas touché : le script Moonbase ajoute en haut à droite des boutons « Log in / Cart » qui
-  chevauchent la navigation ; `img/hero-jpeg.jpg` est en 404 (référencé mais absent).
+- Barre flottante Moonbase « Log in / Cart » (recouvrait la navigation) coupée via l'option officielle
+  `Moonbase.setup(url,{toolbar:{enabled:false}})`. Les boutons d'achat sont des liens directs, non concernés.
+- Vu en passant, pas touché : `img/hero-jpeg.jpg` est en 404 (référencé mais absent).
 
 ## Session précédente (2026-11-12, nettoyage DarkFairyGranullar + transition accueil)
 - Le test produit "DarkFairyGranullar" (fiche modale avec tilt 3D/zoom, CSS `.plugfeat`/`.pmodal`,
