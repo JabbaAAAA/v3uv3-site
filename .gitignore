@@ -1,0 +1,11 @@
+# Only the site itself is published (this repository is public, for GitHub Pages).
+# Sources, notes and tool folders stay on this computer.
+ARTWORK/
+/*.png
+CLAUDE.md
+DESIGN.md
+.claude/
+graphify-out/
+.DS_Store
+Thumbs.db
+desktop.ini

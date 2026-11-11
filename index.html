@@ -1,0 +1,1686 @@
+<!--
+  =====================================================================
+  V3UV3 : site unique (JPEG visuel, WAV studio, PLUGIN outils), multilingue.
+  Switch .JPEG/.WAV/.PLUGIN + sélecteur de langue (FR EN ES-ES ES-419 RU JA KO ZH).
+  Garde ce fichier + MASTER.mp4 ensemble. Musique : dossier /audio.
+  PERSONNALISER : cherche "<<< MODIFIER"
+  Voir DESIGN.md à la racine du projet pour la direction artistique.
+  =====================================================================
+-->
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>V3UV3 : vidéo, studio son et plugins audio</title>
+<meta name="description" content="3D, VFX, montage et motion design (V3UV3.JPEG). Studio d'enregistrement, mix et mastering (V3UV3.WAV). Plugins audio à venir (V3UV3.PLUGIN). Basé en France.">
+<link rel="icon" type="image/svg+xml" href="favicon.svg">
+<meta property="og:title" content="V3UV3 : vidéo, studio son et plugins audio">
+<meta property="og:description" content="3D, VFX, montage et motion design. Studio d'enregistrement, mix et mastering. Plugins audio à venir.">
+<meta property="og:type" content="website">
+<meta property="og:image" content="og-image.png">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Nunito:wght@400;500;600;700;800&family=Noto+Sans+JP:wght@500;700&family=Noto+Sans+KR:wght@500;700&family=Noto+Sans+SC:wght@500;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#0D0C0A;--bg-2:#17150F;--surface:#201C14;
+    --ink:#F7F4EC;--txt:var(--ink);--dim:#B9AFA0;--dim-2:#8C8372;
+    --line:rgba(247,244,236,.14);--line-2:rgba(247,244,236,.08);
+    --acc:#FF6A3D;
+    --acc-lt:color-mix(in srgb,var(--acc) 55%,white 45%);
+    --acc-2:color-mix(in srgb,var(--acc) 74%,var(--ink) 10%);
+    --acc-deep:color-mix(in srgb,var(--acc) 70%,black 30%);
+    --acc-ink:var(--bg);
+    --fun:#FFD23D;--fun-ink:#171310;
+    --radius:16px;
+    --ease:cubic-bezier(.22,1,.36,1);
+    --bg-grad:radial-gradient(60% 42% at 50% -6%,color-mix(in srgb,var(--acc) 14%,transparent),transparent 62%);
+  }
+  body[data-mode="wav"]{--acc:#2DD4A8}
+  body[data-mode="plugin"]{--acc:#FFB341}
+  *{margin:0;padding:0;box-sizing:border-box}
+  html{overflow-x:hidden}
+  body{color:var(--txt);font-family:"Nunito",sans-serif;line-height:1.6;overflow-x:hidden;
+    -webkit-font-smoothing:antialiased;background:var(--bg-grad) fixed,var(--bg);transition:background .5s ease,color .3s ease}
+  body[data-lang="ja"]{font-family:"Noto Sans JP","Nunito",sans-serif}
+  body[data-lang="ko"]{font-family:"Noto Sans KR","Nunito",sans-serif}
+  body[data-lang="zh"]{font-family:"Noto Sans SC","Nunito",sans-serif}
+  ::selection{background:var(--acc);color:var(--acc-ink)}
+  html{scrollbar-color:var(--line) var(--bg)}
+  ::-webkit-scrollbar{width:10px;height:10px}
+  ::-webkit-scrollbar-track{background:var(--bg)}
+  ::-webkit-scrollbar-thumb{background:var(--line);border-radius:5px}
+  ::-webkit-scrollbar-thumb:hover{background:var(--acc)}
+  a{color:inherit;text-decoration:none}
+  button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
+  input,textarea{font:inherit}
+  :focus-visible{outline:2px solid var(--acc);outline-offset:3px;border-radius:4px}
+
+  /* curseurs natifs : flèche par défaut, main sur les éléments cliquables */
+  a,button,[role="button"],[data-goto],[data-quote],[data-send],.work,.lang__btn,.lang__menu button,.filters button,.playlist li,.abplay,.player__bar,.mini__bar,.mini__pp,.mini__x,.lb__close,.player__ctrl button,select,label,summary{cursor:pointer}
+
+  /* retour visuel au clic (licencié par DESIGN.md) */
+  a:active,button:active,[role="button"]:active,.playlist li:active,.lb__close:active,summary:active{transform:scale(.96);transition:transform .12s var(--ease)}
+  .work:active{transform:translateY(-2px)}
+
+  @media (prefers-reduced-motion:reduce){
+    *,*::before,*::after{animation-duration:.001ms !important;animation-iteration-count:1 !important;transition-duration:.001ms !important;transition-delay:0s !important;scroll-behavior:auto !important}
+  }
+
+  .icon{width:20px;height:20px;flex:none;stroke:currentColor;fill:none;stroke-width:1.75;stroke-linecap:round;stroke-linejoin:round;display:inline-block;vertical-align:middle}
+  .icon-16{width:16px;height:16px}.icon-24{width:24px;height:24px}
+
+  .eyebrow{font-family:"Nunito";font-weight:700;font-size:.78rem;letter-spacing:.14em;text-transform:uppercase;color:var(--acc);display:flex;align-items:center;gap:14px}
+  .eyebrow::before{content:"";width:34px;height:1px;background:var(--acc)}
+
+  header{position:fixed;top:0;left:0;right:0;z-index:1000;display:flex;justify-content:space-between;align-items:center;
+    padding:20px 5vw;backdrop-filter:blur(10px);
+    border-bottom:1px solid transparent;transition:border-color .4s var(--ease),padding .4s var(--ease)}
+  header.scrolled{border-bottom-color:var(--line-2);padding:14px 5vw}
+  .head__bg{position:absolute;inset:0;z-index:0;overflow:hidden;pointer-events:none}
+  .head__bg::after{content:"";position:absolute;inset:0;background:color-mix(in srgb,var(--bg) 78%,transparent);transition:background .4s var(--ease)}
+  header.scrolled .head__bg::after{background:color-mix(in srgb,var(--bg) 92%,transparent)}
+  .head__art{width:100%;height:100%;object-fit:cover;object-position:50% 45%;opacity:.8;
+    transform:perspective(900px) scale(1.3) rotateX(var(--prx,0deg)) rotateY(var(--pry,0deg)) translate3d(var(--ptx,0px),var(--pty,0px),0) translateY(var(--spy,0px));
+    transform-origin:center;transition:opacity .4s var(--ease);will-change:transform}
+  header:hover .head__art{opacity:.95}
+  .head-left{display:flex;align-items:center;gap:16px;position:relative;z-index:2}
+  .brand{font-family:"Nunito";font-weight:700;font-size:.95rem;letter-spacing:.08em}
+  .brand b{color:var(--acc)}
+  .brand-text{display:none}
+  .brand-logo{display:none}
+  .brand-logo img{height:38px;width:auto;display:block}
+  body[data-mode="jpeg"] .brand-logo[data-for="jpeg"],
+  body[data-mode="wav"] .brand-logo[data-for="wav"],
+  body[data-mode="plugin"] .brand-logo[data-for="plugin"]{display:block}
+  .head-right{display:flex;align-items:center;gap:22px;position:relative;z-index:2}
+  .navlinks{display:flex;gap:28px;font-family:"Nunito";font-weight:700;font-size:.82rem;letter-spacing:.04em;text-transform:uppercase;position:relative}
+  .navlinks__ind{position:absolute;left:0;bottom:-9px;height:2px;width:0;background:var(--acc);opacity:0;pointer-events:none}
+  .navlinks a{display:flex;align-items:center;color:var(--dim);transition:color .25s}
+  .navlinks i{font-style:normal}
+  .navlinks a:hover{color:var(--ink)}
+  .navlinks a.active{color:var(--acc)}
+  .navlinks a.active span{color:var(--acc)}
+  .navlinks a span{color:var(--acc);margin-right:6px}
+  body[data-mode="jpeg"] .navlinks:not([data-for="jpeg"]),
+  body[data-mode="wav"] .navlinks:not([data-for="wav"]),
+  body[data-mode="plugin"] .navlinks:not([data-for="plugin"]),
+  body[data-mode="jpeg"] .head__art:not([data-for="jpeg"]),
+  body[data-mode="wav"] .head__art:not([data-for="wav"]),
+  body[data-mode="plugin"] .head__art:not([data-for="plugin"]){display:none}
+  .wheel{width:34px;height:34px;flex:none}
+  .wheel__seg{fill:var(--seg-acc);fill-opacity:.2;transition:fill-opacity .25s,transform .25s;transform-origin:50% 50%;cursor:pointer}
+  .wheel__seg:hover{fill-opacity:.45}
+  .wheel__seg.on{fill-opacity:1}
+  .wheel__seg:focus-visible{outline:2px solid var(--ink);outline-offset:2px}
+
+  /* sélecteur de langue */
+  .lang{position:relative;font-family:"Nunito";font-weight:600}
+  .lang__btn{display:flex;align-items:center;gap:8px;border:1px solid var(--line);border-radius:var(--radius);padding:7px 13px;font-size:.76rem;letter-spacing:.03em;text-transform:uppercase;color:var(--dim);transition:.25s}
+  .lang__btn:hover{color:var(--ink);border-color:var(--acc)}
+  .lang__menu{position:absolute;top:calc(100% + 10px);right:0;min-width:190px;background:var(--bg);backdrop-filter:blur(12px);
+    border:1px solid var(--line);border-radius:var(--radius);padding:6px;opacity:0;transform:translateY(-8px) scale(.98);pointer-events:none;transition:.22s var(--ease);z-index:1100;box-shadow:0 20px 50px rgba(0,0,0,.55)}
+  .lang.open .lang__menu{opacity:1;transform:none;pointer-events:auto}
+  .lang__menu button{display:flex;justify-content:space-between;align-items:center;gap:14px;width:100%;text-align:left;padding:10px 12px;border-radius:calc(var(--radius) - 4px);font-size:.82rem;color:var(--dim);transition:.18s}
+  .lang__menu button:hover{background:var(--line-2);color:var(--ink)}
+  .lang__menu button.on{color:var(--acc)}
+  .lang__menu button .code{font-size:.68rem;letter-spacing:.08em;color:var(--dim-2)}
+  .lang__menu button.on .code{color:var(--acc)}
+
+  section{position:relative;z-index:10;max-width:1180px;margin:0 auto;padding:140px 5vw;scroll-margin-top:92px}
+  .reveal{opacity:0;transform:translateY(64px) scale(.94);transition:opacity .9s var(--ease) var(--d,0s),transform .9s var(--ease) var(--d,0s)}
+  .reveal.in{opacity:1;transform:none}
+  /* entrée de section : la tête de chaque compartiment glisse depuis un côté, en alternance, pour que le scroll ait un impact visible */
+  .reveal--l{transform:translateX(-96px) translateY(36px) scale(.96)}
+  .reveal--r{transform:translateX(96px) translateY(36px) scale(.96)}
+
+  .view-audio,.view-plugin{display:none}
+  body[data-mode="wav"] .view-visual,body[data-mode="plugin"] .view-visual{display:none}
+  body[data-mode="wav"] .view-audio{display:block}
+  body[data-mode="plugin"] .view-plugin{display:block}
+  @keyframes vfade{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
+  .view.anim{animation:vfade .55s var(--ease)}
+
+  .hero{min-height:100vh;display:flex;flex-direction:column;justify-content:center;position:relative}
+  .hero__bg{position:fixed;inset:0;z-index:-1;overflow:hidden;pointer-events:none}
+  main.view>section:not(.hero){background:linear-gradient(to bottom,transparent,var(--bg) 320px)}
+  .hero__bg video,.hero__bg img{width:100%;height:100%;object-fit:cover;object-position:46% 48%;opacity:.75;transform:perspective(1100px) scale(1.15) rotateX(var(--prx,0deg)) rotateY(var(--pry,0deg)) translate3d(var(--ptx,0px),var(--pty,0px),0) translateY(var(--spy,0px));transform-origin:center;transition:opacity .4s var(--ease);will-change:transform}
+  .hero:hover .hero__bg video,.hero:hover .hero__bg img{opacity:.9}
+  .hero__bg::after{content:"";position:absolute;inset:0;background:linear-gradient(90deg,var(--bg) 8%,color-mix(in srgb,var(--bg) 55%,transparent) 60%,transparent),linear-gradient(0deg,var(--bg),transparent 40%)}
+  .hero .badge{display:inline-flex;align-items:center;gap:9px;font-family:"Nunito";font-weight:700;font-size:.78rem;letter-spacing:.08em;text-transform:uppercase;color:var(--acc-2);width:max-content;margin-bottom:30px}
+  .hero .badge i{width:8px;height:8px;border-radius:50%;background:var(--acc-2);animation:pulse 3.2s var(--ease) infinite}
+  @keyframes pulse{0%{box-shadow:0 0 0 0 color-mix(in srgb,var(--acc) 45%,transparent)}70%{box-shadow:0 0 0 8px transparent}100%{box-shadow:0 0 0 0 transparent}}
+  .hero h1{font-family:"Space Grotesk",sans-serif;font-weight:700;font-size:clamp(3rem,13vw,11rem);line-height:.86;letter-spacing:.005em;text-transform:uppercase;color:var(--acc);text-shadow:0 0 50px color-mix(in srgb,var(--acc) 55%,transparent),0 0 110px color-mix(in srgb,var(--acc) 30%,transparent)}
+  .hero .roles{font-family:"Nunito";font-weight:600;font-size:clamp(.95rem,2.2vw,1.3rem);letter-spacing:.04em;color:var(--ink);margin-top:28px}
+  .hero .roles span{color:var(--acc-2)}
+  .hero .lead{max-width:52ch;margin-top:26px;font-size:1.12rem;color:var(--dim)}
+  .scrolldown{margin-top:60px;font-family:"Nunito";font-weight:700;font-size:.78rem;letter-spacing:.14em;text-transform:uppercase;color:var(--dim-2);display:flex;align-items:center;gap:10px}
+  .scrolldown::before{content:"";width:1px;height:40px;background:linear-gradient(var(--acc),transparent);animation:drop 2.4s var(--ease) infinite}
+  @keyframes drop{0%{opacity:0;transform:scaleY(.3);transform-origin:top}50%{opacity:.8}100%{opacity:0;transform:scaleY(1);transform-origin:top}}
+
+  .about-grid{display:grid;grid-template-columns:1.5fr 1fr;gap:60px;align-items:start;margin-top:46px}
+  .about-grid h2{font-family:"Space Grotesk";font-weight:700;font-size:clamp(2rem,4.5vw,3.4rem);line-height:1.02;text-transform:uppercase;margin-bottom:24px;color:var(--ink)}
+  .about-grid p{font-size:1.12rem;max-width:50ch}.about-grid p + p{margin-top:18px;color:var(--dim)}
+  .facts{border-top:1px solid var(--line)}
+  .facts .row{display:flex;justify-content:space-between;padding:15px 0;border-bottom:1px solid var(--line-2);font-family:"Nunito";font-weight:600;font-size:.92rem}
+  .facts .row span:first-child{color:var(--dim)}.facts .row span:last-child{color:var(--acc)}
+
+  .sec-head{margin-bottom:44px}
+  .sec-head h2{font-family:"Space Grotesk";font-weight:700;font-size:clamp(2rem,5vw,3.6rem);line-height:1;text-transform:uppercase;margin-top:14px;color:var(--ink)}
+
+  .tool-list{border-top:1px solid var(--line)}
+  .tool-row{display:grid;grid-template-columns:54px minmax(190px,1.1fr) 2fr auto;gap:30px;align-items:center;padding:26px 8px;border-bottom:1px solid var(--line-2);transition:.3s var(--ease)}
+  .tool-row:hover{background:color-mix(in srgb,var(--acc) 6%,transparent);padding-left:22px}
+  .tr-n{font-family:"Nunito";font-weight:700;font-size:.85rem;color:var(--acc)}
+  .tr-name{font-family:"Space Grotesk";font-weight:700;font-size:clamp(1.5rem,3vw,2.2rem);text-transform:uppercase;line-height:1;color:var(--ink)}
+  .tr-name small{display:block;font-family:"Nunito";font-weight:600;font-size:.72rem;color:var(--acc-2);letter-spacing:.08em;text-transform:uppercase;margin-top:7px}
+  .tool-row:hover .tr-name{color:var(--acc)}
+  .tr-desc{font-size:.98rem;color:var(--dim)}
+  .tr-tags{display:flex;flex-wrap:wrap;gap:8px;justify-content:flex-end}
+  .tr-tags span{font-family:"Nunito";font-weight:600;font-size:.72rem;letter-spacing:.03em;color:var(--ink);border:1px solid var(--line);border-radius:var(--radius);padding:4px 11px}
+  .tr-tags span.pro{color:var(--acc-ink);background:var(--acc);border-color:var(--acc);font-weight:700}
+
+  .filters{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:30px}
+  .filters button{font-family:"Nunito";font-weight:600;font-size:.76rem;letter-spacing:.03em;text-transform:uppercase;color:var(--dim);border:1px solid var(--line);border-radius:var(--radius);padding:8px 16px;transition:.25s var(--ease)}
+  .filters button.on,.filters button:hover{color:var(--acc-ink);background:var(--acc);border-color:var(--acc)}
+
+  .works-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:24px}
+  .work{position:relative;overflow:hidden;border:1px solid var(--line-2);background:var(--bg-2);text-align:left;width:100%;border-radius:var(--radius);transition:border-color .3s var(--ease),transform .3s var(--ease)}
+  .work.hide{display:none}
+  .work:hover{border-color:var(--acc);transform:translateY(-4px);box-shadow:0 20px 40px -22px rgba(0,0,0,.6)}
+  .work__media{aspect-ratio:16/9;position:relative;overflow:hidden;background:linear-gradient(135deg,var(--surface),var(--bg-2))}
+  .work__media img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;transition:transform .5s var(--ease)}
+  .work:hover .work__media img{transform:scale(1.04)}
+  .work__media::after{content:"";position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,.45),transparent 60%)}
+  .work__play{position:absolute;inset:0;z-index:2;display:grid;place-items:center}
+  .work__play .icon-wrap{width:58px;height:58px;border:1.5px solid #fff;border-radius:50%;display:grid;place-items:center;color:#fff;background:rgba(0,0,0,.3);transition:.25s var(--ease)}
+  .work:hover .work__play .icon-wrap{border-color:var(--acc);color:var(--acc);background:var(--bg)}
+  .work__meta{display:flex;justify-content:space-between;align-items:center;padding:20px 22px;gap:14px}
+  .work__meta h3{font-family:"Space Grotesk";font-weight:700;font-size:1.45rem;text-transform:uppercase;line-height:1;color:var(--ink)}
+  .work__meta h3 small{display:block;font-family:"Nunito";font-weight:400;font-size:.82rem;color:var(--dim);text-transform:none;letter-spacing:0;margin-top:5px}
+  .work__tag{font-family:"Nunito";font-weight:600;font-size:.72rem;letter-spacing:.03em;color:var(--acc-2);border:1px solid var(--line);border-radius:var(--radius);padding:4px 11px;white-space:nowrap}
+
+  /* ---- vignettes Instagram + covers + lecteur ---- */
+  .work__media.ig{background:radial-gradient(120% 90% at 15% 0%,color-mix(in srgb,var(--acc) 16%,transparent),transparent 60%),radial-gradient(90% 90% at 100% 100%,color-mix(in srgb,var(--acc-2) 14%,transparent),transparent 65%),linear-gradient(135deg,var(--surface),var(--bg-2))}
+  .ig__bg{position:absolute;inset:0;z-index:1;display:flex;flex-direction:column;justify-content:center;align-items:flex-start;gap:10px;padding:0 8%}
+  .ig__name{font-family:"Space Grotesk",sans-serif;font-weight:700;font-size:clamp(2.2rem,6vw,4.4rem);line-height:.9;text-transform:uppercase;color:var(--ink);opacity:.92}
+  .ig__kind{font-family:"Nunito";font-weight:700;font-size:.72rem;letter-spacing:.14em;text-transform:uppercase;color:var(--acc)}
+  .work__media.ig .work__play{place-items:center end;padding-right:8%}
+  .lb__inner.portrait{aspect-ratio:auto;width:min(400px,92vw);height:min(78vh,740px)}
+  .lb__inner.pic{aspect-ratio:auto;width:auto}
+  .lb__inner img{display:none;max-width:92vw;max-height:82vh;width:auto;height:auto;margin:0 auto;border-radius:var(--radius)}
+  .lb__inner.pic img{display:block}
+  .lb__inner.pic iframe{display:none}
+  .lb__ig{display:none;position:absolute;bottom:-40px;left:0;font-family:"Nunito";font-weight:600;font-size:.8rem;letter-spacing:.03em;color:var(--dim);transition:color .25s}
+  .lb__inner.portrait .lb__ig{display:block}
+  .lb__ig:hover{color:var(--acc)}
+  .lb{position:fixed;inset:0;z-index:99998;background:rgba(10,7,3,.85);backdrop-filter:blur(8px);display:grid;place-items:center;padding:6vw;opacity:0;visibility:hidden;transition:opacity .3s var(--ease)}
+  .lb.open{opacity:1;visibility:visible}
+  .lb__inner{position:relative;width:min(1040px,92vw);aspect-ratio:16/9;transform:scale(.96) translateY(14px);transition:transform .35s var(--ease)}
+  .lb.open .lb__inner{transform:none}
+  .lb__inner iframe{width:100%;height:100%;border:0;background:#000;border-radius:var(--radius)}
+  .lb__close{position:absolute;top:-46px;right:0;display:flex;align-items:center;gap:8px;font-family:"Nunito";font-weight:700;font-size:.82rem;letter-spacing:.04em;text-transform:uppercase;color:#fff;border:1px solid rgba(255,255,255,.3);border-radius:var(--radius);padding:8px 16px;cursor:pointer;transition:.25s}
+  .lb__close:hover{color:var(--acc-lt);border-color:var(--acc-lt)}
+
+  .svc-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--line-2);border:1px solid var(--line-2);border-radius:var(--radius);overflow:hidden}
+  .svc{background:var(--bg);padding:42px 34px;transition:background .3s var(--ease)}
+  .svc:hover{background:var(--bg-2)}
+  .svc .n{font-family:"Nunito";font-weight:700;font-size:.8rem;color:var(--acc);letter-spacing:.06em}
+  .svc h3{font-family:"Space Grotesk";font-weight:700;font-size:2.1rem;text-transform:uppercase;margin:18px 0 14px;line-height:1;color:var(--ink)}
+  .svc p{font-size:.98rem;color:var(--dim)}
+  .svc .tags{margin-top:24px;display:flex;flex-wrap:wrap;gap:8px}
+  .svc .tags span{font-family:"Nunito";font-weight:600;font-size:.72rem;letter-spacing:.03em;color:var(--acc-2);border:1px solid var(--line);border-radius:var(--radius);padding:4px 11px}
+
+  .price-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;margin-bottom:30px}
+  .price{border:1px solid var(--line);background:var(--bg-2);border-radius:var(--radius);padding:34px 28px;display:flex;flex-direction:column;transition:.3s var(--ease);position:relative}
+  .price:hover{border-color:var(--acc);transform:translateY(-4px);box-shadow:0 20px 40px -22px rgba(0,0,0,.6)}
+  .price.feat{border-color:var(--acc)}
+  .price .pp-tag{position:absolute;top:-11px;left:28px;font-family:"Nunito";font-weight:700;font-size:.68rem;letter-spacing:.06em;text-transform:uppercase;color:var(--fun-ink);background:var(--fun);padding:3px 10px;border-radius:var(--radius)}
+  .price h3{font-family:"Space Grotesk";font-weight:700;font-size:1.7rem;text-transform:uppercase;line-height:1;margin-bottom:6px;color:var(--ink)}
+  .price .sub{font-family:"Nunito";font-weight:600;font-size:.74rem;color:var(--acc-2);letter-spacing:.03em;margin-bottom:22px}
+  .price .amt{font-family:"Space Grotesk";font-weight:700;font-size:3rem;line-height:1;color:var(--acc)}
+  .price .amt small{font-family:"Nunito";font-weight:500;font-size:.85rem;color:var(--dim);letter-spacing:.02em}
+  .price ul{list-style:none;margin-top:22px;display:flex;flex-direction:column;gap:10px;flex:1}
+  .price li{font-size:.92rem;color:var(--dim);padding-left:20px;position:relative}
+  .price li::before{content:"→";position:absolute;left:0;color:var(--acc)}
+  .price .cta{margin-top:24px;font-family:"Nunito";font-weight:700;font-size:.8rem;letter-spacing:.03em;text-transform:uppercase;text-align:center;border:1px solid var(--line);border-radius:var(--radius);padding:12px;transition:.25s}
+  .price .cta:hover{background:var(--acc);color:var(--acc-ink);border-color:var(--acc)}
+  .price-note{border:1px solid var(--line-2);background:var(--bg-2);border-radius:var(--radius);padding:20px 24px;font-size:.95rem;color:var(--dim);margin-bottom:30px}
+  .price-note b{color:var(--acc);font-weight:700}
+
+  .player{display:grid;grid-template-columns:130px 1fr;gap:26px;align-items:center;border:1px solid var(--line);background:var(--bg-2);border-radius:var(--radius);padding:26px;margin-bottom:30px}
+  .player__art{aspect-ratio:1;background:linear-gradient(150deg,var(--acc-deep),var(--ink));border:1px solid var(--line-2);border-radius:calc(var(--radius) - 4px);overflow:hidden}
+  .player__art canvas{width:100%;height:100%;display:block}
+  .player__now{display:flex;justify-content:space-between;align-items:baseline;gap:12px}
+  .now-t{font-family:"Space Grotesk";font-weight:700;font-size:1.5rem;text-transform:uppercase;color:var(--ink)}
+  .now-g{font-family:"Nunito";font-weight:600;font-size:.76rem;color:var(--acc-2);letter-spacing:.03em}
+  .player__bar{height:6px;border-radius:3px;background:var(--line);margin:16px 0 8px;cursor:pointer;position:relative}
+  .player__prog{position:absolute;inset:0;width:0;background:var(--acc);border-radius:3px}
+  .player__time{display:flex;justify-content:space-between;font-family:"Nunito";font-weight:600;font-size:.74rem;color:var(--dim)}
+  .player__ctrl{display:flex;align-items:center;gap:18px;margin-top:16px}
+  .player__ctrl button{width:42px;height:42px;border:1px solid var(--line);border-radius:50%;display:grid;place-items:center;transition:.2s var(--ease);color:var(--ink)}
+  .player__ctrl button:hover{border-color:var(--acc);color:var(--acc)}
+  .player__ctrl .pp{width:54px;height:54px;background:var(--acc);color:var(--acc-ink);border-color:var(--acc)}
+  .playlist{list-style:none;border-top:1px solid var(--line)}
+  .playlist li{display:grid;grid-template-columns:30px 1fr auto auto;gap:18px;align-items:center;padding:16px 8px;border-bottom:1px solid var(--line-2);cursor:pointer;transition:.2s var(--ease)}
+  .playlist li:hover{background:color-mix(in srgb,var(--acc) 6%,transparent);padding-left:18px}
+  .playlist li.active{color:var(--acc)}
+  .playlist .pl-n{font-family:"Nunito";font-weight:600;font-size:.8rem;color:var(--dim)}
+  .playlist li.active .pl-n{color:var(--acc)}
+  .playlist .pl-t{font-weight:600}
+  .playlist .pl-g{font-family:"Nunito";font-weight:600;font-size:.74rem;color:var(--acc-2)}
+  .playlist .pl-d{font-family:"Nunito";font-weight:600;font-size:.78rem;color:var(--dim)}
+
+  .ab{display:flex;align-items:center;gap:20px;flex-wrap:wrap;border:1px solid var(--line);background:var(--bg-2);border-radius:var(--radius);padding:22px 24px;margin-bottom:30px}
+  .ab .lab{font-family:"Nunito";font-weight:700;font-size:.78rem;letter-spacing:.06em;text-transform:uppercase;color:var(--dim)}
+  .ab .abtns{display:flex;border:1px solid var(--line);border-radius:var(--radius);overflow:hidden}
+  .ab .abtns button{font-family:"Nunito";font-weight:600;font-size:.78rem;letter-spacing:.03em;color:var(--dim);padding:8px 18px;transition:.2s}
+  .ab .abtns button.on{background:var(--acc);color:var(--acc-ink)}
+  .ab .abplay{display:inline-flex;align-items:center;gap:8px;font-family:"Nunito";font-weight:600;font-size:.78rem;color:var(--ink);border:1px solid var(--line);border-radius:var(--radius);padding:9px 18px;transition:.2s}
+  .ab .abplay:hover{border-color:var(--acc);color:var(--acc)}
+
+  .embed{margin-top:30px;border:1px solid var(--line);background:var(--bg-2);border-radius:var(--radius);padding:26px;text-align:center;color:var(--dim);font-family:"Nunito";font-size:.85rem}
+  .embed iframe{width:100%;border:0;display:block;border-radius:var(--radius)}
+
+  .mini{position:fixed;left:50%;bottom:22px;transform:translateX(-50%) translateY(140%);z-index:9500;
+    display:flex;align-items:center;gap:16px;background:var(--ink);color:var(--bg);backdrop-filter:blur(12px);
+    border:1px solid var(--line);border-radius:var(--radius);padding:9px 14px 9px 9px;transition:transform .35s var(--ease);max-width:92vw}
+  .mini.show{transform:translateX(-50%) translateY(0)}
+  .mini__pp{width:40px;height:40px;border-radius:50%;background:var(--acc);color:var(--acc-ink);display:grid;place-items:center;flex:none}
+  .mini__info{min-width:0}
+  .mini__t{font-family:"Space Grotesk";font-weight:700;font-size:1.05rem;text-transform:uppercase;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:200px}
+  .mini__bar{height:3px;width:160px;background:color-mix(in srgb,var(--acc-ink) 20%,transparent);margin-top:4px;position:relative;border-radius:2px;cursor:pointer}
+  .mini__prog{position:absolute;inset:0;width:0;background:var(--acc-lt);border-radius:2px}
+  .mini__x{font-size:.9rem;color:var(--bg);opacity:.7;padding:0 8px;flex:none}
+  .mini__x:hover{opacity:1}
+
+  .cform{max-width:520px;margin:40px auto 0;display:grid;gap:14px;text-align:left}
+  .cform input,.cform textarea{background:var(--bg);border:1px solid var(--line);color:var(--ink);padding:14px 16px;font-size:.95rem;border-radius:var(--radius);transition:border-color .25s}
+  .cform input:focus,.cform textarea:focus{outline:none;border-color:var(--acc)}
+  .cform textarea{min-height:120px;resize:vertical}
+  .cform button{font-family:"Nunito";font-weight:700;letter-spacing:.03em;text-transform:uppercase;background:var(--acc);color:var(--acc-ink);padding:14px;border-radius:var(--radius);transition:filter .2s;display:inline-flex;align-items:center;justify-content:center;gap:8px}
+  .cform button:hover{filter:brightness(1.08)}
+
+  #contact-v,#contact-a,#contact-p{text-align:center;padding-bottom:160px}
+  .contact h2{font-family:"Space Grotesk";font-weight:700;font-size:clamp(2.4rem,8vw,6rem);text-transform:uppercase;line-height:.95;margin:26px 0 18px;color:var(--ink)}
+  .contact .mail{display:inline-block;font-family:"Space Grotesk";font-weight:700;font-size:clamp(1.4rem,4vw,2.4rem);text-transform:uppercase;color:var(--acc);border-bottom:2px solid transparent;transition:border-color .3s var(--ease)}
+  .contact .mail:hover{border-bottom-color:var(--acc)}
+  .socials{display:flex;gap:14px;justify-content:center;margin-top:40px;flex-wrap:wrap}
+  .socials a,.socials button{display:inline-flex;align-items:center;gap:8px;font-family:"Nunito";font-weight:600;font-size:.85rem;letter-spacing:.03em;color:var(--ink);border:1px solid var(--line);border-radius:var(--radius);padding:11px 22px;transition:.25s var(--ease)}
+  .socials a:hover,.socials button:hover{border-color:var(--acc);color:var(--acc)}
+
+
+  /* ===== PAGE .PLUGIN ===== */
+  .view-plugin .hero h1{font-size:clamp(2.6rem,10vw,10rem);overflow-wrap:anywhere}
+  .plug-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
+  .plug{border:1px solid var(--line);background:var(--bg-2);border-radius:var(--radius);display:flex;flex-direction:column;transition:.3s var(--ease);position:relative;overflow:hidden}
+  .plug:hover{border-color:var(--acc);transform:translateY(-4px);box-shadow:0 20px 40px -22px rgba(0,0,0,.6)}
+  .plug__art{position:relative;aspect-ratio:16/9;background:linear-gradient(160deg,var(--surface),var(--bg-2));border-bottom:1px solid var(--line-2);display:grid;place-items:center;overflow:hidden}
+  .plug__art svg{width:78%;height:auto}
+  .plug__art .pp-tag{position:absolute;top:14px;left:14px;font-family:"Nunito";font-weight:700;font-size:.68rem;letter-spacing:.06em;text-transform:uppercase;color:var(--fun-ink);background:var(--fun);padding:3px 10px;border-radius:var(--radius)}
+  .plug__body{padding:26px 26px 28px;display:flex;flex-direction:column;flex:1}
+  .plug .sub{font-family:"Nunito";font-weight:600;font-size:.74rem;color:var(--acc-2);letter-spacing:.03em}
+  .plug h3{font-family:"Space Grotesk";font-weight:700;font-size:1.9rem;text-transform:uppercase;line-height:1;color:var(--ink)}
+  .plug p{color:var(--dim);font-size:.95rem;margin-top:12px}
+  .plug .tags{margin-top:18px;display:flex;flex-wrap:wrap;gap:8px}
+  .plug .tags span{font-family:"Nunito";font-weight:600;font-size:.72rem;letter-spacing:.03em;color:var(--acc-2);border:1px solid var(--line);border-radius:var(--radius);padding:4px 11px}
+  .plug__foot{margin-top:auto;padding-top:26px;display:flex;align-items:center;justify-content:space-between;gap:14px}
+  .plug .amt{font-family:"Space Grotesk";font-weight:700;font-size:2.4rem;line-height:1;color:var(--acc)}
+  .plug .cta{font-family:"Nunito";font-weight:700;font-size:.8rem;letter-spacing:.03em;text-transform:uppercase;border:1px solid var(--line);border-radius:var(--radius);padding:12px 24px;transition:.25s}
+  .plug .cta:hover{background:var(--acc);color:var(--acc-ink);border-color:var(--acc)}
+  .plug-soon{border:1px solid var(--line);background:var(--bg-2);border-radius:var(--radius);padding:48px 40px;text-align:center}
+  .plug-soon h3{font-family:"Space Grotesk";font-weight:700;font-size:1.8rem;text-transform:uppercase;color:var(--ink);margin-bottom:10px}
+  .plug-soon p{color:var(--dim);max-width:52ch;margin:0 auto}
+
+  /* ---- fiche produit DarkFairyGranullar : visuel 3D au survol + fiche détaillée en modale ---- */
+  .plugfeat{display:flex;flex-direction:column;align-items:center;text-align:center}
+  .plugfeat__art{position:relative;display:block;width:min(640px,88%);aspect-ratio:1800/1237;border:0;background:none;padding:0;cursor:zoom-in;perspective:1200px}
+  .plugfeat__art img{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;transform:rotateY(0deg) rotateX(0deg) translateZ(0px);transition:transform .6s var(--ease);will-change:transform;filter:drop-shadow(0 30px 40px rgba(0,0,0,.45))}
+  .plugfeat__name{font-family:"Space Grotesk";font-weight:700;font-size:clamp(2.6rem,6.4vw,4.6rem);text-transform:uppercase;line-height:1;color:var(--ink);margin-top:24px}
+  .plugfeat__formats{font-family:"Nunito";font-weight:600;font-size:.92rem;color:var(--dim);margin-top:10px}
+  .plugfeat__info{margin-top:46px;max-width:56ch}
+  .plugfeat__info .eyebrow{justify-content:center;margin-bottom:14px}
+  .plugfeat__info h3{font-family:"Space Grotesk";font-weight:700;font-size:clamp(1.6rem,3vw,2.2rem);text-transform:uppercase;line-height:1.08;color:var(--ink);margin-bottom:18px}
+  .plugfeat__info p{color:var(--dim);font-size:1.02rem}
+  .plugfeat__badges{display:flex;flex-wrap:wrap;justify-content:center;gap:10px;margin-top:22px}
+  .plugfeat__badges span{font-family:"Nunito";font-weight:700;font-size:.72rem;letter-spacing:.04em;text-transform:uppercase;color:var(--acc-2);border:1px solid var(--line);border-radius:var(--radius);padding:7px 15px}
+  .plugfeat__more{margin:26px auto 0;width:46px;height:46px;border:1px solid var(--line);border-radius:50%;display:grid;place-items:center;color:var(--dim);font-size:1.3rem;letter-spacing:.08em;line-height:1;transition:.25s var(--ease)}
+  .plugfeat__more:hover{color:var(--acc-ink);background:var(--acc);border-color:var(--acc);transform:translateY(-2px)}
+
+  .pmodal{position:fixed;inset:0;z-index:99999;background:rgba(10,7,3,.85);backdrop-filter:blur(8px);display:grid;place-items:center;padding:6vw;opacity:0;visibility:hidden;transition:opacity .3s var(--ease)}
+  .pmodal.open{opacity:1;visibility:visible}
+  .pmodal__panel{position:relative;width:min(760px,92vw);max-height:84vh;overflow-y:auto;background:var(--bg-2);border:1px solid var(--line);border-radius:var(--radius);padding:48px 44px;transform:scale(.96) translateY(14px);transition:transform .35s var(--ease)}
+  .pmodal.open .pmodal__panel{transform:none}
+  .pmodal__close{position:absolute;top:18px;right:18px;width:40px;height:40px;border:1px solid var(--line);border-radius:50%;display:grid;place-items:center;color:var(--dim);transition:.25s}
+  .pmodal__close:hover{color:var(--acc-ink);background:var(--acc);border-color:var(--acc)}
+  .pmodal__head h2{font-family:"Space Grotesk";font-weight:700;font-size:clamp(1.6rem,3.6vw,2.2rem);text-transform:uppercase;color:var(--ink)}
+  .pmodal__tagline{font-family:"Nunito";font-weight:600;font-style:italic;color:var(--acc-2);margin-top:8px}
+  .pmodal__tagline-sm{font-family:"Nunito";font-weight:600;font-style:italic;color:var(--acc-2);margin:-10px 0 14px;font-size:.92rem}
+  .pmodal__body{margin-top:28px}
+  .pmodal__body h3{font-family:"Space Grotesk";font-weight:700;font-size:1.2rem;text-transform:uppercase;color:var(--ink);margin-bottom:12px}
+  .pmodal__body p{color:var(--dim);font-size:.98rem;margin-bottom:12px}
+  .pmodal__body p:last-child{margin-bottom:0}
+  .pmodal__accent{color:var(--ink)!important;font-weight:600}
+  .pmodal__sep{border:0;border-top:1px solid var(--line-2);margin:26px 0}
+  .pmodal__list{list-style:none;color:var(--dim);font-size:.95rem;display:grid;gap:9px}
+  .pmodal__list strong{color:var(--ink);font-family:"Nunito";font-weight:700}
+  .pmodal__badges{display:flex;gap:10px;margin:14px 0 24px}
+  .pmodal__badges span{font-family:"Nunito";font-weight:700;font-size:.74rem;letter-spacing:.04em;border:1px solid var(--line);border-radius:var(--radius);padding:7px 15px;color:var(--acc-2)}
+  .pmodal__cta{display:inline-flex;align-items:center;gap:8px;font-family:"Nunito";font-weight:700;font-size:.82rem;letter-spacing:.03em;text-transform:uppercase;border:1px solid var(--line);border-radius:var(--radius);padding:14px 26px;transition:.25s}
+  .pmodal__cta:hover{background:var(--acc);color:var(--acc-ink);border-color:var(--acc)}
+  @media(max-width:720px){.pmodal__panel{padding:34px 22px}}
+
+  .faq{border-top:1px solid var(--line)}
+  .faq details{border-bottom:1px solid var(--line-2);padding:22px 8px}
+  .faq summary{list-style:none;display:flex;justify-content:space-between;align-items:center;gap:20px;font-family:"Space Grotesk";font-weight:700;font-size:1.5rem;text-transform:uppercase;line-height:1.1;color:var(--ink);transition:color .25s}
+  .faq summary::-webkit-details-marker{display:none}
+  .faq summary .faq-icon{display:inline-flex;color:var(--acc);transition:transform .25s var(--ease)}
+  .faq details[open] summary .faq-icon{transform:rotate(45deg)}
+  .faq summary:hover{color:var(--acc)}
+  .faq details p{height:0;margin-top:0;opacity:0;overflow:hidden;color:var(--dim);max-width:70ch;transition:height .35s var(--ease),margin-top .35s var(--ease),opacity .25s var(--ease)}
+  .faq details[open] p{margin-top:14px;opacity:1}
+
+  /* ---- Page d'accueil (avant les 3 modes) ---- */
+  body.pre-entry{overflow:hidden}
+  .landing{position:fixed;inset:0;width:100vw;height:100vh;max-width:none;margin:0;overflow:hidden;z-index:2000;background:var(--bg);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:28px;padding:6vh 5vw;transition:opacity 1.7s var(--ease)}
+  .landing.leaving{opacity:0;pointer-events:none}
+  .landing::before{content:"";position:absolute;inset:0;pointer-events:none;opacity:.05;mix-blend-mode:overlay;
+    background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='220'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")}
+  .landing__mark{width:min(1040px,92vw);height:min(572px,50.6vw);flex:none;position:relative;z-index:1}
+  .landing__mark::before{content:"";position:absolute;inset:-6%;z-index:-1;border-radius:50%;
+    background:radial-gradient(circle,transparent 42%,rgba(255,106,61,.24) 58%,rgba(45,212,168,.16) 72%,transparent 86%);
+    filter:blur(16px);pointer-events:none}
+  #introGlass{display:block;width:100%;height:100%}
+  .landing__fallback{display:none;width:60%;height:60%;margin:20% auto;object-fit:contain}
+  .landing__nav{display:flex;width:min(760px,90vw);justify-content:space-between;align-items:center;position:relative;z-index:1}
+  .landing__btn{font-family:"Nunito";font-weight:700;font-size:.72rem;letter-spacing:.08em;text-transform:uppercase;color:var(--dim);border:1px solid var(--line);border-radius:var(--radius);padding:9px 24px;background:transparent;transition:border-color .2s var(--ease),color .2s var(--ease)}
+  .landing__btn:hover{border-color:var(--btn-acc);color:var(--btn-acc)}
+
+  footer{border-top:1px solid var(--line-2);position:relative;z-index:10}
+  footer .inner{max-width:1180px;margin:0 auto;padding:30px 5vw;display:flex;justify-content:space-between;align-items:center;font-family:"Nunito";font-weight:600;font-size:.78rem;color:var(--dim-2);letter-spacing:.03em;flex-wrap:wrap;gap:12px}
+  footer .legal{display:flex;gap:18px;flex-wrap:wrap}
+  footer .legal a{color:var(--dim-2);transition:color .2s}
+  footer .legal a:hover{color:var(--acc)}
+
+  /* ---- motion design avancé (scroll) : voir js/motion.js ---- */
+  .lmask{display:block;overflow:hidden}
+  .lmask .lline{display:block;will-change:transform}
+  .modewipe{position:fixed;inset:0;z-index:5000;background:var(--acc);transform:scaleY(0);transform-origin:top;pointer-events:none}
+  .wavebars{position:absolute;inset:0;display:flex;align-items:center;justify-content:space-between;gap:2%;padding:0 4%;pointer-events:none;opacity:.45}
+  .wavebars span{display:block;width:3px;flex:none;border-radius:2px;background:linear-gradient(var(--acc),transparent);height:16px}
+  @media(prefers-reduced-motion:reduce){.wavebars{display:none}}
+
+  @media(max-width:860px){
+    .navlinks{display:none}
+    .about-grid{grid-template-columns:1fr;gap:40px}
+    .works-grid,.svc-grid,.price-grid,.plug-grid{grid-template-columns:1fr}
+    .tool-row{grid-template-columns:1fr;gap:14px;padding:24px 6px}
+    .tr-tags{justify-content:flex-start}
+    .player{grid-template-columns:1fr}.player__art{max-width:140px}
+    section{padding:110px 6vw}
+    .mini__bar{width:90px}.mini__t{max-width:120px}
+    .hero .badge{max-width:100%;white-space:normal}
+    .landing{gap:20px}
+  }
+  @media(max-width:560px){
+    header,header.scrolled{padding-left:4vw;padding-right:4vw}
+    .head-right{gap:10px}.head-left{gap:8px}
+    .brand{font-size:.8rem}
+    .wheel{width:26px;height:26px}
+    .lang__btn{padding:6px 10px}
+  }
+</style>
+</head>
+
+<body class="pre-entry" data-mode="jpeg" data-lang="fr">
+
+  <div class="modewipe" id="modewipe" aria-hidden="true"></div>
+
+  <svg aria-hidden="true" style="position:absolute;width:0;height:0;overflow:hidden">
+    <defs>
+      <symbol id="icon-play" viewBox="0 0 24 24"><polygon points="5 3 19 12 5 21 5 3"></polygon></symbol>
+      <symbol id="icon-pause" viewBox="0 0 24 24"><rect x="6" y="4" width="4" height="16"></rect><rect x="14" y="4" width="4" height="16"></rect></symbol>
+      <symbol id="icon-close" viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></symbol>
+      <symbol id="icon-skip-back" viewBox="0 0 24 24"><polygon points="19 20 9 12 19 4 19 20"></polygon><line x1="5" y1="19" x2="5" y2="5"></line></symbol>
+      <symbol id="icon-skip-forward" viewBox="0 0 24 24"><polygon points="5 4 15 12 5 20 5 4"></polygon><line x1="19" y1="5" x2="19" y2="19"></line></symbol>
+      <symbol id="icon-arrow-right" viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></symbol>
+      <symbol id="icon-external" viewBox="0 0 24 24"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path><polyline points="15 3 21 3 21 9"></polyline><line x1="10" y1="14" x2="21" y2="3"></line></symbol>
+      <symbol id="icon-globe" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"></circle><line x1="3" y1="12" x2="21" y2="12"></line><path d="M12 3a13 13 0 0 1 3.4 9 13 13 0 0 1-3.4 9 13 13 0 0 1-3.4-9A13 13 0 0 1 12 3z"></path></symbol>
+      <symbol id="icon-plus" viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></symbol>
+    </defs>
+  </svg>
+
+  <section class="landing" id="landing" aria-label="Accueil V3UV3">
+    <div class="landing__mark" role="img" aria-label="V3UV3, studio créatif indépendant">
+      <canvas id="introGlass"></canvas>
+      <img class="landing__fallback" src="img/landing-mark.png" alt="">
+    </div>
+    <nav class="landing__nav">
+      <button class="landing__btn" style="--btn-acc:#FF6A3D" data-enter="jpeg">.JPEG</button>
+      <button class="landing__btn" style="--btn-acc:#2DD4A8" data-enter="wav">.WAV</button>
+      <button class="landing__btn" style="--btn-acc:#FFB341" data-enter="plugin">.PLUGIN</button>
+    </nav>
+  </section>
+
+  <header id="header">
+    <div class="head__bg">
+      <img class="head__art" data-for="jpeg" src="img/hero-jpeg.jpg" alt="" loading="eager">
+      <img class="head__art" data-for="wav" src="img/hero-wav.jpg" alt="" loading="eager">
+      <img class="head__art" data-for="plugin" src="img/hero-plugin.jpg" alt="" loading="eager">
+    </div>
+    <div class="head-left">
+      <a href="#top" class="brand brand-text">V3UV3<b id="ext">.JPEG</b></a>
+      <a href="#top" class="brand-logo" data-for="jpeg"><img src="img/logo-jpeg.png" alt="V3UV3" loading="eager"></a>
+      <a href="#top" class="brand-logo" data-for="wav"><img src="img/logo-wav.png" alt="V3UV3" loading="eager"></a>
+      <a href="#top" class="brand-logo" data-for="plugin"><img src="img/logo-plugin.png" alt="V3UV3" loading="eager"></a>
+    </div>
+    <div class="head-right">
+      <nav class="navlinks" data-for="jpeg">
+        <a href="#v-about"><span>01</span><i data-i18n="nav_info">Info</i></a>
+        <a href="#v-tools"><span>02</span><i data-i18n="nav_skills">Compétences</i></a>
+        <a href="#v-works"><span>03</span><i data-i18n="nav_works">Projets</i></a>
+        <a href="#contact-v"><span>04</span><i data-i18n="nav_contact">Contact</i></a>
+      </nav>
+      <nav class="navlinks" data-for="wav">
+        <a href="#a-about"><span>01</span><i data-i18n="nav_studio">Studio</i></a>
+        <a href="#a-services"><span>02</span><i data-i18n="nav_services">Services</i></a>
+        <a href="#a-prices"><span>03</span><i data-i18n="nav_prices">Tarifs</i></a>
+        <a href="#a-listen"><span>04</span><i data-i18n="nav_listen">Écouter</i></a>
+        <a href="#contact-a"><span>05</span><i data-i18n="nav_contact">Contact</i></a>
+      </nav>
+      <nav class="navlinks" data-for="plugin">
+        <a href="#p-catalog"><span>01</span><i data-i18n="nav_catalog">Catalogue</i></a>
+        <a href="#p-info"><span>02</span><i data-i18n="nav_pinfo">Infos</i></a>
+        <a href="#p-faq"><span>03</span><i data-i18n="nav_faq">FAQ</i></a>
+        <a href="#contact-p"><span>04</span><i data-i18n="nav_contact">Contact</i></a>
+      </nav>
+      <div class="lang" id="lang">
+        <button class="lang__btn" id="langBtn"><svg class="icon icon-16" aria-hidden="true"><use href="#icon-globe"></use></svg><span id="langCur">FR</span></button>
+        <div class="lang__menu">
+          <button data-lang="fr" class="on">Français <span class="code">FR</span></button>
+          <button data-lang="en">English <span class="code">EN</span></button>
+          <button data-lang="es-ES">Español (España) <span class="code">ES</span></button>
+          <button data-lang="es-419">Español (Latam) <span class="code">419</span></button>
+          <button data-lang="ru">Русский <span class="code">RU</span></button>
+          <button data-lang="ja">日本語 <span class="code">JA</span></button>
+          <button data-lang="ko">한국어 <span class="code">KO</span></button>
+          <button data-lang="zh">中文 <span class="code">ZH</span></button>
+        </div>
+      </div>
+      <svg class="wheel" viewBox="0 0 100 100" role="group" aria-label="Changer de mode">
+        <path class="wheel__seg on" data-mode="jpeg" style="--seg-acc:#FF6A3D" role="button" tabindex="0" aria-label=".JPEG" d="M50,50 L50,2 A48,48 0 0,1 91.57,74 Z"></path>
+        <path class="wheel__seg" data-mode="wav" style="--seg-acc:#2DD4A8" role="button" tabindex="0" aria-label=".WAV" d="M50,50 L91.57,74 A48,48 0 0,1 8.43,74 Z"></path>
+        <path class="wheel__seg" data-mode="plugin" style="--seg-acc:#FFB341" role="button" tabindex="0" aria-label=".PLUGIN" d="M50,50 L8.43,74 A48,48 0 0,1 50,2 Z"></path>
+      </svg>
+    </div>
+  </header>
+
+  <!-- ================= VUE VISUELLE (.JPEG) ================= -->
+  <main class="view view-visual">
+    <section class="hero" id="top">
+      <div class="hero__bg"><img src="img/hero-jpeg.jpg" alt="" loading="eager"></div>
+      <div class="badge"><i></i><span data-i18n="hero_badge_v">Disponible pour collaborations</span></div>
+      <h1>V3UV3.JPEG</h1>
+      <div class="roles" data-i18n="hero_roles_v">3D VFX / Motion / Montage / Design</div>
+      <p class="lead" data-i18n="hero_lead_v">Artiste visuel.</p>
+      <div class="scrolldown" data-i18n="scroll">DÉFILER</div>
+    </section>
+
+    <section id="v-about">
+      <div class="eyebrow reveal" data-i18n="ey_info">01 / Info</div>
+      <div class="about-grid">
+        <div class="reveal">
+          <h2 data-i18n="about_v_h" data-i18n-html>Créer des images<br>qui restent</h2>
+          <p data-i18n="about_v_p1">...</p>
+          <p data-i18n="about_v_p2">...</p>
+        </div>
+        <div class="facts reveal">
+          <div class="row"><span data-i18n="f_name">Nom</span><span>V3UV3.JPEG</span></div>
+          <div class="row"><span data-i18n="f_spec">Spécialité</span><span data-i18n="v_spec">VFX / Clip</span></div>
+          <div class="row"><span data-i18n="f_status">Statut</span><span data-i18n="v_status">Disponible</span></div>
+          <div class="row"><span data-i18n="f_based">Basé en</span><span data-i18n="v_based">France</span></div>
+          <div class="row"><span data-i18n="f_studio">Studio son</span><span>V3UV3.WAV</span></div>
+        </div>
+      </div>
+    </section>
+
+    <section id="v-tools">
+      <div class="sec-head reveal"><div class="eyebrow" data-i18n="ey_skills">02 / Compétences</div><h2 data-i18n="skills_h">Mon environnement</h2></div>
+      <div class="tool-list">
+        <div class="tool-row reveal"><div class="tr-n">01</div><div class="tr-name">Blender<small>3D</small></div><div class="tr-desc" data-i18n="sk_blender_d">...</div><div class="tr-tags"><span>Modélisation</span><span>Simulation</span><span>Rendu</span></div></div>
+        <div class="tool-row reveal"><div class="tr-n">02</div><div class="tr-name">After Effects<small>Motion / Compositing</small></div><div class="tr-desc" data-i18n="sk_ae_d">...</div><div class="tr-tags"><span>Compositing</span><span>Motion</span><span>FX</span></div></div>
+        <div class="tool-row reveal"><div class="tr-n">03</div><div class="tr-name">Premiere Pro<small>Montage</small></div><div class="tr-desc" data-i18n="sk_pr_d">...</div><div class="tr-tags"><span>Clip</span><span>Reel / TikTok</span><span>YouTube</span></div></div>
+        <div class="tool-row reveal"><div class="tr-n">04</div><div class="tr-name">TouchDesigner<small>Temps réel</small></div><div class="tr-desc" data-i18n="sk_td_d">...</div><div class="tr-tags"><span>Génératif</span><span>Audio-réactif</span></div></div>
+        <div class="tool-row reveal"><div class="tr-n">05</div><div class="tr-name">Procreate Pro<small>Cover / Print / Social</small></div><div class="tr-desc" data-i18n="sk_design_d">...</div><div class="tr-tags"><span>Pochette</span><span>Affiche</span><span>Sticker</span><span>Slide réseaux</span></div></div>
+        <div class="tool-row reveal"><div class="tr-n">06</div><div class="tr-name">Ableton Live<small>Sound design</small></div><div class="tr-desc" data-i18n="sk_ableton_d">...</div><div class="tr-tags"><span>Sound design</span><span class="pro" data-i18n="sk_pro">Niveau pro</span></div></div>
+      </div>
+    </section>
+
+    <!-- PROJETS <<< MODIFIER (copie un bloc .work, mets data-cat + data-yt="ID_YOUTUBE") -->
+    <section id="v-works">
+      <div class="sec-head reveal"><div class="eyebrow" data-i18n="ey_works">03 / Projets</div><h2 data-i18n="works_h">Travaux sélectionnés</h2></div>
+      <div class="filters reveal">
+        <button class="on" data-f="all" data-i18n="f_all">Tous</button>
+        <button data-f="blender">Blender</button>
+        <button data-f="touchdesigner">TouchDesigner</button>
+        <button data-f="ae">After Effects</button>
+        <button data-f="reels" data-i18n="f_reels">Reels</button>
+        <button data-f="covers" data-i18n="f_covers">Covers</button>
+      </div>
+      <div class="works-grid">
+        <button class="work reveal" data-cat="blender" data-yt="dl97zb4qTys">
+          <div class="work__media"><img src="https://i.ytimg.com/vi/dl97zb4qTys/maxresdefault.jpg" onerror="this.src='https://i.ytimg.com/vi/dl97zb4qTys/hqdefault.jpg'" alt="Visualizer"><div class="work__play"><span class="icon-wrap"><svg class="icon icon-24" aria-hidden="true"><use href="#icon-play"></use></svg></span></div></div>
+          <div class="work__meta"><h3>Visualizer<small data-i18n="w1_s">Visualizer audio · 3D</small></h3><span class="work__tag">Blender</span></div>
+        </button>
+        <button class="work reveal" data-cat="touchdesigner" data-yt="xLCk3cLs3Hg">
+          <div class="work__media"><img src="https://i.ytimg.com/vi/xLCk3cLs3Hg/maxresdefault.jpg" onerror="this.src='https://i.ytimg.com/vi/xLCk3cLs3Hg/hqdefault.jpg'" alt="Nervoso"><div class="work__play"><span class="icon-wrap"><svg class="icon icon-24" aria-hidden="true"><use href="#icon-play"></use></svg></span></div></div>
+          <div class="work__meta"><h3>Nervoso<small data-i18n="w2_s">Clip · effets spéciaux · réal. Thelemy Studio</small></h3><span class="work__tag">TouchDesigner</span></div>
+        </button>
+        <!-- REELS INSTAGRAM <<< MODIFIER : copie un bloc, change data-ig="ID_DU_POST" (la partie après /p/ dans le lien) -->
+        <button class="work reveal" data-cat="blender reels" data-ig="DdUCga6NLmj">
+          <div class="work__media ig"><div class="ig__bg"><span class="ig__name">JABBA360</span><span class="ig__kind">REEL · 01</span></div><div class="work__play"><span class="icon-wrap"><svg class="icon icon-24" aria-hidden="true"><use href="#icon-play"></use></svg></span></div></div>
+          <div class="work__meta"><h3>JABBA360 · 01<small data-i18n="w_reel_b">…</small></h3><span class="work__tag">Blender</span></div>
+        </button>
+        <button class="work reveal" data-cat="blender reels" data-ig="Dd6CzpVOH-e">
+          <div class="work__media ig"><div class="ig__bg"><span class="ig__name">JABBA360</span><span class="ig__kind">REEL · 02</span></div><div class="work__play"><span class="icon-wrap"><svg class="icon icon-24" aria-hidden="true"><use href="#icon-play"></use></svg></span></div></div>
+          <div class="work__meta"><h3>JABBA360 · 02<small data-i18n="w_reel_b">…</small></h3><span class="work__tag">Blender</span></div>
+        </button>
+        <button class="work reveal" data-cat="blender reels" data-ig="DZVLHegKn3d">
+          <div class="work__media ig"><div class="ig__bg"><span class="ig__name">HEAVENFX</span><span class="ig__kind">REEL</span></div><div class="work__play"><span class="icon-wrap"><svg class="icon icon-24" aria-hidden="true"><use href="#icon-play"></use></svg></span></div></div>
+          <div class="work__meta"><h3>HEAVENFX<small data-i18n="w_reel_b">…</small></h3><span class="work__tag">Blender</span></div>
+        </button>
+        <button class="work reveal" data-cat="blender reels" data-ig="DZEvMrwI6Yj">
+          <div class="work__media ig"><div class="ig__bg"><span class="ig__name">LAVENDER</span><span class="ig__kind">REEL</span></div><div class="work__play"><span class="icon-wrap"><svg class="icon icon-24" aria-hidden="true"><use href="#icon-play"></use></svg></span></div></div>
+          <div class="work__meta"><h3>LAVENDER<small data-i18n="w_reel_b">…</small></h3><span class="work__tag">Blender</span></div>
+        </button>
+        <button class="work reveal" data-cat="ae blender reels" data-ig="DXh1GCpudLM">
+          <div class="work__media ig"><div class="ig__bg"><span class="ig__name">PRESO</span><span class="ig__kind">REEL · 01</span></div><div class="work__play"><span class="icon-wrap"><svg class="icon icon-24" aria-hidden="true"><use href="#icon-play"></use></svg></span></div></div>
+          <div class="work__meta"><h3>PRESO · 01<small data-i18n="w_reel_ae">…</small></h3><span class="work__tag">AE + Blender</span></div>
+        </button>
+        <button class="work reveal" data-cat="ae blender reels" data-ig="DXmIQphoGIh">
+          <div class="work__media ig"><div class="ig__bg"><span class="ig__name">PRESO</span><span class="ig__kind">REEL · 02</span></div><div class="work__play"><span class="icon-wrap"><svg class="icon icon-24" aria-hidden="true"><use href="#icon-play"></use></svg></span></div></div>
+          <div class="work__meta"><h3>PRESO · 02<small data-i18n="w_reel_ae">…</small></h3><span class="work__tag">AE + Blender</span></div>
+        </button>
+        <button class="work reveal" data-cat="covers" data-img>
+          <div class="work__media"><img src="img/op5idor-cover.jpg" alt="J3YKO — OP5IDOR, cover"></div>
+          <div class="work__meta"><h3>J3YKO — OP5IDOR<small data-i18n="w_cov1_s">…</small></h3><span class="work__tag">Cover</span></div>
+        </button>
+        <button class="work reveal" data-cat="covers" data-img>
+          <div class="work__media"><img src="img/op5idor-tracklist.jpg" alt="J3YKO — OP5IDOR, tracklist"></div>
+          <div class="work__meta"><h3>J3YKO — OP5IDOR<small data-i18n="w_cov2_s">…</small></h3><span class="work__tag">Cover</span></div>
+        </button>
+      </div>
+    </section>
+
+    <section id="contact-v" class="contact">
+      <div class="eyebrow reveal" style="justify-content:center" data-i18n="ey_contact_v">04 / Contact</div>
+      <h2 class="reveal" data-i18n="contact_v_h" data-i18n-html>Travaillons<br>ensemble</h2>
+      <a class="mail reveal" href="mailto:V3UV3@proton.me">V3UV3@proton.me</a>
+      <div class="cform reveal" data-form>
+        <input type="text" name="name" data-i18n-ph="cf_name" placeholder="Ton nom">
+        <input type="email" name="email" data-i18n-ph="cf_email" placeholder="Ton email">
+        <textarea name="msg" data-i18n-ph="cf_msg_v" placeholder="Ton projet..."></textarea>
+        <button type="button" data-send><span data-i18n="cf_send">Envoyer</span><svg class="icon icon-16" aria-hidden="true"><use href="#icon-arrow-right"></use></svg></button>
+      </div>
+      <div class="socials reveal"><a href="https://www.instagram.com/v3uv3n0ir/" target="_blank" rel="noopener"><span>Instagram</span><svg class="icon icon-16" aria-hidden="true"><use href="#icon-external"></use></svg></a><a href="https://www.youtube.com/@v3uv3" target="_blank" rel="noopener"><span>YouTube</span><svg class="icon icon-16" aria-hidden="true"><use href="#icon-external"></use></svg></a><button data-goto="wav"><span data-i18n="to_wav">Studio V3UV3.WAV</span><svg class="icon icon-16" aria-hidden="true"><use href="#icon-external"></use></svg></button><button data-goto="plugin"><span data-i18n="to_plugin">Plugins V3UV3.PLUGIN</span><svg class="icon icon-16" aria-hidden="true"><use href="#icon-external"></use></svg></button></div>
+    </section>
+  </main>
+
+  <!-- ================= VUE AUDIO (.WAV) ================= -->
+  <main class="view view-audio">
+    <section class="hero" id="top-a">
+      <div class="hero__bg"><img src="img/hero-wav.jpg" alt="" loading="eager"></div>
+      <div class="badge"><i></i><span data-i18n="hero_badge_a">Studio ouvert</span></div>
+      <h1>V3UV3.WAV</h1>
+      <div class="roles" data-i18n="hero_roles_a">Enregistrement / Mix & Mastering / Prod sur mesure</div>
+      <p class="lead" data-i18n="hero_lead_a">Studio de production musicale.</p>
+      <div class="scrolldown" data-i18n="scroll">DÉFILER</div>
+    </section>
+
+    <section id="a-about">
+      <div class="eyebrow reveal" data-i18n="ey_studio">01 / Studio</div>
+      <div class="about-grid">
+        <div class="reveal">
+          <h2 data-i18n="about_a_h" data-i18n-html>Du micro<br>au master</h2>
+          <p data-i18n="about_a_p1">...</p>
+          <p data-i18n="about_a_p2">...</p>
+        </div>
+        <div class="facts reveal">
+          <div class="row"><span data-i18n="fa_studio">Studio</span><span>V3UV3.WAV</span></div>
+          <div class="row"><span data-i18n="fa_domain">Domaine</span><span data-i18n="fa_domain_v">Musique</span></div>
+          <div class="row"><span data-i18n="fa_sessions">Sessions</span><span data-i18n="fa_sessions_v">Sur RDV</span></div>
+          <div class="row"><span data-i18n="fa_genres">Genres</span><span data-i18n="fa_genres_v">Rock / Métal / Élec</span></div>
+          <div class="row"><span data-i18n="fa_visual">Côté visuel</span><span>V3UV3.JPEG</span></div>
+        </div>
+      </div>
+    </section>
+
+    <section id="a-services">
+      <div class="sec-head reveal"><div class="eyebrow" data-i18n="ey_services">02 / Services</div><h2 data-i18n="services_h">Ce que je propose</h2></div>
+      <div class="svc-grid">
+        <div class="svc reveal"><div class="n">01</div><h3 data-i18n="sv_rec_t">Enregistrement</h3><p data-i18n="sv_rec_d">...</p><div class="tags"><span>Voix</span><span>Guitare / Ampli</span><span>Basse</span></div></div>
+        <div class="svc reveal"><div class="n">02</div><h3 data-i18n="sv_mix_t">Mix & Mastering</h3><p data-i18n="sv_mix_d">...</p><div class="tags"><span>Mixage</span><span>Mastering</span><span>Multi-format</span></div></div>
+        <div class="svc reveal"><div class="n">03</div><h3 data-i18n="sv_prod_t">Prod sur mesure</h3><p data-i18n="sv_prod_d">...</p><div class="tags"><span>Compo</span><span>Tous styles</span><span>Arrangement</span></div></div>
+      </div>
+    </section>
+
+    <section id="a-prices">
+      <div class="sec-head reveal"><div class="eyebrow" data-i18n="ey_prices">03 / Tarifs</div><h2 data-i18n="prices_h">Grille tarifaire</h2></div>
+      <div class="price-grid">
+        <div class="price reveal">
+          <h3 data-i18n="pr_rec_t">Enregistrement</h3>
+          <div class="sub" data-i18n="pr_rec_s">Voix & instruments</div>
+          <div class="amt">30 €<small data-i18n="pr_rec_u"> / heure</small></div>
+          <ul><li data-i18n="pr_rec_l1">Voix, guitare, ampli, basse</li><li data-i18n="pr_rec_l2">Groupes rock / métal</li><li data-i18n="pr_rec_l3">Captation propre & dirigée</li></ul>
+          <button class="cta" data-quote="Enregistrement (30€/h)" data-i18n="pr_book">Réserver</button>
+        </div>
+        <div class="price feat reveal">
+          <span class="pp-tag" data-i18n="pr_feat">LE PLUS DEMANDÉ</span>
+          <h3 data-i18n="pr_mix_t">Mix + Master</h3>
+          <div class="sub" data-i18n="pr_mix_s">Par track, tous styles</div>
+          <div class="amt">40 €<small data-i18n="pr_mix_u"> / track</small></div>
+          <ul><li data-i18n="pr_mix_l1">Mixage 30 € + mastering 10 €</li><li data-i18n="pr_mix_l2">Tous styles</li><li data-i18n="pr_mix_l3">Livraison multi-format</li></ul>
+          <button class="cta" data-quote="Mix + Master (40€/track)" data-i18n="pr_book">Réserver</button>
+        </div>
+        <div class="price reveal">
+          <h3 data-i18n="pr_pack_t">Pack 5 tracks</h3>
+          <div class="sub" data-i18n="pr_pack_s">Mix + Master, tarif dégressif</div>
+          <div class="amt">150 €<small data-i18n="pr_pack_u"> / 5 tracks</small></div>
+          <ul><li data-i18n="pr_pack_l1">30 € le track (au lieu de 40 €)</li><li data-i18n="pr_pack_l2">Soit 50 € d'économie</li><li data-i18n="pr_pack_l3">Idéal EP / projet complet</li></ul>
+          <button class="cta" data-quote="Pack 5 tracks (150€)" data-i18n="pr_book">Réserver</button>
+        </div>
+      </div>
+      <div class="price-note reveal" data-i18n="pr_note" data-i18n-html>...</div>
+      <div class="tool-list reveal" style="margin-top:10px">
+        <div class="tool-row"><div class="tr-n">REC</div><div class="tr-name" style="font-size:1.5rem"><span data-i18n="g_mat">Matériel</span><small data-i18n="g_mat_s">Studio</small></div><div class="tr-desc" data-i18n="g_mat_d">...</div><div class="tr-tags"><span>AKG C214</span><span>Guitare / Ampli</span><span>Basse</span></div></div>
+        <div class="tool-row"><div class="tr-n">GTR</div><div class="tr-name" style="font-size:1.5rem"><span data-i18n="g_gtr">Guitare</span><small data-i18n="g_gtr_s">Plugins</small></div><div class="tr-desc" data-i18n="g_gtr_d">...</div><div class="tr-tags"><span>Neural DSP Archetype: Gojira</span><span>Guitar Rig 7 Pro</span><span>AmpliTube</span></div></div>
+        <div class="tool-row"><div class="tr-n">BASS</div><div class="tr-name" style="font-size:1.5rem"><span data-i18n="g_bass">Basse</span><small data-i18n="g_bass_s">Plugins</small></div><div class="tr-desc" data-i18n="g_bass_d">...</div><div class="tr-tags"><span>Toontrack EZbass</span><span>Guitar Rig 7 Pro</span></div></div>
+        <div class="tool-row"><div class="tr-n">VOX</div><div class="tr-name" style="font-size:1.5rem"><span data-i18n="g_vox">Voix</span><small data-i18n="g_vox_s">Chaîne</small></div><div class="tr-desc" data-i18n="g_vox_d">...</div><div class="tr-tags"><span>AKG C214</span><span>Waves</span></div></div>
+        <div class="tool-row"><div class="tr-n">MSTR</div><div class="tr-name" style="font-size:1.5rem"><span data-i18n="g_mstr">Mastering</span><small data-i18n="g_mstr_s">Plugins & écoute</small></div><div class="tr-desc" data-i18n="g_mstr_d">...</div><div class="tr-tags"><span>Waves</span><span>Mastering The Mix</span><span>iZotope Ozone</span></div></div>
+      </div>
+    </section>
+
+    <!-- ÉCOUTER  <<< MODIFIER : dossier /audio -->
+    <section id="a-listen">
+      <div class="sec-head reveal"><div class="eyebrow" data-i18n="ey_listen">04 / Écouter</div><h2 data-i18n="listen_h">Productions</h2></div>
+      <div class="ab reveal" id="ab">
+        <span class="lab" data-i18n="ab_lab">A/B MASTERING :</span>
+        <div class="abtns"><button class="on" data-ab="raw" data-i18n="ab_raw">Brut</button><button data-ab="master" data-i18n="ab_master">Masterisé</button></div>
+        <button class="abplay" id="abplay" data-raw="audio/demo_raw.mp3" data-master="audio/demo_master.mp3"><svg class="icon icon-16" aria-hidden="true"><use href="#icon-play"></use></svg><span data-i18n="ab_play">Écouter l'extrait</span></button>
+      </div>
+      <div class="player reveal" id="player">
+        <div class="player__art"><canvas id="wave" width="120" height="120"></canvas></div>
+        <div class="player__main">
+          <div class="player__now"><span class="now-t">—</span><span class="now-g" data-i18n="pl_select">Sélectionne un titre</span></div>
+          <div class="player__bar" id="pbar"><div class="player__prog" id="pprog"></div></div>
+          <div class="player__time"><span id="pcur">0:00</span><span id="pdur">0:00</span></div>
+          <div class="player__ctrl"><button id="prev" aria-label="Piste précédente"><svg class="icon" aria-hidden="true"><use href="#icon-skip-back"></use></svg></button><button class="pp" id="pp" aria-label="Lecture"><svg class="icon" aria-hidden="true"><use href="#icon-play"></use></svg></button><button id="next" aria-label="Piste suivante"><svg class="icon" aria-hidden="true"><use href="#icon-skip-forward"></use></svg></button></div>
+        </div>
+      </div>
+      <ul class="playlist" id="playlist">
+        <li data-src="audio/track1.mp3"><span class="pl-n">01</span><span class="pl-t">Titre 1</span><span class="pl-g">Prod</span><span class="pl-d">--:--</span></li>
+        <li data-src="audio/track2.mp3"><span class="pl-n">02</span><span class="pl-t">Titre 2</span><span class="pl-g">Mix</span><span class="pl-d">--:--</span></li>
+        <li data-src="audio/track3.mp3"><span class="pl-n">03</span><span class="pl-t">Titre 3</span><span class="pl-g">Master</span><span class="pl-d">--:--</span></li>
+      </ul>
+      <div class="embed reveal" data-i18n="embed_txt">Intègre ici ta playlist SoundCloud ou Spotify.</div>
+    </section>
+
+    <section id="contact-a" class="contact">
+      <div class="eyebrow reveal" style="justify-content:center" data-i18n="ey_contact_a">05 / Contact</div>
+      <h2 class="reveal" data-i18n="contact_a_h" data-i18n-html>Réservons<br>une session</h2>
+      <a class="mail reveal" href="mailto:V3UV3@proton.me">V3UV3@proton.me</a>
+      <div class="cform reveal" data-form>
+        <input type="text" name="name" data-i18n-ph="cf_name" placeholder="Ton nom">
+        <input type="email" name="email" data-i18n-ph="cf_email" placeholder="Ton email">
+        <textarea name="msg" data-i18n-ph="cf_msg_a" placeholder="Ton projet musical..."></textarea>
+        <button type="button" data-send><span data-i18n="cf_send">Envoyer</span><svg class="icon icon-16" aria-hidden="true"><use href="#icon-arrow-right"></use></svg></button>
+      </div>
+      <div class="socials reveal"><a href="https://www.instagram.com/v3uv3.jpeg/" target="_blank" rel="noopener"><span>Instagram</span><svg class="icon icon-16" aria-hidden="true"><use href="#icon-external"></use></svg></a><button data-goto="jpeg"><span data-i18n="to_jpeg">Côté visuel V3UV3.JPEG</span><svg class="icon icon-16" aria-hidden="true"><use href="#icon-external"></use></svg></button><button data-goto="plugin"><span data-i18n="to_plugin">Plugins V3UV3.PLUGIN</span><svg class="icon icon-16" aria-hidden="true"><use href="#icon-external"></use></svg></button></div>
+    </section>
+  </main>
+
+  <!-- ================= VUE PLUGINS (.PLUGIN) ================= -->
+  <main class="view view-plugin">
+    <section class="hero" id="top-p">
+      <div class="hero__bg"><img src="img/hero-plugin.jpg" alt="" loading="eager"></div>
+      <div class="badge"><i></i><span data-i18n="hero_badge_p">Plugins disponibles</span></div>
+      <h1>V3UV3.PLUGIN</h1>
+      <div class="roles" data-i18n="hero_roles_p">Plugins audio / VST3 / AU</div>
+      <p class="lead" data-i18n="hero_lead_p">Des plugins audio conçus au studio V3UV3. Télécharge, installe, et fais sonner tes projets.</p>
+      <div class="scrolldown" data-i18n="scroll">DÉFILER</div>
+    </section>
+
+    <!-- CATALOGUE <<< MODIFIER : un 2e plugin réel ? copie le bloc .plugfeat, donne-lui un nouvel id de modale (#plugModal2...) et son propre jeu de clés i18n pl_*. -->
+    <section id="p-catalog">
+      <div class="sec-head reveal"><div class="eyebrow" data-i18n="ey_catalog">01 / Catalogue</div><h2 data-i18n="catalog_h">Les plugins</h2></div>
+      <div class="plugfeat reveal">
+        <div class="eyebrow" style="justify-content:center" data-i18n="pl_badge_new">Premier plugin</div>
+        <button type="button" class="plugfeat__art" id="plugArt" aria-label="Agrandir le visuel du plugin">
+          <img src="img/plugin-darkfairygranullar.png" alt="DarkFairyGranullar" loading="lazy">
+        </button>
+        <h2 class="plugfeat__name">DarkFairyGranullar</h2>
+        <p class="plugfeat__formats" data-i18n="pl_formats_short">Granular · Bitcrusher · Stéréo</p>
+        <div class="plugfeat__info">
+          <div class="eyebrow" data-i18n="pl_sculpt_ey">Sculptez votre son</div>
+          <h3 data-i18n="pl_sculpt_h">Du grain. Du caractère. De la largeur.</h3>
+          <p data-i18n="pl_sculpt_p">Un instrument de sound design qui combine synthèse granulaire, textures lo-fi et contrôle de l'espace stéréo.</p>
+          <div class="plugfeat__badges"><span>Granular</span><span>Bitcrush</span><span data-i18n="pl_badge_stereo">Stéréo</span></div>
+          <button type="button" class="plugfeat__more" id="plugMore" aria-haspopup="dialog" aria-controls="plugModal" aria-label="Voir la fiche complète">···</button>
+        </div>
+      </div>
+    </section>
+
+    <section id="p-info">
+      <div class="sec-head reveal"><div class="eyebrow" data-i18n="ey_pinfo">02 / Infos</div><h2 data-i18n="pinfo_h">Ce que tu obtiens</h2></div>
+      <div class="svc-grid">
+        <div class="svc reveal"><div class="n">01</div><h3 data-i18n="pi1_t">Téléchargement instantané</h3><p data-i18n="pi1_d">Dès l'achat, tu reçois ton lien de téléchargement.</p></div>
+        <div class="svc reveal"><div class="n">02</div><h3 data-i18n="pi2_t">Mises à jour</h3><p data-i18n="pi2_d">Les mises à jour du plugin sont incluses.</p></div>
+        <div class="svc reveal"><div class="n">03</div><h3 data-i18n="pi3_t">Support direct</h3><p data-i18n="pi3_d">Une question ou un souci ? Tu écris directement à la personne qui l'a créé.</p></div>
+      </div>
+    </section>
+
+    <section id="p-faq">
+      <div class="sec-head reveal"><div class="eyebrow" data-i18n="ey_faq">03 / FAQ</div><h2 data-i18n="faq_h">Questions fréquentes</h2></div>
+      <div class="faq reveal">
+        <details><summary><span data-i18n="q1">Quels formats et systèmes sont compatibles ?</span><span class="faq-icon"><svg class="icon" aria-hidden="true"><use href="#icon-plus"></use></svg></span></summary><p data-i18n="a1">Les formats et systèmes compatibles sont indiqués sur la fiche de chaque plugin (VST3, AU, AAX · Windows / macOS).</p></details>
+        <details><summary><span data-i18n="q2">Comment j'installe un plugin ?</span><span class="faq-icon"><svg class="icon" aria-hidden="true"><use href="#icon-plus"></use></svg></span></summary><p data-i18n="a2">Après l'achat, tu reçois un lien de téléchargement par e-mail. Lance l'installeur, puis ouvre le plugin dans ton DAW.</p></details>
+        <details><summary><span data-i18n="q3">J'ai un problème, que faire ?</span><span class="faq-icon"><svg class="icon" aria-hidden="true"><use href="#icon-plus"></use></svg></span></summary><p data-i18n="a3">Écris-moi via le formulaire ci-dessous ou par e-mail, je te réponds dès que possible.</p></details>
+      </div>
+    </section>
+
+    <section id="contact-p" class="contact">
+      <div class="eyebrow reveal" style="justify-content:center" data-i18n="ey_contact_p">04 / Contact</div>
+      <h2 class="reveal" data-i18n="contact_p_h" data-i18n-html>Une question<br>sur un plugin ?</h2>
+      <a class="mail reveal" href="mailto:V3UV3@proton.me">V3UV3@proton.me</a>
+      <div class="cform reveal" data-form>
+        <input type="text" name="name" data-i18n-ph="cf_name" placeholder="Ton nom">
+        <input type="email" name="email" data-i18n-ph="cf_email" placeholder="Ton email">
+        <textarea name="msg" data-i18n-ph="cf_msg_p" placeholder="Ta question sur un plugin..."></textarea>
+        <button type="button" data-send><span data-i18n="cf_send">Envoyer</span><svg class="icon icon-16" aria-hidden="true"><use href="#icon-arrow-right"></use></svg></button>
+      </div>
+      <div class="socials reveal"><a href="https://www.instagram.com/v3uv3.jpeg/" target="_blank" rel="noopener"><span>Instagram</span><svg class="icon icon-16" aria-hidden="true"><use href="#icon-external"></use></svg></a><button data-goto="jpeg"><span data-i18n="to_jpeg">Côté visuel V3UV3.JPEG</span><svg class="icon icon-16" aria-hidden="true"><use href="#icon-external"></use></svg></button><button data-goto="wav"><span data-i18n="to_wav">Studio V3UV3.WAV</span><svg class="icon icon-16" aria-hidden="true"><use href="#icon-external"></use></svg></button></div>
+    </section>
+  </main>
+
+  <footer><div class="inner"><span>© 2026 V3UV3</span><span id="foot-tag">3D · MOTION · MONTAGE · VFX</span><nav class="legal"><a href="mentions-legales.html" data-i18n="foot_legal">Mentions légales</a><a href="confidentialite.html" data-i18n="foot_privacy">Confidentialité</a></nav></div></footer>
+
+  <div class="mini" id="mini">
+    <button class="mini__pp" id="miniPP" aria-label="Lecture"><svg class="icon icon-16" aria-hidden="true"><use href="#icon-play"></use></svg></button>
+    <div class="mini__info"><div class="mini__t" id="miniT">—</div><div class="mini__bar" id="miniBar"><div class="mini__prog" id="miniProg"></div></div></div>
+    <button class="mini__x" id="miniX" aria-label="Fermer le lecteur"><svg class="icon icon-16" aria-hidden="true"><use href="#icon-close"></use></svg></button>
+  </div>
+
+  <div class="pmodal" id="plugModal" role="dialog" aria-modal="true" aria-labelledby="pmodalTitle" aria-hidden="true">
+    <div class="pmodal__panel">
+      <button type="button" class="pmodal__close" id="plugModalClose" aria-label="Fermer la fiche produit"><svg class="icon icon-16" aria-hidden="true"><use href="#icon-close"></use></svg></button>
+      <div class="pmodal__head">
+        <h2 id="pmodalTitle">DarkFairyGranullar</h2>
+        <p class="pmodal__tagline">Turn your samples into something else.</p>
+      </div>
+      <div class="pmodal__body">
+        <div data-i18n="pl_m_intro_html" data-i18n-html></div>
+        <hr class="pmodal__sep">
+        <h3 data-i18n="pl_m_granular_h">Le moteur granulaire</h3>
+        <div data-i18n="pl_m_granular_html" data-i18n-html></div>
+        <hr class="pmodal__sep">
+        <h3 data-i18n="pl_m_crush_h">Le bitcrusher</h3>
+        <p class="pmodal__tagline-sm">Less resolution. More attitude.</p>
+        <div data-i18n="pl_m_crush_html" data-i18n-html></div>
+        <hr class="pmodal__sep">
+        <h3>Pitch &amp; Stereo Width</h3>
+        <div data-i18n="pl_m_pitch_html" data-i18n-html></div>
+        <hr class="pmodal__sep">
+        <h3>Shape Your Sound</h3>
+        <ul class="pmodal__list" data-i18n="pl_m_shape_html" data-i18n-html></ul>
+        <hr class="pmodal__sep">
+        <h3 data-i18n="pl_m_about_h">Conçu pour le sound design</h3>
+        <div data-i18n="pl_m_about_html" data-i18n-html></div>
+        <hr class="pmodal__sep">
+        <h3 data-i18n="pl_m_compat_h">Compatibilité</h3>
+        <div class="pmodal__badges"><span>VST3</span><span>AU</span><span>AAX</span></div>
+        <a class="pmodal__cta" id="plugModalCta" href="#contact-p" data-i18n="pl_m_cta">Être informé de la sortie</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="lb" id="lb"><div class="lb__inner" id="lbInner"><div class="lb__close" id="lbClose"><span data-i18n="lb_close">Fermer</span><svg class="icon icon-16" aria-hidden="true"><use href="#icon-close"></use></svg></div><iframe id="lbFrame" allow="autoplay; fullscreen" allowfullscreen></iframe><img id="lbImg" alt=""><a class="lb__ig" id="lbIg" target="_blank" rel="noopener"><span>Instagram</span><svg class="icon icon-16" aria-hidden="true"><use href="#icon-external"></use></svg></a></div></div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+<script type="module" src="js/intro-glass.js"></script>
+<script type="module" src="js/motion.js"></script>
+<script>
+  // GSAP est optionnel : si le CDN est hors-ligne, le site reste utilisable
+  // (nav, formulaires, lecteur audio...), seules les animations avancées
+  // (tilt fluide, parallaxe, transition de mode, soulignement animé) sont
+  // alors coupées net plutôt que de casser le reste du script.
+  const GSAP_OK = typeof gsap!=='undefined' && typeof ScrollTrigger!=='undefined';
+  if(GSAP_OK) gsap.registerPlugin(ScrollTrigger);
+  const I18N = {
+  "fr":{
+    landing_tag:"Choisis ton univers.",landing_jpeg:"Vidéo, VFX, montage",landing_wav:"Studio d'enregistrement",landing_plugin:"Plugins audio",
+    nav_info:"Info",nav_skills:"Compétences",nav_works:"Projets",nav_contact:"Contact",
+    nav_studio:"Studio",nav_services:"Services",nav_prices:"Tarifs",nav_listen:"Écouter",
+    hero_badge_v:"Disponible pour collaborations",
+    hero_roles_v:"3D VFX / Motion / Montage / Design",
+    hero_lead_v:"Artiste visuel. Clips, VFX, montage (format reel TikTok / réseaux & YouTube) et design graphique, de l'idée au rendu final.",
+    scroll:"DÉFILER",
+    ey_info:"01 / Info",about_v_h:"Créer des images<br>qui restent",
+    about_v_p1:"Je travaille la 3D, le motion design, le montage et le temps réel pour des artistes, des marques et des projets personnels, du clip à l'installation.",
+    about_v_p2:"Une chaîne complète, de l'idée au rendu final : direction artistique forte, matière soignée, et un résultat qui sert l'émotion plutôt que l'effet.",
+    f_name:"Nom",f_spec:"Spécialité",f_status:"Statut",f_based:"Basé en",f_studio:"Studio son",
+    v_spec:"VFX / Clip",v_status:"Disponible",v_based:"France",
+    ey_skills:"02 / Compétences",skills_h:"Mon environnement",
+    sk_blender_d:"Modélisation, simulation, lighting et rendu. Création de scènes 3D complètes.",
+    sk_ae_d:"Compositing, motion design et intégration d'effets visuels.",
+    sk_pr_d:"Montage clips, format reel (TikTok / réseaux) et YouTube : étalonnage, rythme, finition et export multi-formats.",
+    sk_td_d:"Visuels génératifs et temps réel, audio-réactifs. Installations & performances.",
+    sk_design_d:"Covers & pochettes d'album / track, affiches, stickers et slides réseaux sociaux. Réalisés sur Procreate Pro.",
+    sk_ableton_d:"Sound design et production sonore : ambiances, design d'effets, mix.",
+    sk_pro:"Niveau pro",
+    ey_works:"03 / Projets",works_h:"Travaux sélectionnés",f_all:"Tous",
+    w1_t:"Visualizer",w1_s:"Visualizer audio · 3D",w2_t:"Nervoso",w2_s:"Clip · effets spéciaux · réal. Thelemy Studio",
+    ey_contact_v:"04 / Contact",contact_v_h:"Travaillons<br>ensemble",
+    cf_name:"Ton nom",cf_email:"Ton email",cf_msg_v:"Ton projet...",cf_send:"Envoyer",lb_close:"Fermer",foot_legal:"Mentions légales",foot_privacy:"Confidentialité",
+    to_wav:"Studio V3UV3.WAV",to_jpeg:"Côté visuel V3UV3.JPEG",
+    hero_badge_a:"Studio ouvert · sessions sur rendez-vous",
+    hero_roles_a:"Enregistrement / Mix & Mastering / Prod sur mesure",
+    hero_lead_a:"Studio de production musicale. De la prise de son au master final : un son propre, puissant et signé. Groupes rock / métal bienvenus.",
+    ey_studio:"01 / Studio",about_a_h:"Du micro<br>au master",
+    about_a_p1:"V3UV3.WAV accompagne artistes et projets sur toute la chaîne sonore : enregistrement, mixage, mastering et production originale.",
+    about_a_p2:"Configuration pensée pour les groupes rock et métal comme pour les productions électroniques : guitare, ampli, basse, voix, et une suite de plugins haut de gamme.",
+    fa_studio:"Studio",fa_domain:"Domaine",fa_domain_v:"Musique",fa_sessions:"Sessions",fa_sessions_v:"Sur RDV",fa_genres:"Genres",fa_genres_v:"Rock / Métal / Élec",fa_visual:"Côté visuel",
+    ey_services:"02 / Services",services_h:"Ce que je propose",
+    sv_rec_t:"Enregistrement",sv_rec_d:"Prise de son voix, guitare, ampli et basse. Captation propre, direction artistique en session. Groupes rock / métal et productions électroniques.",
+    sv_mix_t:"Mix & Mastering",sv_mix_d:"Mixage tous styles puis mastering final : équilibre, profondeur, largeur et niveau prêt pour la diffusion.",
+    sv_prod_t:"Prod sur mesure",sv_prod_d:"Composition et production originales, tous styles : beats, instrus et arrangements taillés pour ton univers.",
+    ey_prices:"03 / Tarifs",prices_h:"Grille tarifaire",
+    pr_rec_t:"Enregistrement",pr_rec_s:"Voix & instruments",pr_rec_u:" / heure",
+    pr_rec_l1:"Voix, guitare, ampli, basse",pr_rec_l2:"Groupes rock / métal",pr_rec_l3:"Captation propre & dirigée",
+    pr_feat:"LE PLUS DEMANDÉ",pr_mix_t:"Mix + Master",pr_mix_s:"Par track, tous styles",pr_mix_u:" / track",
+    pr_mix_l1:"Mixage 30 € + mastering 10 €",pr_mix_l2:"Tous styles",pr_mix_l3:"Livraison multi-format",
+    pr_pack_t:"Pack 5 tracks",pr_pack_s:"Mix + Master, tarif dégressif",pr_pack_u:" / 5 tracks",
+    pr_pack_l1:"30 € le track (au lieu de 40 €)",pr_pack_l2:"Soit 50 € d'économie",pr_pack_l3:"Idéal EP / projet complet",
+    pr_book:"Réserver",
+    pr_note:"<b>Prod sur mesure :</b> composition originale tous styles, sur devis selon le projet. <b>Dégressif :</b> à partir de 5 tracks, le mix + master passe à 30 € le track (5 tracks = 150 € au lieu de 200 €).",
+    g_mat:"Matériel",g_mat_s:"Studio",g_mat_d:"Drone électronique, guitare + ampli, basse. Micro voix de référence.",
+    g_gtr:"Guitare",g_gtr_s:"Plugins",g_gtr_d:"Pour les tons saturés rock / métal comme pour les cleans.",
+    g_bass:"Basse",g_bass_s:"Plugins",g_bass_d:"Basse virtuelle et ré-amplification.",
+    g_vox:"Voix",g_vox_s:"Chaîne",g_vox_d:"Micro AKG C214 et traitement vocal pro.",
+    g_mstr:"Mastering",g_mstr_s:"Plugins & écoute",g_mstr_d:"Chaîne de mastering complète et monitoring dédié.",
+    ey_listen:"04 / Écouter",listen_h:"Productions",ab_lab:"A/B MASTERING :",ab_raw:"Brut",ab_master:"Masterisé",ab_play:"Écouter l'extrait",
+    pl_select:"Sélectionne un titre",embed_txt:"Intègre ici ta playlist SoundCloud ou Spotify.",
+    ey_contact_a:"05 / Contact",contact_a_h:"Réservons<br>une session",cf_msg_a:"Ton projet musical, style, nombre de tracks...",
+    nav_catalog:"Catalogue",nav_pinfo:"Infos",nav_faq:"FAQ",hero_badge_p:"Plugins disponibles",hero_roles_p:"Plugins audio / VST3 / AU",hero_lead_p:"Des plugins audio conçus au studio V3UV3. Télécharge, installe, et fais sonner tes projets.",ey_catalog:"01 / Catalogue",catalog_h:"Les plugins",plug_soon_h:"Premiers plugins en préparation",plug_soon_p:"Le catalogue n'est pas encore en ligne. Écris-moi via le formulaire plus bas pour être prévenu dès la sortie du premier plugin.",pl_new:"NOUVEAU",pl_desc:"Décris ici ce que fait ton plugin en une ou deux phrases.",pl_buy:"Acheter",ey_pinfo:"02 / Infos",pinfo_h:"Ce que tu obtiens",pi1_t:"Téléchargement instantané",pi1_d:"Dès l'achat, tu reçois ton lien de téléchargement.",pi2_t:"Mises à jour",pi2_d:"Les mises à jour du plugin sont incluses.",pi3_t:"Support direct",pi3_d:"Une question ou un souci ? Tu écris directement à la personne qui l'a créé.",ey_faq:"03 / FAQ",faq_h:"Questions fréquentes",q1:"Quels formats et systèmes sont compatibles ?",a1:"Les formats et systèmes compatibles sont indiqués sur la fiche de chaque plugin (VST3, AU, AAX · Windows / macOS).",q2:"Comment j'installe un plugin ?",a2:"Après l'achat, tu reçois un lien de téléchargement par e-mail. Lance l'installeur, puis ouvre le plugin dans ton DAW.",q3:"J'ai un problème, que faire ?",a3:"Écris-moi via le formulaire ci-dessous ou par e-mail, je te réponds dès que possible.",ey_contact_p:"04 / Contact",contact_p_h:"Une question<br>sur un plugin ?",cf_msg_p:"Ta question sur un plugin...",to_plugin:"Plugins V3UV3.PLUGIN",pl_badge_new:"Premier plugin",pl_formats_short:"Granular · Bitcrusher · Stéréo",pl_sculpt_ey:"Sculptez votre son",pl_sculpt_h:"Du grain. Du caractère. De la largeur.",pl_sculpt_p:"Un instrument de sound design qui combine synthèse granulaire, textures lo-fi et contrôle de l'espace stéréo.",pl_badge_stereo:"Stéréo",pl_m_intro_html:"<p>Il y a des samples qu'on utilise tels quels. Et puis il y a ceux qu'on aime triturer jusqu'à ce qu'ils deviennent tout autre chose.</p><p>DarkFairyGranullar est un plugin de sound design qui réunit un moteur granulaire, un bitcrusher à plusieurs algorithmes et des contrôles de pitch et de largeur stéréo. L'idée est simple : prendre un son, le découper, transformer sa texture et l'emmener ailleurs.</p><p>Pars d'une voix, d'un synthé, d'une batterie ou d'un enregistrement quelconque. Modifie la taille et la densité des grains, ajoute du crush, joue avec la hauteur et travaille l'espace stéréo. Le résultat peut aller d'une texture subtile et aérienne à un son numérique brut, fragmenté et expérimental.</p><p class=\"pmodal__accent\">Tu lui donnes un sample. Tu vois où il t'emmène.</p>",pl_m_granular_h:"Le moteur granulaire",pl_m_granular_html:"<p>Le cœur du plugin, c'est la transformation du sample en fragments sonores que tu peux façonner.</p><p>Grain Size permet de définir la taille des grains, tandis que Density contrôle leur densité de génération. Le mode Slice, l'enveloppe et les paramètres de lecture viennent compléter le moteur pour offrir davantage de contrôle sur le rendu.</p><p>Les contrôles Sensitivity, Max Slices, Loop Length et Spray permettent d'affiner le comportement des découpes et la dispersion des grains. Pitch Spread apporte quant à lui des variations de hauteur entre les grains.</p><p>L'objectif : passer d'un son relativement fidèle à une texture granulaire dense, mouvante ou imprévisible.</p>",pl_m_crush_h:"Le bitcrusher",pl_m_crush_html:"<p>Le bitcrusher intégré apporte une dimension numérique au traitement. Plusieurs algorithmes de crush sont disponibles pour varier le caractère de la dégradation.</p><p>Le paramètre Crush permet de doser l'intensité de l'effet, tandis que Crush Mix contrôle le mélange associé au traitement. Utilise-le pour ajouter une coloration lo-fi ou pousser le sample vers un rendu plus agressif et déstructuré.</p>",pl_m_pitch_html:"<p>Le pitch permet de modifier la hauteur du son, tandis que Pitch Spread apporte de la variation entre les grains.</p><p>Avec Width, tu peux travailler la largeur stéréo pour donner davantage d'ampleur à tes textures ou resserrer leur image selon le résultat recherché.</p><p>Ces contrôles sont particulièrement intéressants pour les nappes, les textures évolutives, les ambiances sombres et le sound design électronique.</p>",pl_m_shape_html:"<li><strong>Envelope</strong> — choix de la forme d'enveloppe des grains.</li><li><strong>Sensitivity</strong> — réglage de la sensibilité du moteur.</li><li><strong>Max Slices</strong> — nombre maximal de tranches.</li><li><strong>Loop Length</strong> — contrôle de la longueur de boucle.</li><li><strong>Spray</strong> — réglage de la dispersion.</li><li><strong>Attack &amp; Release</strong> — contrôle de l'évolution temporelle de l'enveloppe.</li><li><strong>Tempo Sync &amp; Repeat</strong> — synchronisation et réglages des répétitions.</li><li><strong>Output Gain</strong> — réglage du niveau de sortie.</li><li><strong>Waveform Display</strong> — visualisation du sample et de ses marqueurs.</li><li><strong>Preset Management</strong> — chargement, navigation et sauvegarde des presets.</li>",pl_m_about_h:"Conçu pour le sound design",pl_m_about_html:"<p>DarkFairyGranullar s'adresse aux producteurs et aux sound designers qui aiment explorer la matière sonore plutôt que simplement appliquer un effet.</p><p>Textures granulaires, ambiances cinématiques, rythmiques glitchées, sonorités lo-fi, effets expérimentaux ou samples transformés : il peut servir aussi bien à ajouter un détail à un morceau qu'à construire une texture entière à partir d'un son simple.</p><p class=\"pmodal__accent\">Don't just play the sample. Transform it.</p>",pl_m_compat_h:"Compatibilité",pl_m_cta:"Être informé de la sortie",
+    f_reels:"Reels",f_covers:"Covers",w_reel_b:"Extrait Blender · format reel",w_reel_ae:"After Effects + Blender · format reel",w_cov1_s:"Cover d'album · Trap / DMV",w_cov2_s:"Visuel tracklist · Trap / DMV",
+    lang_label:"Langue"
+  },
+  "en":{
+    landing_tag:"Pick your world.",landing_jpeg:"Video, VFX, editing",landing_wav:"Recording studio",landing_plugin:"Audio plugins",
+    nav_info:"Info",nav_skills:"Skills",nav_works:"Work",nav_contact:"Contact",
+    nav_studio:"Studio",nav_services:"Services",nav_prices:"Pricing",nav_listen:"Listen",
+    hero_badge_v:"Available for collaborations",
+    hero_roles_v:"3D VFX / Motion / Editing / Design",
+    hero_lead_v:"Visual artist. Music videos, VFX, editing (reel format for TikTok / socials & YouTube) and graphic design, from concept to final render.",
+    scroll:"SCROLL",
+    ey_info:"01 / Info",about_v_h:"Making images<br>that last",
+    about_v_p1:"I work in 3D, motion design, editing and real-time for artists, brands and personal projects, from music videos to installations.",
+    about_v_p2:"A full pipeline, from idea to final render: a strong art direction, refined texture, and a result that serves emotion rather than effect.",
+    f_name:"Name",f_spec:"Specialty",f_status:"Status",f_based:"Based in",f_studio:"Sound studio",
+    v_spec:"VFX / Music video",v_status:"Available",v_based:"France",
+    ey_skills:"02 / Skills",skills_h:"My toolkit",
+    sk_blender_d:"Modeling, simulation, lighting and rendering. Building complete 3D scenes.",
+    sk_ae_d:"Compositing, motion design and visual effects integration.",
+    sk_pr_d:"Editing music videos, reel format (TikTok / socials) and YouTube: grading, pacing, finishing and multi-format export.",
+    sk_td_d:"Generative and real-time visuals, audio-reactive. Installations & performances.",
+    sk_design_d:"Album / track covers, posters, stickers and social media slides. Made in Procreate Pro.",
+    sk_ableton_d:"Sound design and audio production: atmospheres, effect design, mixing.",
+    sk_pro:"Pro level",
+    ey_works:"03 / Work",works_h:"Selected work",f_all:"All",
+    w1_t:"Visualizer",w1_s:"Audio visualizer · 3D",w2_t:"Nervoso",w2_s:"Music video · VFX · dir. Thelemy Studio",
+    ey_contact_v:"04 / Contact",contact_v_h:"Let's work<br>together",
+    cf_name:"Your name",cf_email:"Your email",cf_msg_v:"Your project...",cf_send:"Send",lb_close:"Close",foot_legal:"Legal notice",foot_privacy:"Privacy",
+    to_wav:"Studio V3UV3.WAV",to_jpeg:"Visual side V3UV3.JPEG",
+    hero_badge_a:"Studio open · sessions by appointment",
+    hero_roles_a:"Recording / Mix & Mastering / Custom production",
+    hero_lead_a:"Music production studio. From recording to final master: a clean, powerful, signature sound. Rock / metal bands welcome.",
+    ey_studio:"01 / Studio",about_a_h:"From the mic<br>to the master",
+    about_a_p1:"V3UV3.WAV supports artists and projects across the whole sound chain: recording, mixing, mastering and original production.",
+    about_a_p2:"A setup built for rock and metal bands as well as electronic productions: guitar, amp, bass, vocals, and a suite of high-end plugins.",
+    fa_studio:"Studio",fa_domain:"Field",fa_domain_v:"Music",fa_sessions:"Sessions",fa_sessions_v:"By appt.",fa_genres:"Genres",fa_genres_v:"Rock / Metal / Elec",fa_visual:"Visual side",
+    ey_services:"02 / Services",services_h:"What I offer",
+    sv_rec_t:"Recording",sv_rec_d:"Recording vocals, guitar, amp and bass. Clean capture, art direction during the session. Rock / metal bands and electronic productions.",
+    sv_mix_t:"Mix & Mastering",sv_mix_d:"All-style mixing then final mastering: balance, depth, width and release-ready level.",
+    sv_prod_t:"Custom production",sv_prod_d:"Original composition and production, all styles: beats, instrumentals and arrangements tailored to your world.",
+    ey_prices:"03 / Pricing",prices_h:"Price list",
+    pr_rec_t:"Recording",pr_rec_s:"Vocals & instruments",pr_rec_u:" / hour",
+    pr_rec_l1:"Vocals, guitar, amp, bass",pr_rec_l2:"Rock / metal bands",pr_rec_l3:"Clean, directed capture",
+    pr_feat:"MOST POPULAR",pr_mix_t:"Mix + Master",pr_mix_s:"Per track, all styles",pr_mix_u:" / track",
+    pr_mix_l1:"Mixing €30 + mastering €10",pr_mix_l2:"All styles",pr_mix_l3:"Multi-format delivery",
+    pr_pack_t:"5-track pack",pr_pack_s:"Mix + Master, volume discount",pr_pack_u:" / 5 tracks",
+    pr_pack_l1:"€30 per track (instead of €40)",pr_pack_l2:"That's €50 saved",pr_pack_l3:"Ideal for an EP / full project",
+    pr_book:"Book",
+    pr_note:"<b>Custom production:</b> original composition, all styles, quoted per project. <b>Discount:</b> from 5 tracks, mix + master drops to €30 per track (5 tracks = €150 instead of €200).",
+    g_mat:"Gear",g_mat_s:"Studio",g_mat_d:"Electronic drum, guitar + amp, bass. Reference vocal mic.",
+    g_gtr:"Guitar",g_gtr_s:"Plugins",g_gtr_d:"For saturated rock / metal tones as well as cleans.",
+    g_bass:"Bass",g_bass_s:"Plugins",g_bass_d:"Virtual bass and re-amping.",
+    g_vox:"Vocals",g_vox_s:"Chain",g_vox_d:"AKG C214 mic and pro vocal processing.",
+    g_mstr:"Mastering",g_mstr_s:"Plugins & monitoring",g_mstr_d:"Complete mastering chain and dedicated monitoring.",
+    ey_listen:"04 / Listen",listen_h:"Productions",ab_lab:"A/B MASTERING :",ab_raw:"Raw",ab_master:"Mastered",ab_play:"Play excerpt",
+    pl_select:"Select a track",embed_txt:"Embed your SoundCloud or Spotify playlist here.",
+    ey_contact_a:"05 / Contact",contact_a_h:"Let's book<br>a session",cf_msg_a:"Your music project, style, number of tracks...",
+    nav_catalog:"Catalog",nav_pinfo:"Info",nav_faq:"FAQ",hero_badge_p:"Plugins available",hero_roles_p:"Audio plugins / VST3 / AU",hero_lead_p:"Audio plugins built at the V3UV3 studio. Download, install, and make your projects sound better.",ey_catalog:"01 / Catalog",catalog_h:"The plugins",plug_soon_h:"First plugins in the works",plug_soon_p:"The catalog isn't live yet. Use the form below to get notified as soon as the first plugin ships.",pl_new:"NEW",pl_desc:"Describe here what your plugin does in a sentence or two.",pl_buy:"Buy",ey_pinfo:"02 / Info",pinfo_h:"What you get",pi1_t:"Instant download",pi1_d:"As soon as you buy, you get your download link.",pi2_t:"Updates",pi2_d:"Plugin updates are included.",pi3_t:"Direct support",pi3_d:"Got a question or an issue? You write straight to the person who made it.",ey_faq:"03 / FAQ",faq_h:"Frequently asked questions",q1:"Which formats and systems are supported?",a1:"Supported formats and systems are listed on each plugin's card (VST3, AU, AAX · Windows / macOS).",q2:"How do I install a plugin?",a2:"After purchase you receive a download link by email. Run the installer, then open the plugin in your DAW.",q3:"I have a problem, what do I do?",a3:"Write to me with the form below or by email and I will get back to you as soon as I can.",ey_contact_p:"04 / Contact",contact_p_h:"A question<br>about a plugin?",cf_msg_p:"Your question about a plugin...",to_plugin:"Plugins V3UV3.PLUGIN",pl_badge_new:"First plugin",pl_formats_short:"Granular · Bitcrusher · Stereo",pl_sculpt_ey:"Sculpt your sound",pl_sculpt_h:"Grain. Character. Width.",pl_sculpt_p:"A sound design instrument that combines granular synthesis, lo-fi textures and stereo-field control.",pl_badge_stereo:"Stereo",pl_m_intro_html:"<p>Some samples you use as they are. Others you want to tear apart until they become something else entirely.</p><p>DarkFairyGranullar is a sound design plugin that brings together a granular engine, a multi-algorithm bitcrusher, and pitch and stereo-width controls. The idea is simple: take a sound, slice it, warp its texture, and take it somewhere new.</p><p>Start with a voice, a synth, a drum hit or any recording. Shape grain size and density, add crush, play with pitch, work the stereo field. The result can range from a subtle, airy texture to a raw, fragmented, experimental digital sound.</p><p class=\"pmodal__accent\">Feed it a sample. See where it takes you.</p>",pl_m_granular_h:"The granular engine",pl_m_granular_html:"<p>At the heart of the plugin is the transformation of your sample into sonic fragments you can shape.</p><p>Grain Size sets the size of the grains, while Density controls how densely they're generated. Slice mode, the envelope and playback parameters round out the engine for finer control over the result.</p><p>Sensitivity, Max Slices, Loop Length and Spray refine how the slicing behaves and how the grains scatter. Pitch Spread adds pitch variation across grains.</p><p>The goal: move from a fairly faithful sound to a dense, moving or unpredictable granular texture.</p>",pl_m_crush_h:"The bitcrusher",pl_m_crush_html:"<p>The built-in bitcrusher adds a digital edge to the signal. Several crush algorithms are available to vary the character of the degradation.</p><p>Crush sets the intensity of the effect, while Crush Mix controls how much of it blends in. Use it to add lo-fi coloring or push the sample toward a more aggressive, broken-up sound.</p>",pl_m_pitch_html:"<p>Pitch changes the sound's overall pitch, while Pitch Spread adds variation between grains.</p><p>With Width, you can work the stereo field to give your textures more scale, or narrow their image depending on the result you're after.</p><p>These controls are especially useful for pads, evolving textures, dark atmospheres and electronic sound design.</p>",pl_m_shape_html:"<li><strong>Envelope</strong> — choose the grain envelope shape.</li><li><strong>Sensitivity</strong> — tune the engine's sensitivity.</li><li><strong>Max Slices</strong> — set the maximum number of slices.</li><li><strong>Loop Length</strong> — control the loop length.</li><li><strong>Spray</strong> — adjust the scatter amount.</li><li><strong>Attack &amp; Release</strong> — shape the envelope's time behavior.</li><li><strong>Tempo Sync &amp; Repeat</strong> — sync and repeat settings.</li><li><strong>Output Gain</strong> — set the output level.</li><li><strong>Waveform Display</strong> — view the sample and its markers.</li><li><strong>Preset Management</strong> — load, browse and save presets.</li>",pl_m_about_h:"Built for sound design",pl_m_about_html:"<p>DarkFairyGranullar is for producers and sound designers who like exploring sonic material rather than just applying an effect.</p><p>Granular textures, cinematic atmospheres, glitched rhythms, lo-fi tones, experimental effects or transformed samples: it can add a single detail to a track or build an entire texture from one simple sound.</p><p class=\"pmodal__accent\">Don't just play the sample. Transform it.</p>",pl_m_compat_h:"Compatibility",pl_m_cta:"Get notified at launch",
+    f_reels:"Reels",f_covers:"Covers",w_reel_b:"Blender excerpt · reel format",w_reel_ae:"After Effects + Blender · reel format",w_cov1_s:"Album cover · Trap / DMV",w_cov2_s:"Tracklist artwork · Trap / DMV",
+    lang_label:"Language"
+  },
+  "es-ES":{
+    landing_tag:"Elige tu universo.",landing_jpeg:"Vídeo, VFX, montaje",landing_wav:"Estudio de grabación",landing_plugin:"Plugins de audio",
+    nav_info:"Info",nav_skills:"Habilidades",nav_works:"Proyectos",nav_contact:"Contacto",
+    nav_studio:"Estudio",nav_services:"Servicios",nav_prices:"Tarifas",nav_listen:"Escuchar",
+    hero_badge_v:"Disponible para colaboraciones",
+    hero_roles_v:"3D VFX / Motion / Montaje / Diseño",
+    hero_lead_v:"Artista visual. Videoclips, VFX, montaje (formato reel para TikTok / redes y YouTube) y diseño gráfico, de la idea al render final.",
+    scroll:"DESLIZA",
+    ey_info:"01 / Info",about_v_h:"Crear imágenes<br>que perduran",
+    about_v_p1:"Trabajo el 3D, el motion design, el montaje y el tiempo real para artistas, marcas y proyectos personales, del videoclip a la instalación.",
+    about_v_p2:"Una cadena completa, de la idea al render final: una dirección artística sólida, materia cuidada y un resultado que sirve a la emoción más que al efecto.",
+    f_name:"Nombre",f_spec:"Especialidad",f_status:"Estado",f_based:"Ubicación",f_studio:"Estudio de sonido",
+    v_spec:"VFX / Videoclip",v_status:"Disponible",v_based:"Francia",
+    ey_skills:"02 / Habilidades",skills_h:"Mi entorno",
+    sk_blender_d:"Modelado, simulación, iluminación y render. Creación de escenas 3D completas.",
+    sk_ae_d:"Composición, motion design e integración de efectos visuales.",
+    sk_pr_d:"Montaje de videoclips, formato reel (TikTok / redes) y YouTube: corrección de color, ritmo, acabado y exportación multiformato.",
+    sk_td_d:"Visuales generativos y en tiempo real, audio-reactivos. Instalaciones y performances.",
+    sk_design_d:"Portadas de álbum / track, carteles, pegatinas y slides para redes sociales. Hechos en Procreate Pro.",
+    sk_ableton_d:"Diseño de sonido y producción: ambientes, diseño de efectos, mezcla.",
+    sk_pro:"Nivel pro",
+    ey_works:"03 / Proyectos",works_h:"Trabajos seleccionados",f_all:"Todos",
+    w1_t:"Visualizer",w1_s:"Visualizador de audio · 3D",w2_t:"Nervoso",w2_s:"Videoclip · VFX · dir. Thelemy Studio",
+    ey_contact_v:"04 / Contacto",contact_v_h:"Trabajemos<br>juntos",
+    cf_name:"Tu nombre",cf_email:"Tu email",cf_msg_v:"Tu proyecto...",cf_send:"Enviar",lb_close:"Cerrar",foot_legal:"Aviso legal",foot_privacy:"Privacidad",
+    to_wav:"Estudio V3UV3.WAV",to_jpeg:"Parte visual V3UV3.JPEG",
+    hero_badge_a:"Estudio abierto · sesiones con cita previa",
+    hero_roles_a:"Grabación / Mezcla y Masterización / Producción a medida",
+    hero_lead_a:"Estudio de producción musical. De la toma al máster final: un sonido limpio, potente y con sello propio. Bandas de rock / metal bienvenidas.",
+    ey_studio:"01 / Estudio",about_a_h:"Del micro<br>al máster",
+    about_a_p1:"V3UV3.WAV acompaña a artistas y proyectos en toda la cadena de sonido: grabación, mezcla, masterización y producción original.",
+    about_a_p2:"Configuración pensada para bandas de rock y metal y también para producciones electrónicas: guitarra, ampli, bajo, voz y una suite de plugins de alta gama.",
+    fa_studio:"Estudio",fa_domain:"Ámbito",fa_domain_v:"Música",fa_sessions:"Sesiones",fa_sessions_v:"Con cita",fa_genres:"Géneros",fa_genres_v:"Rock / Metal / Elec",fa_visual:"Parte visual",
+    ey_services:"02 / Servicios",services_h:"Lo que ofrezco",
+    sv_rec_t:"Grabación",sv_rec_d:"Toma de voz, guitarra, ampli y bajo. Captación limpia, dirección artística en sesión. Bandas de rock / metal y producciones electrónicas.",
+    sv_mix_t:"Mezcla y Masterización",sv_mix_d:"Mezcla de todos los estilos y masterización final: equilibrio, profundidad, amplitud y nivel listo para publicar.",
+    sv_prod_t:"Producción a medida",sv_prod_d:"Composición y producción originales, todos los estilos: beats, instrumentales y arreglos a la medida de tu universo.",
+    ey_prices:"03 / Tarifas",prices_h:"Lista de precios",
+    pr_rec_t:"Grabación",pr_rec_s:"Voz e instrumentos",pr_rec_u:" / hora",
+    pr_rec_l1:"Voz, guitarra, ampli, bajo",pr_rec_l2:"Bandas de rock / metal",pr_rec_l3:"Captación limpia y dirigida",
+    pr_feat:"MÁS SOLICITADO",pr_mix_t:"Mezcla + Máster",pr_mix_s:"Por track, todos los estilos",pr_mix_u:" / track",
+    pr_mix_l1:"Mezcla 30 € + máster 10 €",pr_mix_l2:"Todos los estilos",pr_mix_l3:"Entrega multiformato",
+    pr_pack_t:"Pack 5 tracks",pr_pack_s:"Mezcla + Máster, precio reducido",pr_pack_u:" / 5 tracks",
+    pr_pack_l1:"30 € por track (en vez de 40 €)",pr_pack_l2:"Un ahorro de 50 €",pr_pack_l3:"Ideal para un EP / proyecto completo",
+    pr_book:"Reservar",
+    pr_note:"<b>Producción a medida:</b> composición original, todos los estilos, presupuesto según el proyecto. <b>Descuento:</b> a partir de 5 tracks, la mezcla + máster baja a 30 € por track (5 tracks = 150 € en vez de 200 €).",
+    g_mat:"Equipo",g_mat_s:"Estudio",g_mat_d:"Batería electrónica, guitarra + ampli, bajo. Micro de voz de referencia.",
+    g_gtr:"Guitarra",g_gtr_s:"Plugins",g_gtr_d:"Para tonos saturados de rock / metal y también limpios.",
+    g_bass:"Bajo",g_bass_s:"Plugins",g_bass_d:"Bajo virtual y re-amplificación.",
+    g_vox:"Voz",g_vox_s:"Cadena",g_vox_d:"Micro AKG C214 y procesamiento vocal pro.",
+    g_mstr:"Masterización",g_mstr_s:"Plugins y escucha",g_mstr_d:"Cadena de masterización completa y monitoreo dedicado.",
+    ey_listen:"04 / Escuchar",listen_h:"Producciones",ab_lab:"A/B MASTERING :",ab_raw:"En crudo",ab_master:"Masterizado",ab_play:"Escuchar extracto",
+    pl_select:"Elige un track",embed_txt:"Inserta aquí tu playlist de SoundCloud o Spotify.",
+    ey_contact_a:"05 / Contacto",contact_a_h:"Reservemos<br>una sesión",cf_msg_a:"Tu proyecto musical, estilo, número de tracks...",
+    nav_catalog:"Catálogo",nav_pinfo:"Info",nav_faq:"FAQ",hero_badge_p:"Plugins disponibles",hero_roles_p:"Plugins de audio / VST3 / AU",hero_lead_p:"Plugins de audio creados en el estudio V3UV3. Descarga, instala y haz que tus proyectos suenen mejor.",ey_catalog:"01 / Catálogo",catalog_h:"Los plugins",plug_soon_h:"Primeros plugins en preparación",plug_soon_p:"El catálogo todavía no está en línea. Escríbeme con el formulario de abajo para que te avise en cuanto salga el primer plugin.",pl_new:"NUEVO",pl_desc:"Describe aquí qué hace tu plugin en una o dos frases.",pl_buy:"Comprar",ey_pinfo:"02 / Info",pinfo_h:"Lo que obtienes",pi1_t:"Descarga inmediata",pi1_d:"En cuanto compras, recibes tu enlace de descarga.",pi2_t:"Actualizaciones",pi2_d:"Las actualizaciones del plugin están incluidas.",pi3_t:"Soporte directo",pi3_d:"¿Tienes una duda o un problema? Escribes directamente a quien lo creó.",ey_faq:"03 / FAQ",faq_h:"Preguntas frecuentes",q1:"¿Qué formatos y sistemas son compatibles?",a1:"Los formatos y sistemas compatibles se indican en la ficha de cada plugin (VST3, AU, AAX · Windows / macOS).",q2:"¿Cómo instalo un plugin?",a2:"Tras la compra recibes un enlace de descarga por correo. Ejecuta el instalador y abre el plugin en tu DAW.",q3:"Tengo un problema, ¿qué hago?",a3:"Escríbeme con el formulario de abajo o por correo y te respondo en cuanto pueda.",ey_contact_p:"04 / Contacto",contact_p_h:"¿Una pregunta<br>sobre un plugin?",cf_msg_p:"Tu pregunta sobre un plugin...",to_plugin:"Plugins V3UV3.PLUGIN",pl_badge_new:"Primer plugin",pl_formats_short:"Granular · Bitcrusher · Estéreo",pl_sculpt_ey:"Esculpe tu sonido",pl_sculpt_h:"Grano. Carácter. Amplitud.",pl_sculpt_p:"Un instrumento de sound design que combina síntesis granular, texturas lo-fi y control del campo estéreo.",pl_badge_stereo:"Estéreo",pl_m_intro_html:"<p>Hay samples que usamos tal cual. Y luego están los que nos gusta triturar hasta que se convierten en otra cosa.</p><p>DarkFairyGranullar es un plugin de sound design que reúne un motor granular, un bitcrusher con varios algoritmos y controles de pitch y amplitud estéreo. La idea es simple: coger un sonido, trocearlo, transformar su textura y llevarlo a otro sitio.</p><p>Parte de una voz, un synth, una batería o cualquier grabación. Modifica el tamaño y la densidad de los granos, añade crush, juega con la altura y trabaja el espacio estéreo. El resultado puede ir de una textura sutil y aérea a un sonido digital crudo, fragmentado y experimental.</p><p class=\"pmodal__accent\">Le das un sample. Tú ves adónde te lleva.</p>",pl_m_granular_h:"El motor granular",pl_m_granular_html:"<p>El corazón del plugin es la transformación del sample en fragmentos sonoros que puedes moldear.</p><p>Grain Size define el tamaño de los granos, mientras que Density controla su densidad de generación. El modo Slice, la envolvente y los parámetros de reproducción completan el motor para ofrecer más control sobre el resultado.</p><p>Los controles Sensitivity, Max Slices, Loop Length y Spray permiten afinar el comportamiento de los cortes y la dispersión de los granos. Pitch Spread aporta variaciones de altura entre granos.</p><p>El objetivo: pasar de un sonido bastante fiel a una textura granular densa, cambiante o imprevisible.</p>",pl_m_crush_h:"El bitcrusher",pl_m_crush_html:"<p>El bitcrusher integrado aporta una dimensión digital al tratamiento. Hay varios algoritmos de crush disponibles para variar el carácter de la degradación.</p><p>El parámetro Crush dosifica la intensidad del efecto, mientras que Crush Mix controla la mezcla asociada. Úsalo para añadir una coloración lo-fi o llevar el sample hacia un resultado más agresivo y desestructurado.</p>",pl_m_pitch_html:"<p>Pitch modifica la altura del sonido, mientras que Pitch Spread aporta variación entre granos.</p><p>Con Width puedes trabajar la amplitud estéreo para dar más envergadura a tus texturas o cerrar su imagen según el resultado buscado.</p><p>Estos controles son especialmente interesantes para pads, texturas evolutivas, ambientes oscuros y sound design electrónico.</p>",pl_m_shape_html:"<li><strong>Envelope</strong> — elige la forma de envolvente de los granos.</li><li><strong>Sensitivity</strong> — ajusta la sensibilidad del motor.</li><li><strong>Max Slices</strong> — número máximo de cortes.</li><li><strong>Loop Length</strong> — controla la longitud del bucle.</li><li><strong>Spray</strong> — ajusta la dispersión.</li><li><strong>Attack &amp; Release</strong> — controla la evolución temporal de la envolvente.</li><li><strong>Tempo Sync &amp; Repeat</strong> — sincronización y repeticiones.</li><li><strong>Output Gain</strong> — ajusta el nivel de salida.</li><li><strong>Waveform Display</strong> — visualiza el sample y sus marcadores.</li><li><strong>Preset Management</strong> — carga, navega y guarda presets.</li>",pl_m_about_h:"Pensado para el sound design",pl_m_about_html:"<p>DarkFairyGranullar está dirigido a productores y sound designers a los que les gusta explorar la materia sonora en vez de limitarse a aplicar un efecto.</p><p>Texturas granulares, ambientes cinematográficos, ritmos glitch, sonoridades lo-fi, efectos experimentales o samples transformados: sirve tanto para añadir un detalle a un tema como para construir toda una textura a partir de un sonido simple.</p><p class=\"pmodal__accent\">Don't just play the sample. Transform it.</p>",pl_m_compat_h:"Compatibilidad",pl_m_cta:"Avísame del lanzamiento",
+    f_reels:"Reels",f_covers:"Portadas",w_reel_b:"Fragmento de Blender · formato reel",w_reel_ae:"After Effects + Blender · formato reel",w_cov1_s:"Portada de álbum · Trap / DMV",w_cov2_s:"Arte de la tracklist · Trap / DMV",
+    lang_label:"Idioma"
+  },
+  "es-419":{
+    landing_tag:"Elige tu universo.",landing_jpeg:"Video, VFX, edición",landing_wav:"Estudio de grabación",landing_plugin:"Plugins de audio",
+    nav_info:"Info",nav_skills:"Habilidades",nav_works:"Proyectos",nav_contact:"Contacto",
+    nav_studio:"Estudio",nav_services:"Servicios",nav_prices:"Precios",nav_listen:"Escuchar",
+    hero_badge_v:"Disponible para colaboraciones",
+    hero_roles_v:"3D VFX / Motion / Edición / Diseño",
+    hero_lead_v:"Artista visual. Videos musicales, VFX, edición (formato reel para TikTok / redes y YouTube) y diseño gráfico, de la idea al render final.",
+    scroll:"DESLIZA",
+    ey_info:"01 / Info",about_v_h:"Crear imágenes<br>que perduran",
+    about_v_p1:"Trabajo el 3D, el motion design, la edición y el tiempo real para artistas, marcas y proyectos personales, del video musical a la instalación.",
+    about_v_p2:"Una cadena completa, de la idea al render final: una dirección de arte sólida, textura cuidada y un resultado que sirve a la emoción más que al efecto.",
+    f_name:"Nombre",f_spec:"Especialidad",f_status:"Estado",f_based:"Ubicación",f_studio:"Estudio de sonido",
+    v_spec:"VFX / Video musical",v_status:"Disponible",v_based:"Francia",
+    ey_skills:"02 / Habilidades",skills_h:"Mi entorno",
+    sk_blender_d:"Modelado, simulación, iluminación y render. Creación de escenas 3D completas.",
+    sk_ae_d:"Composición, motion design e integración de efectos visuales.",
+    sk_pr_d:"Edición de videos musicales, formato reel (TikTok / redes) y YouTube: colorización, ritmo, acabado y exportación multiformato.",
+    sk_td_d:"Visuales generativos y en tiempo real, audio-reactivos. Instalaciones y performances.",
+    sk_design_d:"Portadas de álbum / track, afiches, calcomanías y slides para redes sociales. Hechos en Procreate Pro.",
+    sk_ableton_d:"Diseño de sonido y producción: ambientes, diseño de efectos, mezcla.",
+    sk_pro:"Nivel pro",
+    ey_works:"03 / Proyectos",works_h:"Trabajos seleccionados",f_all:"Todos",
+    w1_t:"Visualizer",w1_s:"Visualizador de audio · 3D",w2_t:"Nervoso",w2_s:"Video musical · VFX · dir. Thelemy Studio",
+    ey_contact_v:"04 / Contacto",contact_v_h:"Trabajemos<br>juntos",
+    cf_name:"Tu nombre",cf_email:"Tu correo",cf_msg_v:"Tu proyecto...",cf_send:"Enviar",lb_close:"Cerrar",foot_legal:"Aviso legal",foot_privacy:"Privacidad",
+    to_wav:"Estudio V3UV3.WAV",to_jpeg:"Parte visual V3UV3.JPEG",
+    hero_badge_a:"Estudio abierto · sesiones con cita",
+    hero_roles_a:"Grabación / Mezcla y Masterización / Producción a medida",
+    hero_lead_a:"Estudio de producción musical. De la toma al máster final: un sonido limpio, potente y con sello propio. Bandas de rock / metal bienvenidas.",
+    ey_studio:"01 / Estudio",about_a_h:"Del micrófono<br>al máster",
+    about_a_p1:"V3UV3.WAV acompaña a artistas y proyectos en toda la cadena de sonido: grabación, mezcla, masterización y producción original.",
+    about_a_p2:"Configuración pensada para bandas de rock y metal y también para producciones electrónicas: guitarra, ampli, bajo, voz y una suite de plugins de alta gama.",
+    fa_studio:"Estudio",fa_domain:"Área",fa_domain_v:"Música",fa_sessions:"Sesiones",fa_sessions_v:"Con cita",fa_genres:"Géneros",fa_genres_v:"Rock / Metal / Elec",fa_visual:"Parte visual",
+    ey_services:"02 / Servicios",services_h:"Lo que ofrezco",
+    sv_rec_t:"Grabación",sv_rec_d:"Toma de voz, guitarra, ampli y bajo. Captura limpia, dirección de arte en sesión. Bandas de rock / metal y producciones electrónicas.",
+    sv_mix_t:"Mezcla y Masterización",sv_mix_d:"Mezcla de todos los estilos y masterización final: equilibrio, profundidad, amplitud y nivel listo para publicar.",
+    sv_prod_t:"Producción a medida",sv_prod_d:"Composición y producción originales, todos los estilos: beats, instrumentales y arreglos a la medida de tu universo.",
+    ey_prices:"03 / Precios",prices_h:"Lista de precios",
+    pr_rec_t:"Grabación",pr_rec_s:"Voz e instrumentos",pr_rec_u:" / hora",
+    pr_rec_l1:"Voz, guitarra, ampli, bajo",pr_rec_l2:"Bandas de rock / metal",pr_rec_l3:"Captura limpia y dirigida",
+    pr_feat:"MÁS PEDIDO",pr_mix_t:"Mezcla + Máster",pr_mix_s:"Por track, todos los estilos",pr_mix_u:" / track",
+    pr_mix_l1:"Mezcla 30 € + máster 10 €",pr_mix_l2:"Todos los estilos",pr_mix_l3:"Entrega multiformato",
+    pr_pack_t:"Paquete 5 tracks",pr_pack_s:"Mezcla + Máster, precio reducido",pr_pack_u:" / 5 tracks",
+    pr_pack_l1:"30 € por track (en vez de 40 €)",pr_pack_l2:"Un ahorro de 50 €",pr_pack_l3:"Ideal para un EP / proyecto completo",
+    pr_book:"Reservar",
+    pr_note:"<b>Producción a medida:</b> composición original, todos los estilos, cotización según el proyecto. <b>Descuento:</b> desde 5 tracks, la mezcla + máster baja a 30 € por track (5 tracks = 150 € en vez de 200 €).",
+    g_mat:"Equipo",g_mat_s:"Estudio",g_mat_d:"Batería electrónica, guitarra + ampli, bajo. Micrófono de voz de referencia.",
+    g_gtr:"Guitarra",g_gtr_s:"Plugins",g_gtr_d:"Para tonos saturados de rock / metal y también limpios.",
+    g_bass:"Bajo",g_bass_s:"Plugins",g_bass_d:"Bajo virtual y re-amplificación.",
+    g_vox:"Voz",g_vox_s:"Cadena",g_vox_d:"Micrófono AKG C214 y procesamiento vocal pro.",
+    g_mstr:"Masterización",g_mstr_s:"Plugins y monitoreo",g_mstr_d:"Cadena de masterización completa y monitoreo dedicado.",
+    ey_listen:"04 / Escuchar",listen_h:"Producciones",ab_lab:"A/B MASTERING :",ab_raw:"En crudo",ab_master:"Masterizado",ab_play:"Escuchar extracto",
+    pl_select:"Elige un track",embed_txt:"Inserta aquí tu playlist de SoundCloud o Spotify.",
+    ey_contact_a:"05 / Contacto",contact_a_h:"Reservemos<br>una sesión",cf_msg_a:"Tu proyecto musical, estilo, número de tracks...",
+    nav_catalog:"Catálogo",nav_pinfo:"Info",nav_faq:"FAQ",hero_badge_p:"Plugins disponibles",hero_roles_p:"Plugins de audio / VST3 / AU",hero_lead_p:"Plugins de audio creados en el estudio V3UV3. Descarga, instala y haz que tus proyectos suenen mejor.",ey_catalog:"01 / Catálogo",catalog_h:"Los plugins",plug_soon_h:"Primeros plugins en preparación",plug_soon_p:"El catálogo todavía no está en línea. Escríbeme con el formulario de abajo para que te avise en cuanto salga el primer plugin.",pl_new:"NUEVO",pl_desc:"Describe aquí qué hace tu plugin en una o dos frases.",pl_buy:"Comprar",ey_pinfo:"02 / Info",pinfo_h:"Lo que obtienes",pi1_t:"Descarga inmediata",pi1_d:"Apenas compras, recibes tu enlace de descarga.",pi2_t:"Actualizaciones",pi2_d:"Las actualizaciones del plugin están incluidas.",pi3_t:"Soporte directo",pi3_d:"¿Tienes una duda o un problema? Le escribes directamente a quien lo creó.",ey_faq:"03 / FAQ",faq_h:"Preguntas frecuentes",q1:"¿Qué formatos y sistemas son compatibles?",a1:"Los formatos y sistemas compatibles se indican en la ficha de cada plugin (VST3, AU, AAX · Windows / macOS).",q2:"¿Cómo instalo un plugin?",a2:"Después de la compra recibes un enlace de descarga por correo electrónico. Ejecuta el instalador y abre el plugin en tu DAW.",q3:"Tengo un problema, ¿qué hago?",a3:"Escríbeme con el formulario de abajo o por correo electrónico y te respondo apenas pueda.",ey_contact_p:"04 / Contacto",contact_p_h:"¿Una pregunta<br>sobre un plugin?",cf_msg_p:"Tu pregunta sobre un plugin...",to_plugin:"Plugins V3UV3.PLUGIN",pl_badge_new:"Primer plugin",pl_formats_short:"Granular · Bitcrusher · Estéreo",pl_sculpt_ey:"Esculpe tu sonido",pl_sculpt_h:"Grano. Carácter. Amplitud.",pl_sculpt_p:"Un instrumento de sound design que combina síntesis granular, texturas lo-fi y control del campo estéreo.",pl_badge_stereo:"Estéreo",pl_m_intro_html:"<p>Hay samples que se usan tal cual. Y después están los que nos gusta triturar hasta que se convierten en otra cosa.</p><p>DarkFairyGranullar es un plugin de sound design que reúne un motor granular, un bitcrusher con varios algoritmos y controles de pitch y amplitud estéreo. La idea es simple: tomar un sonido, trocearlo, transformar su textura y llevarlo a otro lugar.</p><p>Parte de una voz, un synth, una batería o cualquier grabación. Modifica el tamaño y la densidad de los granos, agrega crush, juega con la altura y trabaja el espacio estéreo. El resultado puede ir de una textura sutil y aérea a un sonido digital crudo, fragmentado y experimental.</p><p class=\"pmodal__accent\">Le das un sample. Tú ves adónde te lleva.</p>",pl_m_granular_h:"El motor granular",pl_m_granular_html:"<p>El corazón del plugin es la transformación del sample en fragmentos sonoros que puedes moldear.</p><p>Grain Size define el tamaño de los granos, mientras que Density controla su densidad de generación. El modo Slice, la envolvente y los parámetros de reproducción completan el motor para ofrecer más control sobre el resultado.</p><p>Los controles Sensitivity, Max Slices, Loop Length y Spray permiten afinar el comportamiento de los cortes y la dispersión de los granos. Pitch Spread aporta variaciones de altura entre granos.</p><p>El objetivo: pasar de un sonido bastante fiel a una textura granular densa, cambiante o impredecible.</p>",pl_m_crush_h:"El bitcrusher",pl_m_crush_html:"<p>El bitcrusher integrado aporta una dimensión digital al tratamiento. Hay varios algoritmos de crush disponibles para variar el carácter de la degradación.</p><p>El parámetro Crush dosifica la intensidad del efecto, mientras que Crush Mix controla la mezcla asociada. Úsalo para agregar una coloración lo-fi o llevar el sample hacia un resultado más agresivo y desestructurado.</p>",pl_m_pitch_html:"<p>Pitch modifica la altura del sonido, mientras que Pitch Spread aporta variación entre granos.</p><p>Con Width puedes trabajar la amplitud estéreo para dar más envergadura a tus texturas o cerrar su imagen según el resultado buscado.</p><p>Estos controles son especialmente interesantes para pads, texturas evolutivas, ambientes oscuros y sound design electrónico.</p>",pl_m_shape_html:"<li><strong>Envelope</strong> — elige la forma de envolvente de los granos.</li><li><strong>Sensitivity</strong> — ajusta la sensibilidad del motor.</li><li><strong>Max Slices</strong> — número máximo de cortes.</li><li><strong>Loop Length</strong> — controla la longitud del loop.</li><li><strong>Spray</strong> — ajusta la dispersión.</li><li><strong>Attack &amp; Release</strong> — controla la evolución temporal de la envolvente.</li><li><strong>Tempo Sync &amp; Repeat</strong> — sincronización y repeticiones.</li><li><strong>Output Gain</strong> — ajusta el nivel de salida.</li><li><strong>Waveform Display</strong> — visualiza el sample y sus marcadores.</li><li><strong>Preset Management</strong> — carga, navega y guarda presets.</li>",pl_m_about_h:"Pensado para el sound design",pl_m_about_html:"<p>DarkFairyGranullar está dirigido a productores y sound designers a los que les gusta explorar la materia sonora en vez de solo aplicar un efecto.</p><p>Texturas granulares, ambientes cinematográficos, ritmos glitch, sonoridades lo-fi, efectos experimentales o samples transformados: sirve tanto para agregar un detalle a un tema como para construir toda una textura a partir de un sonido simple.</p><p class=\"pmodal__accent\">Don't just play the sample. Transform it.</p>",pl_m_compat_h:"Compatibilidad",pl_m_cta:"Avísame cuando salga",
+    f_reels:"Reels",f_covers:"Portadas",w_reel_b:"Fragmento de Blender · formato reel",w_reel_ae:"After Effects + Blender · formato reel",w_cov1_s:"Portada de álbum · Trap / DMV",w_cov2_s:"Arte de la tracklist · Trap / DMV",
+    lang_label:"Idioma"
+  },
+  "ru":{
+    landing_tag:"Выбери свою вселенную.",landing_jpeg:"Видео, VFX, монтаж",landing_wav:"Студия звукозаписи",landing_plugin:"Аудиоплагины",
+    nav_info:"Инфо",nav_skills:"Навыки",nav_works:"Проекты",nav_contact:"Контакт",
+    nav_studio:"Студия",nav_services:"Услуги",nav_prices:"Цены",nav_listen:"Слушать",
+    hero_badge_v:"Открыт для сотрудничества",
+    hero_roles_v:"3D VFX / Моушн / Монтаж / Дизайн",
+    hero_lead_v:"Визуальный художник. Клипы, VFX, монтаж (формат reel для TikTok / соцсетей и YouTube) и графический дизайн, от идеи до финального рендера.",
+    scroll:"ВНИЗ",
+    ey_info:"01 / Инфо",about_v_h:"Образы,<br>что остаются",
+    about_v_p1:"Работаю с 3D, моушн-дизайном, монтажом и реальным временем для артистов, брендов и личных проектов, от клипа до инсталляции.",
+    about_v_p2:"Полный цикл, от идеи до финального рендера: сильная арт-дирекция, тщательная фактура и результат, который служит эмоции, а не эффекту.",
+    f_name:"Имя",f_spec:"Специализация",f_status:"Статус",f_based:"Локация",f_studio:"Звуковая студия",
+    v_spec:"VFX / Клип",v_status:"Доступен",v_based:"Франция",
+    ey_skills:"02 / Навыки",skills_h:"Мои инструменты",
+    sk_blender_d:"Моделирование, симуляция, свет и рендер. Создание полных 3D-сцен.",
+    sk_ae_d:"Композитинг, моушн-дизайн и интеграция визуальных эффектов.",
+    sk_pr_d:"Монтаж клипов, формат reel (TikTok / соцсети) и YouTube: цветокоррекция, ритм, финиш и экспорт в разных форматах.",
+    sk_td_d:"Генеративные визуалы в реальном времени, реагирующие на звук. Инсталляции и перформансы.",
+    sk_design_d:"Обложки альбомов / треков, постеры, стикеры и слайды для соцсетей. Сделано в Procreate Pro.",
+    sk_ableton_d:"Саунд-дизайн и продакшн: атмосферы, дизайн эффектов, сведение.",
+    sk_pro:"Про-уровень",
+    ey_works:"03 / Проекты",works_h:"Избранные работы",f_all:"Все",
+    w1_t:"Visualizer",w1_s:"Аудио-визуализатор · 3D",w2_t:"Nervoso",w2_s:"Клип · VFX · реж. Thelemy Studio",
+    ey_contact_v:"04 / Контакт",contact_v_h:"Давай<br>работать вместе",
+    cf_name:"Ваше имя",cf_email:"Ваш email",cf_msg_v:"Ваш проект...",cf_send:"Отправить",lb_close:"Закрыть",foot_legal:"Юридическая информация",foot_privacy:"Конфиденциальность",
+    to_wav:"Студия V3UV3.WAV",to_jpeg:"Визуальная часть V3UV3.JPEG",
+    hero_badge_a:"Студия открыта · сессии по записи",
+    hero_roles_a:"Запись / Сведение и Мастеринг / Продакшн на заказ",
+    hero_lead_a:"Студия музыкального продакшна. От записи до финального мастера: чистый, мощный фирменный звук. Рок / метал группы приветствуются.",
+    ey_studio:"01 / Студия",about_a_h:"От микрофона<br>до мастера",
+    about_a_p1:"V3UV3.WAV сопровождает артистов и проекты на всём звуковом пути: запись, сведение, мастеринг и оригинальный продакшн.",
+    about_a_p2:"Конфигурация для рок- и метал-групп, а также для электронных проектов: гитара, усилитель, бас, вокал и набор топовых плагинов.",
+    fa_studio:"Студия",fa_domain:"Сфера",fa_domain_v:"Музыка",fa_sessions:"Сессии",fa_sessions_v:"По записи",fa_genres:"Жанры",fa_genres_v:"Рок / Метал / Эл.",fa_visual:"Визуал",
+    ey_services:"02 / Услуги",services_h:"Что я предлагаю",
+    sv_rec_t:"Запись",sv_rec_d:"Запись вокала, гитары, усилителя и баса. Чистый захват, арт-дирекция на сессии. Рок / метал группы и электронные проекты.",
+    sv_mix_t:"Сведение и Мастеринг",sv_mix_d:"Сведение в любом стиле и финальный мастеринг: баланс, глубина, ширина и уровень, готовый к релизу.",
+    sv_prod_t:"Продакшн на заказ",sv_prod_d:"Оригинальная композиция и продакшн, любые стили: биты, инструменталы и аранжировки под ваш мир.",
+    ey_prices:"03 / Цены",prices_h:"Прайс-лист",
+    pr_rec_t:"Запись",pr_rec_s:"Вокал и инструменты",pr_rec_u:" / час",
+    pr_rec_l1:"Вокал, гитара, усилитель, бас",pr_rec_l2:"Рок / метал группы",pr_rec_l3:"Чистый, направленный захват",
+    pr_feat:"САМОЕ ПОПУЛЯРНОЕ",pr_mix_t:"Сведение + Мастер",pr_mix_s:"За трек, любые стили",pr_mix_u:" / трек",
+    pr_mix_l1:"Сведение 30 € + мастеринг 10 €",pr_mix_l2:"Любые стили",pr_mix_l3:"Поставка в разных форматах",
+    pr_pack_t:"Пакет 5 треков",pr_pack_s:"Сведение + Мастер, скидка за объём",pr_pack_u:" / 5 треков",
+    pr_pack_l1:"30 € за трек (вместо 40 €)",pr_pack_l2:"Экономия 50 €",pr_pack_l3:"Идеально для EP / полного проекта",
+    pr_book:"Забронировать",
+    pr_note:"<b>Продакшн на заказ:</b> оригинальная композиция, любые стили, расчёт по проекту. <b>Скидка:</b> от 5 треков сведение + мастер, 30 € за трек (5 треков = 150 € вместо 200 €).",
+    g_mat:"Оборудование",g_mat_s:"Студия",g_mat_d:"Электронные барабаны, гитара + усилитель, бас. Референсный вокальный микрофон.",
+    g_gtr:"Гитара",g_gtr_s:"Плагины",g_gtr_d:"Для насыщенных рок / метал тонов и чистых звуков.",
+    g_bass:"Бас",g_bass_s:"Плагины",g_bass_d:"Виртуальный бас и реампинг.",
+    g_vox:"Вокал",g_vox_s:"Цепь",g_vox_d:"Микрофон AKG C214 и профессиональная обработка вокала.",
+    g_mstr:"Мастеринг",g_mstr_s:"Плагины и мониторинг",g_mstr_d:"Полная цепочка мастеринга и выделенный мониторинг.",
+    ey_listen:"04 / Слушать",listen_h:"Продакшн",ab_lab:"A/B МАСТЕРИНГ :",ab_raw:"Сырой",ab_master:"Мастер",ab_play:"Слушать отрывок",
+    pl_select:"Выберите трек",embed_txt:"Вставьте сюда плейлист SoundCloud или Spotify.",
+    ey_contact_a:"05 / Контакт",contact_a_h:"Забронируем<br>сессию",cf_msg_a:"Ваш музыкальный проект, стиль, число треков...",
+    nav_catalog:"Каталог",nav_pinfo:"Инфо",nav_faq:"FAQ",hero_badge_p:"Плагины в продаже",hero_roles_p:"Аудиоплагины / VST3 / AU",hero_lead_p:"Аудиоплагины, созданные в студии V3UV3. Скачай, установи и улучши звучание своих проектов.",ey_catalog:"01 / Каталог",catalog_h:"Плагины",plug_soon_h:"Первые плагины в разработке",plug_soon_p:"Каталог пока не опубликован. Напиши мне через форму ниже, чтобы узнать первым о выходе плагина.",pl_new:"НОВИНКА",pl_desc:"Опиши здесь, что делает твой плагин, в одном-двух предложениях.",pl_buy:"Купить",ey_pinfo:"02 / Инфо",pinfo_h:"Что ты получаешь",pi1_t:"Мгновенная загрузка",pi1_d:"Сразу после покупки ты получаешь ссылку для скачивания.",pi2_t:"Обновления",pi2_d:"Обновления плагина включены.",pi3_t:"Прямая поддержка",pi3_d:"Есть вопрос или проблема? Ты пишешь напрямую тому, кто его создал.",ey_faq:"03 / FAQ",faq_h:"Частые вопросы",q1:"Какие форматы и системы поддерживаются?",a1:"Поддерживаемые форматы и системы указаны в карточке каждого плагина (VST3, AU, AAX · Windows / macOS).",q2:"Как установить плагин?",a2:"После покупки ты получишь ссылку для скачивания по электронной почте. Запусти установщик, затем открой плагин в своей DAW.",q3:"У меня проблема, что делать?",a3:"Напиши мне через форму ниже или по почте, и я отвечу, как только смогу.",ey_contact_p:"04 / Контакт",contact_p_h:"Вопрос<br>о плагине?",cf_msg_p:"Твой вопрос о плагине...",to_plugin:"Плагины V3UV3.PLUGIN",pl_badge_new:"Первый плагин",pl_formats_short:"Granular · Bitcrusher · Стерео",pl_sculpt_ey:"Твори свой звук",pl_sculpt_h:"Зерно. Характер. Ширина.",pl_sculpt_p:"Инструмент саунд-дизайна, объединяющий гранулярный синтез, lo-fi текстуры и управление стерео-полем.",pl_badge_stereo:"Стерео",pl_m_intro_html:"<p>Есть сэмплы, которые используют как есть. А есть те, которые любят терзать, пока они не станут чем-то совершенно другим.</p><p>DarkFairyGranullar — это плагин для саунд-дизайна, объединяющий гранулярный движок, биткрашер с несколькими алгоритмами и управление высотой тона и стерео-шириной. Идея простая: взять звук, нарезать его, изменить текстуру и увести куда-то ещё.</p><p>Возьми голос, синт, барабаны или любую запись. Меняй размер и плотность гранул, добавляй crush, играй с высотой тона и работай со стерео-полем. Результат — от тонкой воздушной текстуры до сырого, фрагментированного, экспериментального цифрового звука.</p><p class=\"pmodal__accent\">Ты даёшь ему сэмпл. Ты видишь, куда он тебя ведёт.</p>",pl_m_granular_h:"Гранулярный движок",pl_m_granular_html:"<p>Сердце плагина — превращение сэмпла в звуковые фрагменты, которые можно формировать.</p><p>Grain Size задаёт размер гранул, а Density управляет их плотностью. Режим Slice, огибающая и параметры воспроизведения дополняют движок, давая больше контроля над результатом.</p><p>Sensitivity, Max Slices, Loop Length и Spray позволяют тонко настроить поведение нарезки и разброс гранул. Pitch Spread добавляет вариации высоты тона между гранулами.</p><p>Цель — перейти от относительно точного звука к плотной, подвижной или непредсказуемой гранулярной текстуре.</p>",pl_m_crush_h:"Биткрашер",pl_m_crush_html:"<p>Встроенный биткрашер добавляет цифровой характер обработке. Доступно несколько алгоритмов crush для разного характера деградации.</p><p>Параметр Crush задаёт интенсивность эффекта, а Crush Mix управляет его подмесом. Используй его, чтобы добавить lo-fi окраску или увести сэмпл к более агрессивному, разрушенному звучанию.</p>",pl_m_pitch_html:"<p>Pitch меняет высоту звука, а Pitch Spread добавляет вариацию между гранулами.</p><p>С помощью Width можно работать со стерео-шириной, придавая текстурам больше объёма или, наоборот, сужая их образ — в зависимости от нужного результата.</p><p>Эти параметры особенно полезны для пэдов, развивающихся текстур, мрачных атмосфер и электронного саунд-дизайна.</p>",pl_m_shape_html:"<li><strong>Envelope</strong> — выбор формы огибающей гранул.</li><li><strong>Sensitivity</strong> — настройка чувствительности движка.</li><li><strong>Max Slices</strong> — максимальное число нарезок.</li><li><strong>Loop Length</strong> — длина петли.</li><li><strong>Spray</strong> — настройка разброса.</li><li><strong>Attack &amp; Release</strong> — временная форма огибающей.</li><li><strong>Tempo Sync &amp; Repeat</strong> — синхронизация и повторы.</li><li><strong>Output Gain</strong> — уровень выхода.</li><li><strong>Waveform Display</strong> — отображение сэмпла и его меток.</li><li><strong>Preset Management</strong> — загрузка, просмотр и сохранение пресетов.</li>",pl_m_about_h:"Создан для саунд-дизайна",pl_m_about_html:"<p>DarkFairyGranullar создан для продюсеров и саунд-дизайнеров, которым нравится исследовать звуковую материю, а не просто накладывать эффект.</p><p>Гранулярные текстуры, кинематографичные атмосферы, глитч-ритмы, lo-fi звучание, экспериментальные эффекты или трансформированные сэмплы: он одинаково хорош и для одной детали в треке, и для создания целой текстуры из простого звука.</p><p class=\"pmodal__accent\">Don't just play the sample. Transform it.</p>",pl_m_compat_h:"Совместимость",pl_m_cta:"Узнать о выходе",
+    f_reels:"Reels",f_covers:"Обложки",w_reel_b:"Фрагмент Blender · формат reels",w_reel_ae:"After Effects + Blender · формат reels",w_cov1_s:"Обложка альбома · Trap / DMV",w_cov2_s:"Визуал трек-листа · Trap / DMV",
+    lang_label:"Язык"
+  },
+  "ja":{
+    landing_tag:"世界を選んで。",landing_jpeg:"映像・VFX・編集",landing_wav:"レコーディングスタジオ",landing_plugin:"オーディオプラグイン",
+    nav_info:"情報",nav_skills:"スキル",nav_works:"作品",nav_contact:"連絡",
+    nav_studio:"スタジオ",nav_services:"サービス",nav_prices:"料金",nav_listen:"視聴",
+    hero_badge_v:"コラボ募集中",
+    hero_roles_v:"3D VFX / モーション / 編集 / デザイン",
+    hero_lead_v:"ビジュアルアーティスト。MV、VFX、編集（TikTok・SNS向けリール／YouTube）、グラフィックデザイン, アイデアから最終レンダーまで。",
+    scroll:"スクロール",
+    ey_info:"01 / 情報",about_v_h:"心に残る<br>映像をつくる",
+    about_v_p1:"アーティスト、ブランド、個人プロジェクトのために3D・モーションデザイン・編集・リアルタイムを手がけます, MVからインスタレーションまで。",
+    about_v_p2:"アイデアから最終レンダーまでの一貫した制作：力強いアートディレクション、丁寧な質感、効果よりも感情に寄り添う仕上がり。",
+    f_name:"名前",f_spec:"専門",f_status:"状況",f_based:"拠点",f_studio:"音響スタジオ",
+    v_spec:"VFX / MV",v_status:"対応可",v_based:"フランス",
+    ey_skills:"02 / スキル",skills_h:"制作環境",
+    sk_blender_d:"モデリング、シミュレーション、ライティング、レンダリング。完全な3Dシーン制作。",
+    sk_ae_d:"コンポジット、モーションデザイン、VFXの統合。",
+    sk_pr_d:"MV・リール（TikTok／SNS）・YouTubeの編集：カラーグレーディング、テンポ、仕上げ、マルチフォーマット書き出し。",
+    sk_td_d:"ジェネラティブかつリアルタイムのオーディオリアクティブ映像。インスタレーションとパフォーマンス。",
+    sk_design_d:"アルバム／トラックのカバー、ポスター、ステッカー、SNSスライド。Procreate Proで制作。",
+    sk_ableton_d:"サウンドデザインと音響制作：アンビエンス、エフェクト設計、ミックス。",
+    sk_pro:"プロレベル",
+    ey_works:"03 / 作品",works_h:"選抜作品",f_all:"すべて",
+    w1_t:"Visualizer",w1_s:"オーディオビジュアライザー · 3D",w2_t:"Nervoso",w2_s:"MV · VFX · 監督 Thelemy Studio",
+    ey_contact_v:"04 / 連絡",contact_v_h:"一緒に<br>つくろう",
+    cf_name:"お名前",cf_email:"メール",cf_msg_v:"プロジェクト内容...",cf_send:"送信",lb_close:"閉じる",foot_legal:"法的情報",foot_privacy:"プライバシー",
+    to_wav:"スタジオ V3UV3.WAV",to_jpeg:"ビジュアル面 V3UV3.JPEG",
+    hero_badge_a:"スタジオ営業中 · 予約制セッション",
+    hero_roles_a:"録音 / ミックス＆マスタリング / オーダーメイド制作",
+    hero_lead_a:"音楽制作スタジオ。録音から最終マスターまで：クリーンでパワフル、署名のあるサウンド。ロック／メタルバンド歓迎。",
+    ey_studio:"01 / スタジオ",about_a_h:"マイクから<br>マスターまで",
+    about_a_p1:"V3UV3.WAVは録音・ミックス・マスタリング・オリジナル制作まで、音のすべての工程でアーティストとプロジェクトをサポートします。",
+    about_a_p2:"ロック／メタルバンドにも電子音楽制作にも対応：ギター、アンプ、ベース、ボーカル、ハイエンドプラグイン群。",
+    fa_studio:"スタジオ",fa_domain:"分野",fa_domain_v:"音楽",fa_sessions:"セッション",fa_sessions_v:"予約制",fa_genres:"ジャンル",fa_genres_v:"ロック／メタル／電子",fa_visual:"ビジュアル",
+    ey_services:"02 / サービス",services_h:"提供内容",
+    sv_rec_t:"録音",sv_rec_d:"ボーカル、ギター、アンプ、ベースの録音。クリーンな収録、セッション中のアートディレクション。ロック／メタルバンドと電子音楽制作。",
+    sv_mix_t:"ミックス＆マスタリング",sv_mix_d:"全ジャンルのミックスと最終マスタリング：バランス、奥行き、広がり、リリース対応レベル。",
+    sv_prod_t:"オーダーメイド制作",sv_prod_d:"全ジャンルのオリジナル作曲・制作：あなたの世界観に合わせたビート、インスト、アレンジ。",
+    ey_prices:"03 / 料金",prices_h:"料金表",
+    pr_rec_t:"録音",pr_rec_s:"ボーカル＆楽器",pr_rec_u:" / 時間",
+    pr_rec_l1:"ボーカル、ギター、アンプ、ベース",pr_rec_l2:"ロック／メタルバンド",pr_rec_l3:"クリーンでディレクション付きの収録",
+    pr_feat:"一番人気",pr_mix_t:"ミックス＋マスター",pr_mix_s:"1トラックあたり・全ジャンル",pr_mix_u:" / トラック",
+    pr_mix_l1:"ミックス30€ ＋ マスタリング10€",pr_mix_l2:"全ジャンル",pr_mix_l3:"マルチフォーマット納品",
+    pr_pack_t:"5トラックパック",pr_pack_s:"ミックス＋マスター、割引",pr_pack_u:" / 5トラック",
+    pr_pack_l1:"1トラック30€（40€のところ）",pr_pack_l2:"50€お得",pr_pack_l3:"EP／フルプロジェクトに最適",
+    pr_book:"予約する",
+    pr_note:"<b>オーダーメイド制作：</b>全ジャンルのオリジナル作曲、プロジェクトごとに見積り。<b>割引：</b>5トラック以上でミックス＋マスターが1トラック30€に（5トラック＝200€のところ150€）。",
+    g_mat:"機材",g_mat_s:"スタジオ",g_mat_d:"電子ドラム、ギター＋アンプ、ベース。リファレンス用ボーカルマイク。",
+    g_gtr:"ギター",g_gtr_s:"プラグイン",g_gtr_d:"ロック／メタルの歪みからクリーンまで。",
+    g_bass:"ベース",g_bass_s:"プラグイン",g_bass_d:"バーチャルベースとリアンプ。",
+    g_vox:"ボーカル",g_vox_s:"チェーン",g_vox_d:"AKG C214マイクとプロのボーカル処理。",
+    g_mstr:"マスタリング",g_mstr_s:"プラグイン＆モニタリング",g_mstr_d:"完全なマスタリングチェーンと専用モニタリング。",
+    ey_listen:"04 / 視聴",listen_h:"制作作品",ab_lab:"A/B マスタリング :",ab_raw:"未処理",ab_master:"マスター済",ab_play:"抜粋を再生",
+    pl_select:"トラックを選択",embed_txt:"SoundCloudやSpotifyのプレイリストをここに埋め込めます。",
+    ey_contact_a:"05 / 連絡",contact_a_h:"セッションを<br>予約しよう",cf_msg_a:"音楽プロジェクト、スタイル、トラック数...",
+    nav_catalog:"カタログ",nav_pinfo:"情報",nav_faq:"FAQ",hero_badge_p:"プラグイン販売中",hero_roles_p:"オーディオプラグイン / VST3 / AU",hero_lead_p:"V3UV3スタジオで作られたオーディオプラグイン。ダウンロードしてインストールし、あなたのプロジェクトをより良いサウンドに。",ey_catalog:"01 / カタログ",catalog_h:"プラグイン",plug_soon_h:"最初のプラグインを準備中",plug_soon_p:"カタログはまだ公開されていません。下のフォームから連絡すれば、最初のプラグインが出たときに知らせます。",pl_new:"新作",pl_desc:"ここにプラグインの機能を1〜2文で説明してください。",pl_buy:"購入",ey_pinfo:"02 / 情報",pinfo_h:"含まれるもの",pi1_t:"即時ダウンロード",pi1_d:"購入するとすぐにダウンロードリンクが届きます。",pi2_t:"アップデート",pi2_d:"プラグインのアップデートが含まれます。",pi3_t:"直接サポート",pi3_d:"質問や問題があれば、制作者に直接連絡できます。",ey_faq:"03 / FAQ",faq_h:"よくある質問",q1:"対応しているフォーマットとOSは？",a1:"対応フォーマットとOSは各プラグインのカードに記載しています（VST3、AU、AAX · Windows / macOS）。",q2:"プラグインのインストール方法は？",a2:"購入後、ダウンロードリンクがメールで届きます。インストーラーを実行し、DAWでプラグインを開いてください。",q3:"問題が起きたらどうすればいいですか？",a3:"下のフォームまたはメールでご連絡ください。できるだけ早くお返事します。",ey_contact_p:"04 / コンタクト",contact_p_h:"プラグインについての<br>ご質問は？",cf_msg_p:"プラグインについての質問...",to_plugin:"プラグイン V3UV3.PLUGIN",pl_badge_new:"最初のプラグイン",pl_formats_short:"グラニュラー・ビットクラッシャー・ステレオ",pl_sculpt_ey:"サウンドを彫刻する",pl_sculpt_h:"粒感。個性。広がり。",pl_sculpt_p:"グラニュラーシンセシス、ローファイなテクスチャー、ステレオフィールドのコントロールを組み合わせたサウンドデザイン用プラグイン。",pl_badge_stereo:"ステレオ",pl_m_intro_html:"<p>そのまま使うサンプルもあれば、別物になるまで加工したいサンプルもある。</p><p>DarkFairyGranullarは、グラニュラーエンジン、複数アルゴリズムのビットクラッシャー、ピッチとステレオ幅のコントロールを組み合わせたサウンドデザイン・プラグインです。考え方はシンプル：音を取り込み、細かく刻み、質感を変え、別の場所へ連れていく。</p><p>ボーカル、シンセ、ドラム、どんな録音からでも始められます。グレインサイズと密度を変え、クラッシュを加え、ピッチで遊び、ステレオ空間を作り込む。結果は繊細で空気感のあるテクスチャーから、粗く断片的で実験的なデジタルサウンドまで幅広く広がります。</p><p class=\"pmodal__accent\">サンプルを渡せば、その先はプラグインが連れていってくれる。</p>",pl_m_granular_h:"グラニュラーエンジン",pl_m_granular_html:"<p>このプラグインの核心は、サンプルを自在に形作れる音の断片に変換することです。</p><p>Grain Sizeでグレインの大きさを、Densityでその生成密度を決めます。Sliceモード、エンベロープ、再生パラメーターがエンジンを補い、結果をより細かくコントロールできます。</p><p>Sensitivity、Max Slices、Loop Length、Sprayでスライスの挙動とグレインの散らばりを調整できます。Pitch Spreadはグレイン間にピッチのばらつきを加えます。</p><p>目指すのは、比較的原音に忠実なサウンドから、密度が高く動きのある、あるいは予測不能なグラニュラーテクスチャーまでの幅。</p>",pl_m_crush_h:"ビットクラッシャー",pl_m_crush_html:"<p>内蔵のビットクラッシャーが処理にデジタルな質感を加えます。複数のクラッシュアルゴリズムで劣化のキャラクターを変えられます。</p><p>Crushでエフェクトの強さを、Crush Mixでそのブレンド量をコントロール。ローファイな色付けにも、より攻撃的で崩れたサウンドにも使えます。</p>",pl_m_pitch_html:"<p>Pitchは音の高さそのものを、Pitch Spreadはグレイン間のばらつきを変えます。</p><p>Widthでステレオ幅を調整し、テクスチャーに広がりを持たせたり、逆に像を絞り込んだりできます。</p><p>これらのコントロールは、パッド、変化し続けるテクスチャー、ダークなアンビエント、エレクトロニックなサウンドデザインに特に有効です。</p>",pl_m_shape_html:"<li><strong>Envelope</strong> — グレインのエンベロープ形状を選択。</li><li><strong>Sensitivity</strong> — エンジンの感度を調整。</li><li><strong>Max Slices</strong> — 最大スライス数。</li><li><strong>Loop Length</strong> — ループ長の調整。</li><li><strong>Spray</strong> — 散らばりの調整。</li><li><strong>Attack &amp; Release</strong> — エンベロープの時間変化。</li><li><strong>Tempo Sync &amp; Repeat</strong> — テンポ同期とリピート設定。</li><li><strong>Output Gain</strong> — 出力レベルの調整。</li><li><strong>Waveform Display</strong> — サンプルとマーカーの波形表示。</li><li><strong>Preset Management</strong> — プリセットの読込・閲覧・保存。</li>",pl_m_about_h:"サウンドデザインのために",pl_m_about_html:"<p>DarkFairyGranullarは、エフェクトをかけるだけでなく音の素材そのものを探求したいプロデューサーやサウンドデザイナーのためのプラグインです。</p><p>グラニュラーテクスチャー、シネマティックなアンビエント、グリッチなリズム、ローファイなトーン、実験的なエフェクト、変形したサンプル。トラックに一つのディテールを加えることにも、シンプルな音から丸ごとテクスチャーを作ることにも使えます。</p><p class=\"pmodal__accent\">Don't just play the sample. Transform it.</p>",pl_m_compat_h:"対応フォーマット",pl_m_cta:"発売を通知してもらう",
+    f_reels:"リール",f_covers:"カバー",w_reel_b:"Blenderの抜粋 · リール形式",w_reel_ae:"After Effects + Blender · リール形式",w_cov1_s:"アルバムカバー · Trap / DMV",w_cov2_s:"トラックリストのアートワーク · Trap / DMV",
+    lang_label:"言語"
+  },
+  "ko":{
+    landing_tag:"원하는 세계를 선택하세요.",landing_jpeg:"영상, VFX, 편집",landing_wav:"녹음 스튜디오",landing_plugin:"오디오 플러그인",
+    nav_info:"정보",nav_skills:"역량",nav_works:"작업",nav_contact:"연락",
+    nav_studio:"스튜디오",nav_services:"서비스",nav_prices:"요금",nav_listen:"듣기",
+    hero_badge_v:"협업 가능",
+    hero_roles_v:"3D VFX / 모션 / 편집 / 디자인",
+    hero_lead_v:"비주얼 아티스트. 뮤직비디오, VFX, 편집(TikTok·SNS용 릴/YouTube), 그래픽 디자인, 아이디어부터 최종 렌더까지.",
+    scroll:"스크롤",
+    ey_info:"01 / 정보",about_v_h:"오래 남는<br>이미지를 만들다",
+    about_v_p1:"아티스트, 브랜드, 개인 프로젝트를 위해 3D·모션 디자인·편집·실시간 작업을 합니다, 뮤직비디오부터 설치까지.",
+    about_v_p2:"아이디어에서 최종 렌더까지 완결된 파이프라인: 강한 아트 디렉션, 정교한 질감, 효과보다 감정을 위한 결과.",
+    f_name:"이름",f_spec:"전문",f_status:"상태",f_based:"위치",f_studio:"사운드 스튜디오",
+    v_spec:"VFX / 뮤직비디오",v_status:"가능",v_based:"프랑스",
+    ey_skills:"02 / 역량",skills_h:"작업 환경",
+    sk_blender_d:"모델링, 시뮬레이션, 라이팅, 렌더링. 완전한 3D 씬 제작.",
+    sk_ae_d:"합성, 모션 디자인, 시각 효과 통합.",
+    sk_pr_d:"뮤직비디오·릴(TikTok/SNS)·YouTube 편집: 색보정, 리듬, 마무리, 멀티 포맷 내보내기.",
+    sk_td_d:"제너러티브·실시간 오디오 반응 비주얼. 설치 및 퍼포먼스.",
+    sk_design_d:"앨범/트랙 커버, 포스터, 스티커, SNS 슬라이드. Procreate Pro로 제작.",
+    sk_ableton_d:"사운드 디자인과 음향 제작: 분위기, 이펙트 디자인, 믹스.",
+    sk_pro:"프로 레벨",
+    ey_works:"03 / 작업",works_h:"선별 작업",f_all:"전체",
+    w1_t:"Visualizer",w1_s:"오디오 비주얼라이저 · 3D",w2_t:"Nervoso",w2_s:"뮤직비디오 · VFX · 연출 Thelemy Studio",
+    ey_contact_v:"04 / 연락",contact_v_h:"함께<br>작업해요",
+    cf_name:"이름",cf_email:"이메일",cf_msg_v:"프로젝트 내용...",cf_send:"보내기",lb_close:"닫기",foot_legal:"법적 고지",foot_privacy:"개인정보",
+    to_wav:"스튜디오 V3UV3.WAV",to_jpeg:"비주얼 V3UV3.JPEG",
+    hero_badge_a:"스튜디오 운영 중 · 예약제 세션",
+    hero_roles_a:"녹음 / 믹스 & 마스터링 / 맞춤 제작",
+    hero_lead_a:"음악 제작 스튜디오. 녹음부터 최종 마스터까지: 깨끗하고 강력한 시그니처 사운드. 록/메탈 밴드 환영.",
+    ey_studio:"01 / 스튜디오",about_a_h:"마이크에서<br>마스터까지",
+    about_a_p1:"V3UV3.WAV는 녹음·믹스·마스터링·오리지널 제작까지 사운드의 전 과정에서 아티스트와 프로젝트를 함께합니다.",
+    about_a_p2:"록·메탈 밴드는 물론 전자음악 제작에도 맞춘 구성: 기타, 앰프, 베이스, 보컬, 하이엔드 플러그인 모음.",
+    fa_studio:"스튜디오",fa_domain:"분야",fa_domain_v:"음악",fa_sessions:"세션",fa_sessions_v:"예약제",fa_genres:"장르",fa_genres_v:"록/메탈/일렉",fa_visual:"비주얼",
+    ey_services:"02 / 서비스",services_h:"제공 내용",
+    sv_rec_t:"녹음",sv_rec_d:"보컬, 기타, 앰프, 베이스 녹음. 깨끗한 수음, 세션 중 아트 디렉션. 록/메탈 밴드와 전자음악 제작.",
+    sv_mix_t:"믹스 & 마스터링",sv_mix_d:"모든 스타일 믹스 후 최종 마스터링: 균형, 깊이, 폭, 발매 준비 레벨.",
+    sv_prod_t:"맞춤 제작",sv_prod_d:"모든 스타일의 오리지널 작곡·제작: 당신의 세계에 맞춘 비트, 인스트, 편곡.",
+    ey_prices:"03 / 요금",prices_h:"요금표",
+    pr_rec_t:"녹음",pr_rec_s:"보컬 & 악기",pr_rec_u:" / 시간",
+    pr_rec_l1:"보컬, 기타, 앰프, 베이스",pr_rec_l2:"록/메탈 밴드",pr_rec_l3:"깨끗하고 디렉션된 수음",
+    pr_feat:"가장 인기",pr_mix_t:"믹스 + 마스터",pr_mix_s:"트랙당, 모든 스타일",pr_mix_u:" / 트랙",
+    pr_mix_l1:"믹스 30€ + 마스터링 10€",pr_mix_l2:"모든 스타일",pr_mix_l3:"멀티 포맷 납품",
+    pr_pack_t:"5트랙 패키지",pr_pack_s:"믹스 + 마스터, 할인",pr_pack_u:" / 5트랙",
+    pr_pack_l1:"트랙당 30€ (40€ 대신)",pr_pack_l2:"50€ 절약",pr_pack_l3:"EP/풀 프로젝트에 적합",
+    pr_book:"예약",
+    pr_note:"<b>맞춤 제작:</b> 모든 스타일의 오리지널 작곡, 프로젝트별 견적. <b>할인:</b> 5트랙부터 믹스+마스터가 트랙당 30€ (5트랙 = 200€ 대신 150€).",
+    g_mat:"장비",g_mat_s:"스튜디오",g_mat_d:"전자 드럼, 기타+앰프, 베이스. 레퍼런스 보컬 마이크.",
+    g_gtr:"기타",g_gtr_s:"플러그인",g_gtr_d:"록/메탈 새추레이션부터 클린까지.",
+    g_bass:"베이스",g_bass_s:"플러그인",g_bass_d:"가상 베이스와 리앰핑.",
+    g_vox:"보컬",g_vox_s:"체인",g_vox_d:"AKG C214 마이크와 프로 보컬 처리.",
+    g_mstr:"마스터링",g_mstr_s:"플러그인 & 모니터링",g_mstr_d:"완전한 마스터링 체인과 전용 모니터링.",
+    ey_listen:"04 / 듣기",listen_h:"제작물",ab_lab:"A/B 마스터링 :",ab_raw:"원본",ab_master:"마스터",ab_play:"발췌 재생",
+    pl_select:"트랙 선택",embed_txt:"SoundCloud 또는 Spotify 플레이리스트를 여기에 삽입하세요.",
+    ey_contact_a:"05 / 연락",contact_a_h:"세션을<br>예약해요",cf_msg_a:"음악 프로젝트, 스타일, 트랙 수...",
+    nav_catalog:"카탈로그",nav_pinfo:"정보",nav_faq:"FAQ",hero_badge_p:"플러그인 판매 중",hero_roles_p:"오디오 플러그인 / VST3 / AU",hero_lead_p:"V3UV3 스튜디오에서 만든 오디오 플러그인. 다운로드하고 설치해서 프로젝트의 사운드를 한층 끌어올리세요.",ey_catalog:"01 / 카탈로그",catalog_h:"플러그인",plug_soon_h:"첫 플러그인 준비 중",plug_soon_p:"카탈로그는 아직 공개되지 않았습니다. 아래 양식으로 연락하면 첫 플러그인이 나올 때 알려드립니다.",pl_new:"신규",pl_desc:"여기에 플러그인이 하는 일을 한두 문장으로 설명하세요.",pl_buy:"구매",ey_pinfo:"02 / 정보",pinfo_h:"제공되는 것",pi1_t:"즉시 다운로드",pi1_d:"구매 즉시 다운로드 링크를 받을 수 있습니다.",pi2_t:"업데이트",pi2_d:"플러그인 업데이트가 포함됩니다.",pi3_t:"직접 지원",pi3_d:"질문이나 문제가 있나요? 제작자에게 직접 문의할 수 있습니다.",ey_faq:"03 / FAQ",faq_h:"자주 묻는 질문",q1:"어떤 포맷과 운영체제를 지원하나요?",a1:"지원하는 포맷과 운영체제는 각 플러그인 카드에 표시되어 있습니다 (VST3, AU, AAX · Windows / macOS).",q2:"플러그인은 어떻게 설치하나요?",a2:"구매 후 이메일로 다운로드 링크가 전송됩니다. 설치 프로그램을 실행한 뒤 DAW에서 플러그인을 열어 주세요.",q3:"문제가 생기면 어떻게 하나요?",a3:"아래 양식이나 이메일로 문의해 주세요. 가능한 한 빨리 답변드리겠습니다.",ey_contact_p:"04 / 연락처",contact_p_h:"플러그인에 대해<br>궁금한 점이 있나요?",cf_msg_p:"플러그인에 대한 질문...",to_plugin:"플러그인 V3UV3.PLUGIN",pl_badge_new:"첫 번째 플러그인",pl_formats_short:"그래뉼러 · 비트크러셔 · 스테레오",pl_sculpt_ey:"사운드를 조각하다",pl_sculpt_h:"알갱이. 개성. 폭.",pl_sculpt_p:"그래뉼러 신시사이즈, 로파이 텍스처, 스테레오 필드 컨트롤을 결합한 사운드 디자인 플러그인.",pl_badge_stereo:"스테레오",pl_m_intro_html:"<p>그대로 쓰는 샘플이 있는가 하면, 완전히 다른 무언가가 될 때까지 뒤틀어 보고 싶은 샘플도 있다.</p><p>DarkFairyGranullar는 그래뉼러 엔진, 여러 알고리즘의 비트크러셔, 피치와 스테레오 폭 컨트롤을 한데 모은 사운드 디자인 플러그인입니다. 아이디어는 단순합니다. 소리를 가져와 잘게 쪼개고, 질감을 바꾸고, 전혀 다른 곳으로 데려가는 것.</p><p>보컬, 신스, 드럼, 어떤 녹음에서든 시작하세요. 그레인 크기와 밀도를 바꾸고, 크러시를 더하고, 피치를 가지고 놀고, 스테레오 공간을 다듬으세요. 결과는 섬세하고 공기 같은 텍스처부터 거칠고 조각난 실험적인 디지털 사운드까지 다양합니다.</p><p class=\"pmodal__accent\">샘플을 건네면, 어디로 데려갈지는 플러그인이 보여줍니다.</p>",pl_m_granular_h:"그래뉼러 엔진",pl_m_granular_html:"<p>이 플러그인의 핵심은 샘플을 네가 원하는 대로 빚어낼 수 있는 소리 조각으로 바꾸는 것입니다.</p><p>Grain Size는 그레인의 크기를, Density는 생성 밀도를 조절합니다. Slice 모드, 엔벨로프, 재생 파라미터가 엔진을 보완해 결과를 더 세밀하게 컨트롤할 수 있게 해줍니다.</p><p>Sensitivity, Max Slices, Loop Length, Spray로 슬라이싱 동작과 그레인의 흩어짐을 다듬을 수 있습니다. Pitch Spread는 그레인 사이에 피치 변화를 더합니다.</p><p>목표는 비교적 원음에 가까운 소리에서, 밀도 높고 움직이거나 예측할 수 없는 그래뉼러 텍스처까지 넘나드는 것입니다.</p>",pl_m_crush_h:"비트크러셔",pl_m_crush_html:"<p>내장된 비트크러셔는 처리 과정에 디지털적인 질감을 더합니다. 여러 크러시 알고리즘으로 열화의 성격을 다르게 줄 수 있습니다.</p><p>Crush는 효과의 강도를, Crush Mix는 그 블렌드 양을 조절합니다. 로파이한 색을 더하거나 샘플을 더 거칠고 해체된 사운드로 밀어붙일 때 사용하세요.</p>",pl_m_pitch_html:"<p>Pitch는 소리의 전체 높낮이를, Pitch Spread는 그레인 사이의 변화를 바꿉니다.</p><p>Width로 스테레오 폭을 다뤄 텍스처에 더 큰 스케일을 주거나, 원하는 결과에 따라 이미지를 좁힐 수 있습니다.</p><p>이 컨트롤들은 패드, 변화하는 텍스처, 어두운 분위기, 일렉트로닉 사운드 디자인에 특히 유용합니다.</p>",pl_m_shape_html:"<li><strong>Envelope</strong> — 그레인 엔벨로프 형태를 선택합니다.</li><li><strong>Sensitivity</strong> — 엔진의 감도를 조정합니다.</li><li><strong>Max Slices</strong> — 최대 슬라이스 수.</li><li><strong>Loop Length</strong> — 루프 길이를 조절합니다.</li><li><strong>Spray</strong> — 흩어짐 정도를 조정합니다.</li><li><strong>Attack &amp; Release</strong> — 엔벨로프의 시간 변화를 조절합니다.</li><li><strong>Tempo Sync &amp; Repeat</strong> — 템포 싱크와 반복 설정.</li><li><strong>Output Gain</strong> — 출력 레벨을 조절합니다.</li><li><strong>Waveform Display</strong> — 샘플과 마커를 시각화합니다.</li><li><strong>Preset Management</strong> — 프리셋 불러오기, 탐색, 저장.</li>",pl_m_about_h:"사운드 디자인을 위해 만들었다",pl_m_about_html:"<p>DarkFairyGranullar는 단순히 이펙트를 적용하기보다 소리 그 자체를 탐구하길 좋아하는 프로듀서와 사운드 디자이너를 위한 것입니다.</p><p>그래뉼러 텍스처, 시네마틱한 분위기, 글리치한 리듬, 로파이 톤, 실험적인 이펙트, 변형된 샘플. 트랙에 작은 디테일 하나를 더하는 것부터 단순한 소리 하나로 텍스처 전체를 만드는 것까지 모두 가능합니다.</p><p class=\"pmodal__accent\">Don't just play the sample. Transform it.</p>",pl_m_compat_h:"호환성",pl_m_cta:"출시 알림 받기",
+    f_reels:"릴스",f_covers:"커버",w_reel_b:"Blender 발췌 · 릴스 형식",w_reel_ae:"After Effects + Blender · 릴스 형식",w_cov1_s:"앨범 커버 · Trap / DMV",w_cov2_s:"트랙리스트 아트워크 · Trap / DMV",
+    lang_label:"언어"
+  },
+  "zh":{
+    landing_tag:"选择你的世界。",landing_jpeg:"视频、特效、剪辑",landing_wav:"录音室",landing_plugin:"音频插件",
+    nav_info:"信息",nav_skills:"技能",nav_works:"作品",nav_contact:"联系",
+    nav_studio:"工作室",nav_services:"服务",nav_prices:"价格",nav_listen:"试听",
+    hero_badge_v:"接受合作",
+    hero_roles_v:"3D VFX / 动态 / 剪辑 / 设计",
+    hero_lead_v:"视觉艺术家。MV、VFX、剪辑（TikTok/社交 reel 与 YouTube）和平面设计, 从概念到最终渲染。",
+    scroll:"向下滚动",
+    ey_info:"01 / 信息",about_v_h:"创造<br>留存的影像",
+    about_v_p1:"为艺术家、品牌和个人项目从事 3D、动态设计、剪辑与实时制作, 从 MV 到装置。",
+    about_v_p2:"从创意到最终渲染的完整流程：强烈的艺术指导、精致的质感，以及服务于情感而非炫技的成果。",
+    f_name:"姓名",f_spec:"专长",f_status:"状态",f_based:"所在地",f_studio:"声音工作室",
+    v_spec:"VFX / MV",v_status:"可接单",v_based:"法国",
+    ey_skills:"02 / 技能",skills_h:"我的工具",
+    sk_blender_d:"建模、模拟、灯光与渲染。制作完整的 3D 场景。",
+    sk_ae_d:"合成、动态设计与视觉特效整合。",
+    sk_pr_d:"MV、reel（TikTok/社交）与 YouTube 剪辑：调色、节奏、收尾与多格式导出。",
+    sk_td_d:"生成式实时、音频响应视觉。装置与现场表演。",
+    sk_design_d:"专辑/单曲封面、海报、贴纸与社交媒体幻灯片。使用 Procreate Pro 制作。",
+    sk_ableton_d:"声音设计与音频制作：氛围、效果设计、混音。",
+    sk_pro:"专业级",
+    ey_works:"03 / 作品",works_h:"精选作品",f_all:"全部",
+    w1_t:"Visualizer",w1_s:"音频可视化 · 3D",w2_t:"Nervoso",w2_s:"MV · 视觉特效 · 导演 Thelemy Studio",
+    ey_contact_v:"04 / 联系",contact_v_h:"一起<br>合作",
+    cf_name:"你的名字",cf_email:"你的邮箱",cf_msg_v:"你的项目...",cf_send:"发送",lb_close:"关闭",foot_legal:"法律声明",foot_privacy:"隐私政策",
+    to_wav:"工作室 V3UV3.WAV",to_jpeg:"视觉端 V3UV3.JPEG",
+    hero_badge_a:"工作室开放 · 预约制",
+    hero_roles_a:"录音 / 混音与母带 / 定制制作",
+    hero_lead_a:"音乐制作工作室。从录音到最终母带：干净、有力、有辨识度的声音。欢迎摇滚/金属乐队。",
+    ey_studio:"01 / 工作室",about_a_h:"从话筒<br>到母带",
+    about_a_p1:"V3UV3.WAV 在整个声音链路上陪伴艺术家与项目：录音、混音、母带与原创制作。",
+    about_a_p2:"为摇滚和金属乐队以及电子制作而设的配置：吉他、音箱、贝斯、人声，以及一套高端插件。",
+    fa_studio:"工作室",fa_domain:"领域",fa_domain_v:"音乐",fa_sessions:"预约",fa_sessions_v:"预约制",fa_genres:"风格",fa_genres_v:"摇滚/金属/电子",fa_visual:"视觉端",
+    ey_services:"02 / 服务",services_h:"我能提供",
+    sv_rec_t:"录音",sv_rec_d:"人声、吉他、音箱与贝斯录制。干净拾音，录音中的艺术指导。摇滚/金属乐队与电子制作。",
+    sv_mix_t:"混音与母带",sv_mix_d:"全风格混音再做最终母带：平衡、深度、宽度与可发行的响度。",
+    sv_prod_t:"定制制作",sv_prod_d:"全风格原创作曲与制作：为你的世界量身打造的 beat、伴奏与编曲。",
+    ey_prices:"03 / 价格",prices_h:"价目表",
+    pr_rec_t:"录音",pr_rec_s:"人声与乐器",pr_rec_u:" / 小时",
+    pr_rec_l1:"人声、吉他、音箱、贝斯",pr_rec_l2:"摇滚/金属乐队",pr_rec_l3:"干净且有指导的拾音",
+    pr_feat:"最受欢迎",pr_mix_t:"混音 + 母带",pr_mix_s:"每首，全风格",pr_mix_u:" / 首",
+    pr_mix_l1:"混音 30€ + 母带 10€",pr_mix_l2:"全风格",pr_mix_l3:"多格式交付",
+    pr_pack_t:"5 首套餐",pr_pack_s:"混音 + 母带，优惠价",pr_pack_u:" / 5 首",
+    pr_pack_l1:"每首 30€（原价 40€）",pr_pack_l2:"立省 50€",pr_pack_l3:"适合 EP / 完整项目",
+    pr_book:"预约",
+    pr_note:"<b>定制制作：</b>全风格原创作曲，按项目报价。<b>优惠：</b>满 5 首起，混音+母带降至每首 30€（5 首 = 150€，原价 200€）。",
+    g_mat:"设备",g_mat_s:"工作室",g_mat_d:"电子鼓、吉他+音箱、贝斯。参考级人声话筒。",
+    g_gtr:"吉他",g_gtr_s:"插件",g_gtr_d:"从摇滚/金属的失真到清音。",
+    g_bass:"贝斯",g_bass_s:"插件",g_bass_d:"虚拟贝斯与重放大。",
+    g_vox:"人声",g_vox_s:"链路",g_vox_d:"AKG C214 话筒与专业人声处理。",
+    g_mstr:"母带",g_mstr_s:"插件与监听",g_mstr_d:"完整母带链路与专用监听。",
+    ey_listen:"04 / 试听",listen_h:"作品",ab_lab:"A/B 母带 :",ab_raw:"未处理",ab_master:"母带版",ab_play:"播放片段",
+    pl_select:"选择曲目",embed_txt:"在此嵌入你的 SoundCloud 或 Spotify 播放列表。",
+    ey_contact_a:"05 / 联系",contact_a_h:"预约<br>一次录音",cf_msg_a:"你的音乐项目、风格、曲目数量...",
+    nav_catalog:"目录",nav_pinfo:"信息",nav_faq:"FAQ",hero_badge_p:"插件现已发售",hero_roles_p:"音频插件 / VST3 / AU",hero_lead_p:"在 V3UV3 工作室打造的音频插件。下载、安装，让你的作品听起来更出色。",ey_catalog:"01 / 目录",catalog_h:"插件",plug_soon_h:"首批插件制作中",plug_soon_p:"目录还没有上线。通过下面的表单联系我，插件上线时会通知你。",pl_new:"新品",pl_desc:"在这里用一两句话介绍你的插件的功能。",pl_buy:"购买",ey_pinfo:"02 / 信息",pinfo_h:"你将获得",pi1_t:"即时下载",pi1_d:"购买后立即收到下载链接。",pi2_t:"更新",pi2_d:"包含插件的后续更新。",pi3_t:"直接支持",pi3_d:"有问题或疑问？直接联系插件的制作者。",ey_faq:"03 / FAQ",faq_h:"常见问题",q1:"支持哪些格式和系统？",a1:"支持的格式和系统会标注在每个插件的卡片上（VST3、AU、AAX · Windows / macOS）。",q2:"如何安装插件？",a2:"购买后，下载链接会发送到你的邮箱。运行安装程序，然后在你的 DAW 中打开插件。",q3:"遇到问题怎么办？",a3:"请通过下方表单或邮件联系我，我会尽快回复。",ey_contact_p:"04 / 联系",contact_p_h:"对插件<br>有疑问？",cf_msg_p:"你对插件的问题...",to_plugin:"插件 V3UV3.PLUGIN",pl_badge_new:"首款插件",pl_formats_short:"颗粒合成 · 位粉碎 · 立体声",pl_sculpt_ey:"雕琢你的声音",pl_sculpt_h:"颗粒。个性。宽度。",pl_sculpt_p:"一款融合颗粒合成、Lo-Fi 质感与立体声场控制的音效设计插件。",pl_badge_stereo:"立体声",pl_m_intro_html:"<p>有些采样我们直接拿来用，也有些采样我们喜欢把它折腾到面目全非。</p><p>DarkFairyGranullar 是一款音效设计插件，集成了颗粒引擎、多算法位粉碎器，以及音高和立体声宽度控制。思路很简单：取一段声音，把它切碎，改变它的质地，把它带到别处。</p><p>可以从人声、合成器、鼓组或任意录音开始。调整颗粒大小与密度，加入 crush，玩转音高，塑造立体声场。效果可以从细腻通透的质感，一路延伸到粗粝、破碎、实验性的数字声音。</p><p class=\"pmodal__accent\">把采样交给它，看它把你带到哪里。</p>",pl_m_granular_h:"颗粒引擎",pl_m_granular_html:"<p>这款插件的核心，是把采样转化为你可以自由塑形的声音碎片。</p><p>Grain Size 决定颗粒大小，Density 控制生成密度。Slice 模式、包络和播放参数进一步完善引擎，给你更精细的控制。</p><p>Sensitivity、Max Slices、Loop Length 和 Spray 可以微调切片行为与颗粒的散布方式。Pitch Spread 则在颗粒之间加入音高变化。</p><p>目标：从相对忠于原声的声音，过渡到密集、流动甚至不可预测的颗粒质感。</p>",pl_m_crush_h:"位粉碎器",pl_m_crush_html:"<p>内置的位粉碎器为处理过程带来数字化的棱角。多种 crush 算法可以改变劣化效果的特质。</p><p>Crush 参数控制效果强度，Crush Mix 控制其混合比例。用它来增添 Lo-Fi 色彩，或把采样推向更具攻击性、更破碎的声音。</p>",pl_m_pitch_html:"<p>Pitch 改变声音整体的音高，Pitch Spread 则在颗粒之间加入变化。</p><p>借助 Width，你可以调整立体声场，让质感更宽广，或者按需要收窄声像。</p><p>这些控制对于 pad、演变中的质感、暗黑氛围以及电子音效设计尤其有用。</p>",pl_m_shape_html:"<li><strong>Envelope</strong> — 选择颗粒的包络形状。</li><li><strong>Sensitivity</strong> — 调整引擎的灵敏度。</li><li><strong>Max Slices</strong> — 设置最大切片数。</li><li><strong>Loop Length</strong> — 控制循环长度。</li><li><strong>Spray</strong> — 调整散布程度。</li><li><strong>Attack &amp; Release</strong> — 调整包络的时间变化。</li><li><strong>Tempo Sync &amp; Repeat</strong> — 节拍同步与重复设置。</li><li><strong>Output Gain</strong> — 调整输出电平。</li><li><strong>Waveform Display</strong> — 显示采样波形及标记点。</li><li><strong>Preset Management</strong> — 加载、浏览与保存预设。</li>",pl_m_about_h:"为音效设计而生",pl_m_about_html:"<p>DarkFairyGranullar 面向那些喜欢探索声音本质、而不只是套用效果的制作人和音效设计师。</p><p>颗粒质感、电影感氛围、故障节奏、Lo-Fi 音色、实验性效果或变形采样：它既能为一段音乐增添一个细节，也能用一个简单的声音构建出完整的质感。</p><p class=\"pmodal__accent\">Don't just play the sample. Transform it.</p>",pl_m_compat_h:"兼容性",pl_m_cta:"发布时通知我",
+    f_reels:"短视频",f_covers:"封面",w_reel_b:"Blender 片段 · 竖屏短视频格式",w_reel_ae:"After Effects + Blender · 竖屏短视频格式",w_cov1_s:"专辑封面 · Trap / DMV",w_cov2_s:"曲目表视觉 · Trap / DMV",
+    lang_label:"语言"
+  }
+};
+
+  const $=s=>document.querySelector(s),$$=s=>[...document.querySelectorAll(s)];
+  const h=$('#header');addEventListener('scroll',()=>h.classList.toggle('scrolled',scrollY>40));
+
+  if(matchMedia('(prefers-reduced-motion:reduce)').matches){
+    $$('.hero__bg video,.head__bg video').forEach(v=>{v.pause();v.removeAttribute('autoplay')});
+  }
+
+  const visibleMedia=el=>[...el.querySelectorAll('.hero__bg video,.hero__bg img,.head__bg video,.head__bg img')].find(m=>getComputedStyle(m).display!=='none');
+
+  if(matchMedia('(hover:hover) and (pointer:fine)').matches && !matchMedia('(prefers-reduced-motion:reduce)').matches){
+    const tilters=new WeakMap();
+    const axis=(media,prop,unit)=>{
+      const state={v:0};
+      return GSAP_OK
+        ? gsap.quickTo(state,'v',{duration:.5,ease:'power3.out',onUpdate:()=>media.style.setProperty(prop,state.v.toFixed(2)+unit)})
+        : v=>media.style.setProperty(prop,v.toFixed(2)+unit);
+    };
+    const tilterFor=media=>{
+      if(tilters.has(media))return tilters.get(media);
+      const t={
+        pry:axis(media,'--pry','deg'),
+        prx:axis(media,'--prx','deg'),
+        ptx:axis(media,'--ptx','px'),
+        pty:axis(media,'--pty','px')
+      };
+      tilters.set(media,t);
+      return t;
+    };
+    $$('.hero, header').forEach(zone=>{
+      let raf=null;
+      zone.addEventListener('mousemove',e=>{
+        const r=zone.getBoundingClientRect();
+        const px=(e.clientX-r.left)/r.width-.5,py=(e.clientY-r.top)/r.height-.5;
+        if(raf)return;
+        raf=requestAnimationFrame(()=>{
+          raf=null;
+          const media=visibleMedia(zone);
+          if(!media)return;
+          const t=tilterFor(media);
+          t.pry(px*18);t.prx(py*-13);t.ptx(px*-16);t.pty(py*-11);
+        });
+      });
+      zone.addEventListener('mouseleave',()=>{
+        const media=visibleMedia(zone);
+        if(!media)return;
+        const t=tilterFor(media);
+        t.pry(0);t.prx(0);t.ptx(0);t.pty(0);
+      });
+    });
+  }
+
+  // chaque compartiment (section) entre depuis un côté en alternance, pour que le scroll se sente comme un nouveau tableau
+  let paneDir=0;
+  $$('section:not(.hero)').forEach(sec=>{
+    const h2=sec.querySelector('h2');
+    const pane=h2?h2.closest('.reveal'):null;
+    if(!pane)return;
+    pane.classList.add(paneDir%2===0?'reveal--l':'reveal--r');
+    paneDir++;
+  });
+
+  // chaque section arrive en cascade légère : les .reveal se posent les uns après les autres (mouvement élargi le 2026-10-23)
+  const io=new IntersectionObserver(es=>es.forEach(e=>{
+    if(e.isIntersecting){
+      e.target.querySelectorAll('.reveal').forEach((el,i)=>{el.style.setProperty('--d',(i*.15)+'s');el.classList.add('in');});
+      io.unobserve(e.target);
+    }
+  }),{threshold:.1});
+  $$('section').forEach(sec=>io.observe(sec));
+
+  // ---- parallaxe légère sur les vignettes projets (profondeur au scroll) ----
+  if(GSAP_OK && !matchMedia('(prefers-reduced-motion:reduce)').matches){
+    $$('.work__media img').forEach(img=>{
+      gsap.fromTo(img,{objectPosition:'50% 38%'},{objectPosition:'50% 62%',ease:'none',
+        scrollTrigger:{trigger:img.closest('.work'),start:'top bottom',end:'bottom top',scrub:true}});
+    });
+    // ---- parallaxe étendue sur les repères visuels : numéros et montants (mouvement élargi le 2026-10-23) ----
+    [['.tr-n',10],['.svc .n',14],['.price .amt',8]].forEach(([sel,depth])=>{
+      $$(sel).forEach(el=>{
+        gsap.fromTo(el,{y:depth},{y:-depth,ease:'none',
+          scrollTrigger:{trigger:el.closest('section'),start:'top bottom',end:'bottom top',scrub:true}});
+      });
+    });
+  }
+
+  // ---- soulignement animé de la nav (survol + lien actif au scroll) ----
+  const navPlace=new Map();
+  $$('.navlinks').forEach(nav=>{
+    const ind=document.createElement('span');
+    ind.className='navlinks__ind';
+    nav.appendChild(ind);
+    const place=link=>{
+      if(!link){
+        if(GSAP_OK)gsap.to(ind,{opacity:0,duration:.25,overwrite:'auto'});else ind.style.opacity=0;
+        return;
+      }
+      const r=link.getBoundingClientRect(),nr=nav.getBoundingClientRect();
+      if(!r.width)return;
+      const x=r.left-nr.left;
+      if(GSAP_OK)gsap.to(ind,{x,width:r.width,opacity:1,duration:.4,ease:'power3.out',overwrite:'auto'});
+      else{ind.style.transform='translateX('+x+'px)';ind.style.width=r.width+'px';ind.style.opacity=1;}
+    };
+    navPlace.set(nav,place);
+    nav.querySelectorAll('a').forEach(a=>a.addEventListener('mouseenter',()=>place(a)));
+    nav.addEventListener('mouseleave',()=>place(nav.querySelector('a.active')));
+  });
+
+  const navSections=$$('.navlinks a').map(a=>({a,sec:document.querySelector(a.getAttribute('href'))})).filter(x=>x.sec);
+  if(navSections.length){
+    const navIo=new IntersectionObserver(es=>{
+      es.forEach(e=>{
+        const match=navSections.find(x=>x.sec===e.target);
+        if(!match)return;
+        match.a.classList.toggle('active',e.isIntersecting);
+        if(e.isIntersecting){
+          const nav=match.a.closest('.navlinks');
+          if(nav && !nav.matches(':hover'))navPlace.get(nav)?.(match.a);
+        }
+      });
+    },{rootMargin:'-45% 0px -45% 0px'});
+    navSections.forEach(x=>navIo.observe(x.sec));
+  }
+
+  // ---- TRADUCTION ----
+  const LSET={fr:'FR',en:'EN','es-ES':'ES','es-419':'419',ru:'RU',ja:'JA',ko:'KO',zh:'ZH'};
+  function applyLang(l){
+    const dict=I18N[l]||I18N.fr;document.body.dataset.lang=l;
+    document.documentElement.lang=(l.startsWith('es')?'es':l);
+    $$('[data-i18n]').forEach(el=>{const k=el.dataset.i18n;if(dict[k]==null)return;
+      if(el.hasAttribute('data-i18n-html'))el.innerHTML=dict[k];else el.textContent=dict[k];});
+    $$('[data-i18n-ph]').forEach(el=>{const k=el.dataset.i18nPh;if(dict[k]!=null)el.placeholder=dict[k];});
+    $('#langCur').textContent=LSET[l]||'FR';
+    $$('.lang__menu button').forEach(b=>b.classList.toggle('on',b.dataset.lang===l));
+  }
+  $('#langBtn').addEventListener('click',e=>{e.stopPropagation();$('#lang').classList.toggle('open');});
+  document.addEventListener('click',()=>$('#lang').classList.remove('open'));
+  $$('.lang__menu button').forEach(b=>b.addEventListener('click',()=>{applyLang(b.dataset.lang);$('#lang').classList.remove('open');}));
+  applyLang('fr');
+
+  // ---- SWITCH .JPEG / .WAV ----
+  const foot={jpeg:'3D · MOTION · MONTAGE · VFX',wav:'ENREGISTREMENT · MIX · MASTERING · PROD',plugin:'PLUGINS · VST3 · AU · AAX'};
+  const EXT={jpeg:'JPEG',wav:'WAV',plugin:'PLUGIN'},VIEW={jpeg:'visual',wav:'audio',plugin:'plugin'};
+  const MODE_ORDER=['jpeg','wav','plugin'],MODE_ACC={jpeg:'#FF6A3D',wav:'#2DD4A8',plugin:'#FFB341'};
+  const modewipe=$('#modewipe');
+  let modeBusy=false; // évite qu'un clic pendant le rideau de transition ne lance une 2e transition concurrente sur la même vue (corrigé le 2026-10-24)
+  function setMode(m,instant){
+    const prevMode=document.body.dataset.mode;
+    if(prevMode===m || (modeBusy && !instant))return;
+    const reduced=matchMedia('(prefers-reduced-motion:reduce)').matches;
+    const dir=MODE_ORDER.indexOf(m)>MODE_ORDER.indexOf(prevMode)?1:-1;
+    const apply=()=>{
+      document.body.dataset.mode=m;$('#ext').textContent='.'+EXT[m];$('#foot-tag').textContent=foot[m];
+      $$('.wheel__seg').forEach(b=>b.classList.toggle('on',b.dataset.mode===m));
+      const v=document.querySelector('.view-'+VIEW[m]);
+      // ne pas tout révéler d'un coup ici : l'IntersectionObserver anime chaque section au scroll, comme sur .JPEG (corrigé le 2026-10-24 — .WAV/.PLUGIN arrivaient déjà tout révélés, donc plus rien à animer en scrollant)
+      const toTop=()=>window.scrollTo({top:0,left:0,behavior:'instant'});
+      toTop();
+      if(GSAP_OK)ScrollTrigger.refresh();
+      toTop(); // le refresh de ScrollTrigger peut repositionner le scroll : on réapplique après, au cas où
+      if(GSAP_OK && !reduced){
+        gsap.fromTo(v,{opacity:0,x:40*dir},{opacity:1,x:0,duration:.55,ease:'power3.out',clearProps:'opacity,transform'});
+      }else{
+        v.classList.remove('anim');void v.offsetWidth;v.classList.add('anim');
+      }
+      document.dispatchEvent(new CustomEvent('v3:modechange',{detail:{mode:m}}));
+    };
+    const prevView=prevMode?document.querySelector('.view-'+VIEW[prevMode]):null;
+    if(!instant && GSAP_OK && prevView && !reduced){
+      // rideau de couleur (accent du mode de destination) entre les deux vues, plutôt
+      // qu'un simple fondu : le changement d'univers se voit comme une transition à
+      // part entière, pas comme deux pages qui s'empilent
+      modeBusy=true;
+      const tl=gsap.timeline({onComplete:()=>{modeBusy=false;}});
+      tl.to(prevView,{opacity:0,x:-40*dir,duration:.3,ease:'power2.in'},0)
+        .set(modewipe,{background:MODE_ACC[m],transformOrigin:'top',scaleY:0},0)
+        .to(modewipe,{scaleY:1,duration:.3,ease:'power3.inOut'},0)
+        .add(()=>{gsap.set(prevView,{clearProps:'opacity,transform'});apply();})
+        .set(modewipe,{transformOrigin:'bottom'})
+        .to(modewipe,{scaleY:0,duration:.35,ease:'power3.inOut'},'+=0.02');
+      setTimeout(()=>{if(tl.progress()<1)tl.progress(1);modeBusy=false;},500); // shortcut: filet de sécurité si l'onglet est masqué/throttle navigateur
+    }else{
+      apply();
+    }
+  }
+  $$('.wheel__seg').forEach(b=>{
+    b.addEventListener('click',()=>setMode(b.dataset.mode));
+    b.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();setMode(b.dataset.mode);}});
+  });
+  $$('[data-goto]').forEach(b=>b.addEventListener('click',()=>setMode(b.dataset.goto)));
+
+  // ---- Page d'accueil : le V en verre (moteur premium-3d-glass) éclate au clic ----
+  (function(){
+    const landing=$('#landing');
+    if(!landing)return;
+    // le logo part en éclats pendant que la page choisie apparaît derrière, en même temps (pas de retour en place)
+    $$('.landing__btn').forEach(b=>b.addEventListener('click',()=>{
+      const m=b.dataset.enter,reduced=matchMedia('(prefers-reduced-motion:reduce)').matches;
+      if(reduced){setMode(m,true);document.body.classList.remove('pre-entry');landing.remove();document.dispatchEvent(new CustomEvent('v3:modechange',{detail:{mode:m}}));return;}
+      setMode(m,true);
+      document.body.classList.remove('pre-entry');
+      document.dispatchEvent(new CustomEvent('v3:modechange',{detail:{mode:m}}));
+      window.__v3glass&&window.__v3glass.explode();
+      landing.classList.add('leaving');
+      setTimeout(()=>landing.remove(),1750);
+    }));
+  })();
+  // boutons Acheter : tant que le lien est "#", on ne fait rien (à remplacer par ton lien de paiement)
+  $$('.plug .cta').forEach(a=>a.addEventListener('click',e=>{if(a.getAttribute('href')==='#')e.preventDefault();}));
+
+  $$('.filters button').forEach(b=>b.addEventListener('click',()=>{
+    $$('.filters button').forEach(x=>x.classList.remove('on'));b.classList.add('on');
+    const f=b.dataset.f;$$('.work').forEach(w=>w.classList.toggle('hide',f!=='all'&&!w.dataset.cat.split(' ').includes(f)));}));
+
+  // deux overlays indépendants (zoom image + fiche produit) peuvent théoriquement s'ouvrir
+  // l'un depuis l'autre : un compteur évite qu'en fermer un ne débloque le scroll trop tôt
+  let scrollLocks=0;
+  function lockScroll(){scrollLocks++;document.body.style.overflow='hidden';}
+  function unlockScroll(){scrollLocks=Math.max(0,scrollLocks-1);if(scrollLocks===0)document.body.style.overflow='';}
+
+  const lb=$('#lb'),lbf=$('#lbFrame'),lbi=$('#lbInner'),lbImg=$('#lbImg'),lbIg=$('#lbIg');
+  function showLB(cls){lbi.className='lb__inner'+(cls?' '+cls:'');lb.classList.add('open');lockScroll();}
+  function openVid(id){lbf.src='https://www.youtube-nocookie.com/embed/'+id+'?autoplay=1&rel=0';showLB('');}
+  function openIG(id){lbf.src='https://www.instagram.com/p/'+id+'/embed/';lbIg.href='https://www.instagram.com/p/'+id+'/';showLB('portrait');}
+  function openImg(src,alt){lbImg.src=src;lbImg.alt=alt||'';showLB('pic');}
+  function closeLB(){if(!lb.classList.contains('open'))return;lb.classList.remove('open');lbf.src='';lbImg.removeAttribute('src');unlockScroll();}
+  $$('.work[data-yt]').forEach(w=>w.addEventListener('click',()=>openVid(w.dataset.yt)));
+  $$('.work[data-ig]').forEach(w=>w.addEventListener('click',()=>openIG(w.dataset.ig)));
+  $$('.work[data-img]').forEach(w=>w.addEventListener('click',()=>{const im=w.querySelector('img');openImg(im.src,im.alt);}));
+  $('#lbClose').addEventListener('click',closeLB);
+  lb.addEventListener('click',e=>{if(e.target===lb)closeLB();});
+
+  // ---- fiche produit DarkFairyGranullar : tilt 3D au survol, zoom au clic, fiche détaillée en modale ----
+  (function(){
+    const art=$('#plugArt');
+    if(!art)return;
+    const img=art.querySelector('img');
+    const reduced=matchMedia('(prefers-reduced-motion:reduce)').matches;
+    if(matchMedia('(hover:hover) and (pointer:fine)').matches && !reduced){
+      art.addEventListener('mousemove',e=>{
+        const r=art.getBoundingClientRect();
+        const px=(e.clientX-r.left)/r.width-.5,py=(e.clientY-r.top)/r.height-.5;
+        img.style.transition='transform .15s var(--ease)';
+        img.style.transform=`rotateY(${(px*14).toFixed(2)}deg) rotateX(${(py*-10).toFixed(2)}deg) translateZ(18px)`;
+      });
+      art.addEventListener('mouseleave',()=>{
+        img.style.transition='transform .6s var(--ease)';
+        img.style.transform='rotateY(0deg) rotateX(0deg) translateZ(0px)';
+      });
+    }
+    art.addEventListener('click',()=>{if(img.getAttribute('src'))openImg(img.src,img.alt);});
+
+    const modal=$('#plugModal'),panel=modal.querySelector('.pmodal__panel'),trigger=$('#plugMore'),closeBtn=$('#plugModalClose');
+    let lastFocus=null;
+    const focusables=()=>[...panel.querySelectorAll('a[href],button,[tabindex]:not([tabindex="-1"])')].filter(el=>el.offsetParent!==null);
+    function onKey(e){
+      if(e.key==='Escape'){closeModal();return;}
+      if(e.key!=='Tab')return;
+      const f=focusables();if(!f.length)return;
+      const first=f[0],last=f[f.length-1];
+      if(e.shiftKey&&document.activeElement===first){e.preventDefault();last.focus();}
+      else if(!e.shiftKey&&document.activeElement===last){e.preventDefault();first.focus();}
+    }
+    function openModal(){
+      lastFocus=document.activeElement;
+      modal.classList.add('open');
+      modal.removeAttribute('aria-hidden');
+      lockScroll();
+      closeBtn.focus();
+      document.addEventListener('keydown',onKey);
+    }
+    function closeModal(){
+      if(!modal.classList.contains('open'))return;
+      modal.classList.remove('open');
+      modal.setAttribute('aria-hidden','true');
+      unlockScroll();
+      document.removeEventListener('keydown',onKey);
+      lastFocus&&lastFocus.focus();
+    }
+    trigger.addEventListener('click',openModal);
+    closeBtn.addEventListener('click',closeModal);
+    modal.addEventListener('click',e=>{if(e.target===modal)closeModal();});
+    $('#plugModalCta').addEventListener('click',closeModal);
+  })();
+  addEventListener('keydown',e=>{if(e.key==='Escape')closeLB();});
+
+  // ---- ACCORDÉON FAQ (expand/collapse animé, hauteur mesurée) ----
+  $$('.faq details').forEach(d=>{
+    const p=d.querySelector('p');
+    p.addEventListener('transitionend',e=>{
+      if(e.propertyName!=='height')return;
+      if(p.style.height==='0px')d.removeAttribute('open');else p.style.height='auto';
+    });
+    d.querySelector('summary').addEventListener('click',e=>{
+      e.preventDefault();
+      if(d.hasAttribute('open')){
+        p.style.height=p.scrollHeight+'px';
+        requestAnimationFrame(()=>{p.style.height='0px';});
+      }else{
+        d.setAttribute('open','');
+        p.style.height=p.scrollHeight+'px';
+      }
+    });
+  });
+
+  $$('[data-quote]').forEach(b=>b.addEventListener('click',()=>{
+    const ta=document.querySelector('#contact-a [name=msg]');if(ta)ta.value='Demande : '+b.dataset.quote+'\n\n';
+    document.getElementById('contact-a').scrollIntoView();}));
+
+  // ---- AUDIO ----
+  const audio=new Audio();audio.preload='metadata';
+  const items=$$('#playlist li');const ppBtn=$('#pp');
+  const mini=$('#mini'),miniPP=$('#miniPP'),miniT=$('#miniT'),miniProg=$('#miniProg');
+  let cur=-1,abMode='raw',abActive=false;
+  const fmt=s=>isNaN(s)?'0:00':Math.floor(s/60)+':'+String(Math.floor(s%60)).padStart(2,'0');
+  const cv=$('#wave'),cx=cv.getContext('2d');let actx,analyser,freq,srcNode,wired=false;
+  function wireAudio(){if(wired)return;try{actx=new (window.AudioContext||window.webkitAudioContext)();srcNode=actx.createMediaElementSource(audio);
+    analyser=actx.createAnalyser();analyser.fftSize=128;srcNode.connect(analyser);analyser.connect(actx.destination);freq=new Uint8Array(analyser.frequencyBinCount);wired=true;}catch(e){wired=false;}}
+  function draw(){requestAnimationFrame(draw);const w=cv.width,hgt=cv.height;cx.clearRect(0,0,w,hgt);
+    const col=getComputedStyle(document.body).getPropertyValue('--acc').trim()||'#e8b53e';const n=20,bw=w/n;let data=null;
+    if(analyser&&!audio.paused){analyser.getByteFrequencyData(freq);data=freq;}cx.fillStyle=col;
+    for(let i=0;i<n;i++){let v;if(data){v=data[i*2]/255;}else{v=audio.paused?0.05:0.25+0.2*Math.abs(Math.sin(Date.now()/220+i*0.6));}
+      const bh=Math.max(2,v*hgt);cx.globalAlpha=data?.5+v*.5:.6;cx.fillRect(i*bw+1,hgt-bh,bw-2,bh);}cx.globalAlpha=1;}
+  draw();
+  function updatePP(){const pl=!audio.paused;
+    ppBtn.querySelector('use').setAttribute('href',pl?'#icon-pause':'#icon-play');
+    miniPP.querySelector('use').setAttribute('href',pl?'#icon-pause':'#icon-play');
+    mini.classList.toggle('show',cur>=0||abActive);}
+  function load(i){cur=i;abActive=false;const li=items[i];audio.src=li.dataset.src;
+    $('.now-t').textContent=li.querySelector('.pl-t').textContent;$('.now-g').textContent=li.querySelector('.pl-g').textContent;
+    miniT.textContent=li.querySelector('.pl-t').textContent;items.forEach((x,k)=>x.classList.toggle('active',k===i));}
+  function go(){wireAudio();if(actx&&actx.state==='suspended')actx.resume();audio.play().catch(()=>{});updatePP();}
+  function playPause(){if(cur<0&&!abActive){load(0);go();return;}if(audio.paused)go();else{audio.pause();updatePP();}}
+  items.forEach((li,i)=>li.addEventListener('click',()=>{if(cur===i&&!abActive){playPause();}else{load(i);go();}}));
+  ppBtn.addEventListener('click',playPause);
+  $('#next').addEventListener('click',()=>{load(((cur<0?0:cur)+1)%items.length);go();});
+  $('#prev').addEventListener('click',()=>{load(((cur<0?0:cur)-1+items.length)%items.length);go();});
+  audio.addEventListener('timeupdate',()=>{const p=(audio.currentTime/audio.duration*100||0)+'%';$('#pprog').style.width=p;miniProg.style.width=p;$('#pcur').textContent=fmt(audio.currentTime);});
+  audio.addEventListener('loadedmetadata',()=>{$('#pdur').textContent=fmt(audio.duration);if(cur>=0)items[cur].querySelector('.pl-d').textContent=fmt(audio.duration);});
+  audio.addEventListener('ended',()=>{if(abActive){updatePP();return;}load((cur+1)%items.length);go();});
+  audio.addEventListener('play',updatePP);audio.addEventListener('pause',updatePP);
+  $('#pbar').addEventListener('click',e=>{const r=e.currentTarget.getBoundingClientRect();if(audio.duration)audio.currentTime=(e.clientX-r.left)/r.width*audio.duration;});
+  miniPP.addEventListener('click',playPause);
+  $('#miniBar').addEventListener('click',e=>{const r=e.currentTarget.getBoundingClientRect();if(audio.duration)audio.currentTime=(e.clientX-r.left)/r.width*audio.duration;});
+  $('#miniX').addEventListener('click',()=>{audio.pause();audio.currentTime=0;mini.classList.remove('show');});
+  const abPlay=$('#abplay');
+  $$('#ab .abtns button').forEach(b=>b.addEventListener('click',()=>{$$('#ab .abtns button').forEach(x=>x.classList.remove('on'));b.classList.add('on');abMode=b.dataset.ab;
+    if(abActive){const t=audio.currentTime;audio.src=abPlay.dataset[abMode];audio.currentTime=t||0;go();}}));
+  abPlay.addEventListener('click',()=>{if(abActive&&!audio.paused){audio.pause();updatePP();return;}
+    abActive=true;cur=-1;items.forEach(x=>x.classList.remove('active'));
+    const d=I18N[document.body.dataset.lang]||I18N.fr;
+    $('.now-t').textContent=(abMode==='raw'?d.ab_raw:d.ab_master);$('.now-g').textContent='A/B';miniT.textContent='A/B';
+    if(audio.src.indexOf(abPlay.dataset[abMode])<0)audio.src=abPlay.dataset[abMode];go();});
+
+  $$('[data-send]').forEach(btn=>btn.addEventListener('click',()=>{
+    const f=btn.closest('[data-form]');const n=f.querySelector('[name=name]').value,e=f.querySelector('[name=email]').value,m=f.querySelector('[name=msg]').value;
+    const body=encodeURIComponent('Nom: '+n+'\nEmail: '+e+'\n\n'+m);
+    window.location.href='mailto:V3UV3@proton.me?subject='+encodeURIComponent('Contact site : '+(n||''))+'&body='+body;}));
+</script>
+</body>
+</html>
