@@ -90,7 +90,8 @@
   .brand b{color:var(--acc)}
   .brand-text{display:none}
   .brand-logo{display:none}
-  .brand-logo img{height:38px;width:auto;display:block}
+  .brand-logo img{height:58px;width:auto;display:block}
+  @media (max-width:600px){.brand-logo img{height:42px}}
   body[data-mode="jpeg"] .brand-logo[data-for="jpeg"],
   body[data-mode="wav"] .brand-logo[data-for="wav"],
   body[data-mode="plugin"] .brand-logo[data-for="plugin"]{display:block}

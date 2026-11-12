@@ -28,6 +28,9 @@
   texte FAQ a1 par défaut et du pied de page du mode plugin.
 - Barre flottante Moonbase « Log in / Cart » (recouvrait la navigation) coupée via l'option officielle
   `Moonbase.setup(url,{toolbar:{enabled:false}})`. Les boutons d'achat sont des liens directs, non concernés.
+- **Nouveaux logos du haut de page** (fournis par l'utilisateur, PNG transparents) : JPEG = orange,
+  WAV = bleu-vert, PLUGIN = jaune. Remplacent `img/logo-{jpeg,wav,plugin}.png` aux mêmes noms (recadrés,
+  140 px de haut). Hauteur d'affichage `.brand-logo img` : 58 px (42 px sous 600 px de large).
 - Vu en passant, pas touché : `img/hero-jpeg.jpg` est en 404 (référencé mais absent).
 
 ## Session précédente (2026-11-12, nettoyage DarkFairyGranullar + transition accueil)
