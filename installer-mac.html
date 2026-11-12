@@ -1,0 +1,249 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Installer V3UV3 MASTER sur Mac</title>
+<meta name="description" content="Installer V3UV3 MASTER sur macOS en 4 étapes : autoriser l'installeur, installer, relancer ton logiciel.">
+<meta name="robots" content="noindex">
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Karla:ital,wght@0,400;0,600;0,700;1,400&display=swap">
+<link rel="preload" href="fonts/V3UV3Hand.ttf" as="font" type="font/ttf" crossorigin>
+<style>
+/* Same sheet of paper as master.html: the plugin's own palette and hand font. One column of numbered steps, each with its screenshot. */
+@font-face { font-family: "V3UV3Hand"; src: url("fonts/V3UV3Hand.ttf") format("truetype"); font-display: block; }
+:root {
+  --paper: #fbf8f1; --ink: #161514; --pencil: #6f6b63; --light: #d9d3c7; --wash: #f1ece1;
+  --hand: "V3UV3Hand", "Karla", "Segoe UI", sans-serif;
+  --text: "Karla", "Segoe UI", "Helvetica Neue", Arial, sans-serif;
+  color-scheme: light;
+}
+* { box-sizing: border-box; }
+body { margin: 0; background: var(--paper); color: var(--ink); font-family: var(--text); font-size: 17px; line-height: 1.6; }
+.sheet {
+  max-width: 860px; margin: 0 auto;
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
+  padding-block: 32px 64px;
+  display: grid; gap: 48px;
+}
+h1, h2, h3, .hand { font-family: var(--hand); font-weight: 400; letter-spacing: .02em; text-transform: uppercase; margin: 0; line-height: 1.05; text-wrap: balance; }
+p { margin: 0; max-width: 64ch; }
+a { color: inherit; }
+:focus-visible { outline: 2px dashed var(--ink); outline-offset: 3px; }
+code { font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace; font-size: 14.5px; background: var(--wash); padding: 2px 6px; border-radius: 6px; overflow-wrap: anywhere; }
+.pen { position: relative; isolation: isolate; }
+.pen::before { content: ""; position: absolute; inset: 0; z-index: -1; border: 2px solid var(--ink); border-radius: 14px; filter: url(#wobble); pointer-events: none; }
+
+.top { display: flex; justify-content: space-between; align-items: center; gap: 12px; flex-wrap: wrap; }
+.top a, .langs button { font-family: var(--hand); font-size: 20px; text-transform: uppercase; text-decoration: none; padding: 6px 14px; background: none; border: 0; color: var(--ink); cursor: pointer; }
+.top a::before { border-color: transparent; border-radius: 10px; }
+.top a:hover::before { border-color: var(--ink); }
+.langs { display: flex; gap: 8px; }
+.langs button::before { border-radius: 10px; border-color: transparent; }
+.langs button[aria-pressed="true"]::before { border-color: var(--ink); }
+
+.hero { display: grid; gap: 16px; }
+.eyebrow { font-family: var(--hand); text-transform: uppercase; color: var(--pencil); font-size: 20px; letter-spacing: .08em; }
+h1 { font-size: clamp(48px, 10vw, 96px); }
+.lede { font-size: 19px; }
+.why { padding: 18px 20px; background: var(--wash); border-radius: 14px; display: grid; gap: 6px; font-size: 16px; }
+.why strong { font-family: var(--hand); font-weight: 400; text-transform: uppercase; font-size: 21px; }
+
+.steps { list-style: none; margin: 0; padding: 0; display: grid; gap: 40px; }
+.step { display: grid; grid-template-columns: 56px minmax(0, 1fr); gap: 18px; align-items: start; }
+.n { width: 52px; height: 52px; display: grid; place-items: center; font-family: var(--hand); font-size: 28px; }
+.n::before { border-radius: 50%; }
+.step-body { display: grid; gap: 12px; min-width: 0; }
+.step h2 { font-size: clamp(26px, 4vw, 34px); }
+.step ul { margin: 0; padding-left: 20px; display: grid; gap: 4px; }
+.step li::marker { content: "- "; font-family: var(--hand); }
+.note { font-size: 15px; color: var(--pencil); }
+
+.shot { margin: 0; padding: 10px; display: grid; gap: 8px; max-width: 640px; }
+.shot img { display: block; width: 100%; height: auto; border-radius: 8px; }
+.shot figcaption { font-family: var(--hand); text-transform: uppercase; font-size: 16px; color: var(--pencil); }
+.shot .ph { display: none; min-height: 150px; place-items: center; text-align: center; padding: 18px; border: 2px dashed var(--light); border-radius: 8px; color: var(--pencil); font-size: 15px; }
+.shot.missing img { display: none; }
+.shot.missing .ph { display: grid; }
+
+.planb { padding: 20px; display: grid; gap: 10px; }
+.planb h2 { font-size: 28px; }
+footer { font-family: var(--hand); text-transform: uppercase; color: var(--pencil); font-size: 18px; border-top: 1.5px solid var(--light); padding-top: 18px; display: flex; justify-content: space-between; flex-wrap: wrap; gap: 8px; }
+footer a { font-family: var(--text); text-transform: none; font-size: 14px; }
+
+[data-lang] { display: none; }
+html[lang="fr"] [data-lang="fr"], html[lang="en"] [data-lang="en"] { display: revert; }
+@media (max-width: 520px) { .step { grid-template-columns: 44px minmax(0, 1fr); gap: 12px; } .n { width: 42px; height: 42px; font-size: 22px; } }
+</style>
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <filter id="wobble" x="-5%" y="-5%" width="110%" height="110%">
+    <feTurbulence type="fractalNoise" baseFrequency="0.035" numOctaves="2" seed="7"/>
+    <feDisplacementMap in="SourceGraphic" scale="3.2"/>
+  </filter>
+</svg>
+
+<main class="sheet">
+  <nav class="top" aria-label="Navigation">
+    <a class="pen" href="master.html">&larr; V3UV3 MASTER</a>
+    <div class="langs" role="group" aria-label="Langue / Language">
+      <button class="pen" type="button" data-set-lang="fr" aria-pressed="true">FR</button>
+      <button class="pen" type="button" data-set-lang="en" aria-pressed="false">EN</button>
+    </div>
+  </nav>
+
+  <!-- ===================== FRANÇAIS ===================== -->
+  <section class="hero" data-lang="fr">
+    <div class="eyebrow">V3UV3 MASTER - MACOS 11 ET PLUS</div>
+    <h1>Installer sur Mac</h1>
+    <p class="lede">Quatre étapes, deux minutes. La première fois, macOS te demande d'autoriser l'installeur : c'est normal, et ça ne se fait qu'une fois.</p>
+    <div class="why">
+      <strong>Pourquoi macOS bloque l'installeur ?</strong>
+      <p>V3UV3 MASTER est fait par un développeur indépendant, et sa signature Apple n'est pas encore en place. macOS ne connaît donc pas encore l'éditeur et te demande ta permission. Le plugin lui-même passe les validations des formats : pluginval au niveau le plus sévère, le validateur Steinberg pour le VST3, auval d'Apple pour l'AU.</p>
+    </div>
+  </section>
+
+  <ol class="steps" data-lang="fr">
+    <li class="step">
+      <span class="n pen">1</span>
+      <div class="step-body">
+        <h2>Ouvre l'installeur</h2>
+        <p>Double-clique sur <code>V3UV3-MASTER-0.1.0.pkg</code> dans tes Téléchargements. macOS affiche « Apple n'a pas pu confirmer que… ne contenait pas de logiciel malveillant ». Clique sur <b>Terminé</b> (ou <b>OK</b>). Rien n'est installé pour l'instant.</p>
+        <figure class="shot pen"><img src="img/mac-install-1.jpg" alt="La fenêtre macOS qui bloque l'ouverture de l'installeur V3UV3 MASTER." loading="lazy"><div class="ph">Capture à venir : la fenêtre « Apple n'a pas pu confirmer… »</div><figcaption>La fenêtre de blocage</figcaption></figure>
+      </div>
+    </li>
+    <li class="step">
+      <span class="n pen">2</span>
+      <div class="step-body">
+        <h2>Autorise-le dans les réglages</h2>
+        <ul>
+          <li>Ouvre <b>Réglages Système</b> (menu Pomme), puis <b>Confidentialité et sécurité</b>.</li>
+          <li>Descends jusqu'à la partie <b>Sécurité</b> : tu vois « “V3UV3-MASTER-0.1.0.pkg” a été bloqué ».</li>
+          <li>Clique sur <b>Ouvrir quand même</b>, puis confirme avec ton mot de passe ou Touch ID.</li>
+        </ul>
+        <figure class="shot pen"><img src="img/mac-install-2.jpg" alt="Réglages Système, Confidentialité et sécurité, avec le bouton Ouvrir quand même." loading="lazy"><div class="ph">Capture à venir : Confidentialité et sécurité, bouton « Ouvrir quand même » entouré</div><figcaption>Le bouton « Ouvrir quand même »</figcaption></figure>
+        <p class="note">macOS 11 ou 12 : Préférences Système &gt; Sécurité et confidentialité &gt; onglet Général &gt; « Ouvrir quand même ».</p>
+      </div>
+    </li>
+    <li class="step">
+      <span class="n pen">3</span>
+      <div class="step-body">
+        <h2>Installe</h2>
+        <p>Une dernière fenêtre demande confirmation : clique sur <b>Ouvrir</b>. L'installeur démarre : <b>Continuer</b>, puis <b>Installer</b>, et ton mot de passe. Le VST3 et l'AU se placent tout seuls dans les dossiers de plugins du Mac.</p>
+        <figure class="shot pen"><img src="img/mac-install-3.jpg" alt="L'installeur de V3UV3 MASTER ouvert sur macOS." loading="lazy"><div class="ph">Capture à venir : l'installeur V3UV3 MASTER ouvert</div><figcaption>L'installeur</figcaption></figure>
+      </div>
+    </li>
+    <li class="step">
+      <span class="n pen">4</span>
+      <div class="step-body">
+        <h2>Relance ton logiciel</h2>
+        <ul>
+          <li><b>Logic Pro, GarageBand</b> : rien à faire, l'AU est vérifié au démarrage.</li>
+          <li><b>Ableton Live</b> : Réglages &gt; Plug-ins &gt; Rescanner.</li>
+          <li><b>FL Studio</b> : Options &gt; Gestionnaire de plugins &gt; Rechercher des plugins.</li>
+          <li><b>REAPER</b> : Préférences &gt; Plug-ins &gt; VST &gt; Re-scan.</li>
+        </ul>
+        <p>Ouvre V3UV3 MASTER sur ta piste master, clique sur <b>LICENCE</b> en haut à droite, puis active ton essai ou ta licence.</p>
+        <figure class="shot pen"><img src="img/mac-install-4.jpg" alt="V3UV3 MASTER ouvert dans un logiciel de musique, avec l'écran d'activation." loading="lazy"><div class="ph">Capture à venir : le plugin ouvert dans le logiciel, écran d'activation</div><figcaption>Le plugin prêt</figcaption></figure>
+      </div>
+    </li>
+  </ol>
+
+  <section class="planb pen" data-lang="fr">
+    <h2>Toujours bloqué ?</h2>
+    <p>Ouvre l'app <b>Terminal</b> (Applications &gt; Utilitaires), colle cette ligne, appuie sur Entrée, puis double-clique à nouveau sur l'installeur :</p>
+    <p><code>xattr -d com.apple.quarantine ~/Downloads/V3UV3-MASTER-0.1.0.pkg</code></p>
+    <p>Encore un souci ? Écris-moi depuis le <a href="index.html#contact-p">formulaire de contact</a> avec la version de macOS et ton logiciel de musique.</p>
+  </section>
+
+  <!-- ===================== ENGLISH ===================== -->
+  <section class="hero" data-lang="en">
+    <div class="eyebrow">V3UV3 MASTER - MACOS 11 AND LATER</div>
+    <h1>Install on Mac</h1>
+    <p class="lede">Four steps, two minutes. The first time, macOS asks you to allow the installer. That's expected, and you only do it once.</p>
+    <div class="why">
+      <strong>Why does macOS block the installer?</strong>
+      <p>V3UV3 MASTER is made by an independent developer, and its Apple signature isn't set up yet. macOS doesn't know the publisher yet, so it asks for your permission. The plugin itself passes the format validators: pluginval at its strictest level, Steinberg's validator for VST3, and Apple's auval for AU.</p>
+    </div>
+  </section>
+
+  <ol class="steps" data-lang="en">
+    <li class="step">
+      <span class="n pen">1</span>
+      <div class="step-body">
+        <h2>Open the installer</h2>
+        <p>Double-click <code>V3UV3-MASTER-0.1.0.pkg</code> in your Downloads. macOS says "Apple could not verify… is free of malware". Click <b>Done</b> (or <b>OK</b>). Nothing is installed yet.</p>
+        <figure class="shot pen"><img src="img/mac-install-1.jpg" alt="The macOS window that blocks the V3UV3 MASTER installer." loading="lazy"><div class="ph">Screenshot coming: the "Apple could not verify…" window</div><figcaption>The blocking window</figcaption></figure>
+      </div>
+    </li>
+    <li class="step">
+      <span class="n pen">2</span>
+      <div class="step-body">
+        <h2>Allow it in Settings</h2>
+        <ul>
+          <li>Open <b>System Settings</b> (Apple menu), then <b>Privacy &amp; Security</b>.</li>
+          <li>Scroll down to <b>Security</b>: you'll see that "V3UV3-MASTER-0.1.0.pkg" was blocked.</li>
+          <li>Click <b>Open Anyway</b>, then confirm with your password or Touch ID.</li>
+        </ul>
+        <figure class="shot pen"><img src="img/mac-install-2.jpg" alt="System Settings, Privacy and Security, with the Open Anyway button." loading="lazy"><div class="ph">Screenshot coming: Privacy &amp; Security, "Open Anyway" circled</div><figcaption>The "Open Anyway" button</figcaption></figure>
+        <p class="note">macOS 11 or 12: System Preferences &gt; Security &amp; Privacy &gt; General tab &gt; "Open Anyway".</p>
+      </div>
+    </li>
+    <li class="step">
+      <span class="n pen">3</span>
+      <div class="step-body">
+        <h2>Install</h2>
+        <p>One last window asks you to confirm: click <b>Open</b>. The installer starts: <b>Continue</b>, then <b>Install</b>, and your password. The VST3 and the AU go into the Mac's plug-in folders on their own.</p>
+        <figure class="shot pen"><img src="img/mac-install-3.jpg" alt="The V3UV3 MASTER installer open on macOS." loading="lazy"><div class="ph">Screenshot coming: the V3UV3 MASTER installer</div><figcaption>The installer</figcaption></figure>
+      </div>
+    </li>
+    <li class="step">
+      <span class="n pen">4</span>
+      <div class="step-body">
+        <h2>Restart your DAW</h2>
+        <ul>
+          <li><b>Logic Pro, GarageBand</b>: nothing to do, the AU is checked at launch.</li>
+          <li><b>Ableton Live</b>: Settings &gt; Plug-Ins &gt; Rescan.</li>
+          <li><b>FL Studio</b>: Options &gt; Manage plugins &gt; Find plugins.</li>
+          <li><b>REAPER</b>: Preferences &gt; Plug-ins &gt; VST &gt; Re-scan.</li>
+        </ul>
+        <p>Put V3UV3 MASTER on your master track, click <b>LICENCE</b> at the top right, and activate your trial or licence.</p>
+        <figure class="shot pen"><img src="img/mac-install-4.jpg" alt="V3UV3 MASTER open in a DAW, on the activation screen." loading="lazy"><div class="ph">Screenshot coming: the plugin open in a DAW, activation screen</div><figcaption>Ready to go</figcaption></figure>
+      </div>
+    </li>
+  </ol>
+
+  <section class="planb pen" data-lang="en">
+    <h2>Still blocked?</h2>
+    <p>Open the <b>Terminal</b> app (Applications &gt; Utilities), paste this line, press Return, then double-click the installer again:</p>
+    <p><code>xattr -d com.apple.quarantine ~/Downloads/V3UV3-MASTER-0.1.0.pkg</code></p>
+    <p>Still stuck? Write to me through the <a href="index.html#contact-p">contact form</a> with your macOS version and your DAW.</p>
+  </section>
+
+  <footer><span>V3UV3 PRODUCTION</span><span><a href="mentions-legales.html">Mentions légales</a></span></footer>
+</main>
+
+<script>
+(function () {
+  // A screenshot not taken yet shows its placeholder instead of a broken image.
+  document.querySelectorAll('.shot img').forEach(function (img) {
+    var miss = function () { img.parentNode.classList.add('missing'); };
+    if (img.complete && img.naturalWidth === 0) miss(); else img.addEventListener('error', miss);
+  });
+  // FR / EN: from the link (#en), then the browser language, then French.
+  var root = document.documentElement;
+  function setLang(l) {
+    root.lang = l;
+    document.querySelectorAll('[data-set-lang]').forEach(function (b) { b.setAttribute('aria-pressed', String(b.dataset.setLang === l)); });
+  }
+  var start = location.hash === '#en' ? 'en' : location.hash === '#fr' ? 'fr' : (/^fr/i.test(navigator.language || 'fr') ? 'fr' : 'en');
+  setLang(start);
+  document.querySelectorAll('[data-set-lang]').forEach(function (b) { b.addEventListener('click', function () { setLang(b.dataset.setLang); }); });
+})();
+</script>
+</body>
+</html>

@@ -31,6 +31,11 @@
 - **Nouveaux logos du haut de page** (fournis par l'utilisateur, PNG transparents) : JPEG = orange,
   WAV = bleu-vert, PLUGIN = jaune. Remplacent `img/logo-{jpeg,wav,plugin}.png` aux mêmes noms (recadrés,
   140 px de haut). Hauteur d'affichage `.brand-logo img` : 58 px (42 px sous 600 px de large).
+- **Page `installer-mac.html`** (FR + EN, style du plugin, `noindex`) : guide d'installation Mac pour la version
+  **non signée** (pas de compte Apple Developer pour l'instant, décision de l'utilisateur). 4 étapes + plan B
+  `xattr`. Emplacements de captures `img/mac-install-1.jpg` à `-4.jpg` (absentes : un cadre « capture à venir »
+  s'affiche). Lien depuis `master.html` (ligne « SUR MAC » des détails). À donner aux clients dans le mail /
+  la release Moonbase.
 - Vu en passant, pas touché : `img/hero-jpeg.jpg` est en 404 (référencé mais absent).
 
 ## Session précédente (2026-11-12, nettoyage DarkFairyGranullar + transition accueil)
