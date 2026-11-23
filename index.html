@@ -442,14 +442,29 @@
   .landing.leaving{opacity:0;filter:blur(22px);pointer-events:none}
   .landing::before{content:"";position:absolute;inset:0;pointer-events:none;opacity:.05;mix-blend-mode:overlay;
     background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='220'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")}
-  .landing{background:#000;justify-content:flex-end;padding:0 5vw 9vh}
+  .landing{background:#000;justify-content:flex-end;padding:0 5vw 3.5vh}
   .landing::before{display:none}
   .landing__mark{position:absolute;inset:0;z-index:0}
   .landing__video{display:block;width:100%;height:100%;object-fit:cover}
   @media (max-aspect-ratio:4/3){.landing__video{object-fit:contain}}
-  .landing__nav{display:flex;width:min(760px,90vw);justify-content:space-between;align-items:center;position:relative;z-index:1}
-  .landing__btn{font-family:"Nunito";font-weight:700;font-size:.72rem;letter-spacing:.08em;text-transform:uppercase;color:var(--dim);border:1px solid var(--line);border-radius:var(--radius);padding:9px 24px;background:transparent;transition:border-color .2s var(--ease),color .2s var(--ease)}
-  .landing__btn:hover{border-color:var(--btn-acc);color:var(--btn-acc)}
+  /* boutons d'accueil (23/11/2026) : gros, typo manuscrite, trait rouge au survol, gelée au clic */
+  .landing__nav{display:flex;width:min(1100px,92vw);justify-content:space-between;align-items:flex-end;gap:2vw;position:relative;z-index:1}
+  .landing__btn{position:relative;display:flex;flex-direction:column;align-items:flex-start;gap:6px;padding:10px 6px 16px;background:none;border:0;
+    color:#f3efe9;text-align:left;cursor:pointer;transition:opacity .35s var(--ease),transform .45s var(--ease)}
+  .lb__num{font-family:"V3UV3 Hand","Nunito",sans-serif;font-size:1rem;letter-spacing:.1em;color:var(--acc)}
+  .lb__name{font-family:"V3UV3 Hand","Space Grotesk",sans-serif;font-size:clamp(2.4rem,6.4vw,5.4rem);line-height:.9;text-transform:uppercase;
+    text-shadow:0 6px 30px rgba(0,0,0,.8);transition:color .3s var(--ease)}
+  .lb__sub{font-family:"V3UV3 Hand","Nunito",sans-serif;text-transform:uppercase;letter-spacing:.08em;font-size:clamp(.8rem,1.3vw,1.05rem);color:rgba(243,239,233,.6);
+    transition:color .3s var(--ease)}
+  .landing__btn::after{content:"";position:absolute;left:6px;right:6px;bottom:4px;height:3px;border-radius:3px;background:var(--acc);
+    transform:scaleX(0);transform-origin:left;transition:transform .45s cubic-bezier(.2,.8,.2,1);box-shadow:0 0 18px var(--acc)}
+  .landing__btn:hover,.landing__btn:focus-visible{transform:translateY(-6px)}
+  .landing__btn:hover .lb__name,.landing__btn:focus-visible .lb__name{color:var(--acc)}
+  .landing__btn:hover .lb__sub,.landing__btn:focus-visible .lb__sub{color:#fff}
+  .landing__btn:hover::after,.landing__btn:focus-visible::after{transform:scaleX(1)}
+  .landing__nav:hover .landing__btn:not(:hover){opacity:.35}
+  @media (max-width:640px){.landing__nav{flex-direction:column;align-items:center;gap:4px}.landing__btn{align-items:center;text-align:center}
+    .landing__btn::after{left:20%;right:20%}.lb__name{font-size:2.6rem}}
 
   /* ---- couche premium (js/premium.js, 23/11/2026) ---- */
   .marquee{overflow:hidden;padding:46px 0;border-top:1px solid var(--line-2);border-bottom:1px solid var(--line-2);position:relative;z-index:1}
@@ -540,9 +555,9 @@
       </video>
     </div>
     <nav class="landing__nav">
-      <button class="landing__btn" style="--btn-acc:#E5322D" data-enter="jpeg">.JPEG</button>
-      <button class="landing__btn" style="--btn-acc:#E5322D" data-enter="wav">.WAV</button>
-      <button class="landing__btn" style="--btn-acc:#E5322D" data-enter="plugin">.PLUGIN</button>
+      <button class="landing__btn" data-enter="jpeg"><span class="lb__num">01</span><span class="lb__name">.JPEG</span><span class="lb__sub" data-i18n="landing_jpeg">Vidéo, VFX, montage</span></button>
+      <button class="landing__btn" data-enter="wav"><span class="lb__num">02</span><span class="lb__name">.WAV</span><span class="lb__sub" data-i18n="landing_wav">Studio d'enregistrement</span></button>
+      <button class="landing__btn" data-enter="plugin"><span class="lb__num">03</span><span class="lb__name">.PLUGIN</span><span class="lb__sub" data-i18n="landing_plugin">Plugins audio</span></button>
     </nav>
   </section>
 
@@ -1789,6 +1804,7 @@
     if(!landing)return;
     const vid=$('#introGlass');
     $$('.landing__btn').forEach(b=>b.addEventListener('click',()=>{
+      if(window.gsap){gsap.timeline().to(b,{scaleX:1.12,scaleY:.86,duration:.08}).to(b,{scaleX:.94,scaleY:1.08,duration:.1}).to(b,{scaleX:1,scaleY:1,duration:.5,ease:'elastic.out(1.2,0.3)'});}
       const m=b.dataset.enter,reduced=matchMedia('(prefers-reduced-motion:reduce)').matches;
       setMode(m,true);
       document.body.classList.remove('pre-entry');
