@@ -177,6 +177,18 @@
   main.view>section:not(.hero){background:linear-gradient(to bottom,transparent,var(--bg) 320px)}
   .hero__bg video,.hero__bg img{width:100%;height:100%;object-fit:cover;object-position:46% 48%;opacity:.75;transform:perspective(1100px) scale(1.15) rotateX(var(--prx,0deg)) rotateY(var(--pry,0deg)) translate3d(var(--ptx,0px),var(--pty,0px),0) translateY(var(--spy,0px));transform-origin:center;transition:opacity .4s var(--ease);will-change:transform}
   .hero:hover .hero__bg video,.hero:hover .hero__bg img{opacity:.9}
+  /* téléphone en portrait (23/11/2026) : en plein écran, la vidéo 16:9 était rognée au centre et le sujet
+     (œil ~70 %, micro ~81 %, potard ~77 % de la largeur) sortait de l'écran. On la réduit à 64 % de la hauteur
+     (le fond des vidéos est noir comme la page), on la cadre sur le sujet et on retire le zoom 1.15 */
+  @media (max-width:760px) and (orientation:portrait){
+    .hero__bg video,.hero__bg img{position:absolute;left:0;top:18%;height:64%;transform:translateY(var(--spy,0px));opacity:.9}
+    #top .hero__bg video{object-position:84% 50%}
+    #top-a .hero__bg video{object-position:100% 50%}
+    #top-p .hero__bg video{object-position:96% 50%}
+  }
+  /* iPhone : jamais de gros bouton lecture sur les vidéos décoratives si la lecture auto est refusée */
+  video:not([controls])::-webkit-media-controls-start-playback-button{display:none !important;-webkit-appearance:none}
+  video:not([controls])::-webkit-media-controls{display:none !important}
   .hero__bg::after{content:"";position:absolute;inset:0;background:linear-gradient(90deg,var(--bg) 8%,color-mix(in srgb,var(--bg) 55%,transparent) 60%,transparent),linear-gradient(0deg,var(--bg),transparent 40%)}
   .hero .badge{display:inline-flex;align-items:center;gap:9px;font-family:"Nunito";font-weight:700;font-size:.78rem;letter-spacing:.08em;text-transform:uppercase;color:var(--acc-2);width:max-content;margin-bottom:30px}
   .hero h1{font-family:"Space Grotesk",sans-serif;font-weight:700;font-size:clamp(3rem,13vw,11rem);line-height:.86;letter-spacing:.005em;text-transform:uppercase;color:var(--acc);text-shadow:0 0 50px color-mix(in srgb,var(--acc) 55%,transparent),0 0 110px color-mix(in srgb,var(--acc) 30%,transparent)}
@@ -1615,9 +1627,16 @@
   const $=s=>document.querySelector(s),$$=s=>[...document.querySelectorAll(s)];
   const h=$('#header');addEventListener('scroll',()=>h.classList.toggle('scrolled',scrollY>40));
 
-  if(matchMedia('(prefers-reduced-motion:reduce)').matches){
-    $$('.hero__bg video,.head__bg video').forEach(v=>{v.pause();v.removeAttribute('autoplay')});
-  }
+  // Vidéos muettes (intro, fonds, aperçus) : elles doivent toujours tourner, à la demande de Loïc (23/11/2026),
+  // même avec « réduire les animations ». Sur iPhone, l'autoplay peut être refusé (mode économie d'énergie) :
+  // on relance la lecture au chargement, au premier contact avec la page et à chaque changement de partie.
+  const kickVideos=()=>$$('video[autoplay]').forEach(v=>{v.muted=true;v.playsInline=true;if(v.paused)v.play().catch(()=>{});});
+  kickVideos();
+  addEventListener('load',kickVideos);
+  ['touchend','click','keydown'].forEach(ev=>addEventListener(ev,kickVideos,{passive:true}));
+  addEventListener('scroll',kickVideos,{passive:true,once:true});
+  document.addEventListener('visibilitychange',()=>{if(!document.hidden)kickVideos();});
+  document.addEventListener('v3:modechange',kickVideos);
 
   const visibleMedia=el=>[...el.querySelectorAll('.hero__bg video,.hero__bg img,.head__bg video,.head__bg img')].find(m=>getComputedStyle(m).display!=='none');
 
