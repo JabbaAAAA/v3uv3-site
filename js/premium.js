@@ -1,10 +1,9 @@
-// Couche « premium » (23/11/2026) : scroll fluide, curseur maison, bandeaux défilants,
+// Couche « premium » (23/11/2026) : scroll fluide, bandeaux défilants,
 // fond qui vit au scroll (zoom + assombrissement, poussière, rayons).
 // Tout se coupe si le visiteur a demandé « réduire les animations ».
 (function () {
   'use strict';
   const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
-  const finePointer = matchMedia('(pointer: fine)').matches;
   const G = window.gsap, ST = window.ScrollTrigger;
   const $ = (s, r = document) => r.querySelector(s), $$ = (s, r = document) => [...r.querySelectorAll(s)];
   const VIEW = { jpeg: 'visual', wav: 'audio', plugin: 'plugin' };
@@ -37,27 +36,7 @@
     });
   }
 
-  // ---------- 2. Curseur maison (souris uniquement) ----------
-  if (finePointer && !reduced && G) {
-    const cur = document.createElement('div');
-    cur.className = 'cur';
-    cur.setAttribute('aria-hidden', 'true');
-    cur.innerHTML = '<span class="cur__label"></span>';
-    document.body.appendChild(cur);
-    const label = cur.firstChild;
-    const xTo = G.quickTo(cur, 'x', { duration: 0.35, ease: 'power3' });
-    const yTo = G.quickTo(cur, 'y', { duration: 0.35, ease: 'power3' });
-    addEventListener('pointermove', (e) => { xTo(e.clientX); yTo(e.clientY); cur.classList.add('on'); }, { passive: true });
-    document.addEventListener('pointerleave', () => cur.classList.remove('on'));
-    document.addEventListener('pointerover', (e) => {
-      const el = e.target.closest('.work[data-video], .work[data-img], a, button, [role="button"], input, textarea, label');
-      cur.classList.remove('big', 'link');
-      if (!el) return;
-      if (el.matches('.work[data-video]')) { label.textContent = 'LIRE'; cur.classList.add('big'); }
-      else if (el.matches('.work[data-img]')) { label.textContent = 'VOIR'; cur.classList.add('big'); }
-      else cur.classList.add('link');
-    });
-  }
+  // (curseur maison retiré le 23/11/2026 à la demande de Loïc : souris normale)
 
   // ---------- 3. Bandeaux défilants ----------
   $$('.marquee').forEach((m, i) => {
