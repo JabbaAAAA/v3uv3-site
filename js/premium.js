@@ -12,6 +12,25 @@
   // (scroll fluide Lenis et curseur maison retirés le 23/11/2026 à la demande de Loïc :
   //  molette et souris normales)
 
+  // ---------- Gros titres 3D : effet gelée au clic ----------
+  // écrasé → étiré → tremblement élastique, puis retour au repos (transform-origin en bas)
+  const jelly = (el) => {
+    if (!G || reduced) return;
+    G.killTweensOf(el);
+    G.timeline()
+      .to(el, { scaleX: 1.13, scaleY: 0.82, skewX: 0, duration: 0.09, ease: 'power2.out' })
+      .to(el, { scaleX: 0.9, scaleY: 1.14, duration: 0.11, ease: 'power2.inOut' })
+      .to(el, { scaleX: 1, scaleY: 1, duration: 1.2, ease: 'elastic.out(1.15, 0.22)' })
+      .fromTo(el, { skewX: 5 }, { skewX: 0, duration: 1.3, ease: 'elastic.out(1, 0.18)' }, 0.09);
+  };
+  // délégation : l'intro du hero (motion.js) réécrit le <h1> et recrée l'image
+  $$('.title3d').forEach((img) => { img.setAttribute('role', 'button'); img.setAttribute('tabindex', '0'); });
+  document.addEventListener('click', (e) => { const t = e.target.closest('.title3d'); if (t) jelly(t); });
+  document.addEventListener('keydown', (e) => {
+    const t = e.target.closest && e.target.closest('.title3d');
+    if (t && (e.key === 'Enter' || e.key === ' ')) { e.preventDefault(); jelly(t); }
+  });
+
   // ---------- 3. Bandeaux défilants ----------
   $$('.marquee').forEach((m, i) => {
     const track = $('.marquee__track', m);
