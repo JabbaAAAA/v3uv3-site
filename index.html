@@ -175,6 +175,9 @@
   main.view>section:not(.hero){background:linear-gradient(to bottom,transparent,var(--bg) 320px)}
   .hero__bg video,.hero__bg img{width:100%;height:100%;object-fit:cover;object-position:46% 48%;opacity:.75;transform:perspective(1100px) scale(1.15) rotateX(var(--prx,0deg)) rotateY(var(--pry,0deg)) translate3d(var(--ptx,0px),var(--pty,0px),0) translateY(var(--spy,0px));transform-origin:center;transition:opacity .4s var(--ease);will-change:transform}
   .hero:hover .hero__bg video,.hero:hover .hero__bg img{opacity:.9}
+  /* fond JPEG (œil Blender) : démarre sous la barre du menu pour qu'on voie le haut du bâton */
+  .view-visual .hero__bg{top:74px}
+  .view-visual .hero__bg video{transform:none !important}
   .hero__bg::after{content:"";position:absolute;inset:0;background:linear-gradient(90deg,var(--bg) 8%,color-mix(in srgb,var(--bg) 55%,transparent) 60%,transparent),linear-gradient(0deg,var(--bg),transparent 40%)}
   .hero .badge{display:inline-flex;align-items:center;gap:9px;font-family:"Nunito";font-weight:700;font-size:.78rem;letter-spacing:.08em;text-transform:uppercase;color:var(--acc-2);width:max-content;margin-bottom:30px}
   .hero h1{font-family:"Space Grotesk",sans-serif;font-weight:700;font-size:clamp(3rem,13vw,11rem);line-height:.86;letter-spacing:.005em;text-transform:uppercase;color:var(--acc);text-shadow:0 0 50px color-mix(in srgb,var(--acc) 55%,transparent),0 0 110px color-mix(in srgb,var(--acc) 30%,transparent)}
@@ -563,7 +566,7 @@
 
   <header id="header">
     <div class="head__bg">
-      <img class="head__art" data-for="jpeg" src="img/fond3d-jpeg2.jpg" alt="" loading="eager">
+      <img class="head__art" data-for="jpeg" src="img/fond-oeil-blender.jpg" alt="" loading="eager">
       <img class="head__art" data-for="wav" src="img/fond3d-wav.jpg" alt="" loading="eager">
       <img class="head__art" data-for="plugin" src="img/fond3d-plugin.jpg" alt="" loading="eager">
     </div>
@@ -618,7 +621,7 @@
   <!-- ================= VUE VISUELLE (.JPEG) ================= -->
   <main class="view view-visual">
     <section class="hero" id="top">
-      <div class="hero__bg"><video src="videos/fond-jpeg2.mp4" poster="img/fond3d-jpeg2.jpg" autoplay muted loop playsinline preload="auto" aria-hidden="true"></video></div>
+      <div class="hero__bg"><video src="videos/fond-oeil-blender.mp4" poster="img/fond-oeil-blender.jpg" autoplay muted loop playsinline preload="auto" aria-hidden="true"></video></div>
       <div class="badge"><span data-i18n="hero_badge_v">Disponible pour collaborations</span></div>
       <h1 class="h1-3d"><img class="title3d" src="img/titre3d-final-jpeg.webp" alt="V3UV3.JPEG" width="2140" height="394" loading="eager" draggable="false"></h1>
       <div class="roles" data-i18n="hero_roles_v">3D VFX / Motion / Montage / Design</div>
