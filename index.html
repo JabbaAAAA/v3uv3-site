@@ -91,6 +91,9 @@
     box-shadow:0 8px 30px rgba(0,0,0,.35);backdrop-filter:blur(6px)}
   .works-cat{font-size:1.55rem !important;color:var(--ink) !important;letter-spacing:.06em}
   .works-cat::before{content:"";width:10px;height:10px;border-radius:2px;background:var(--acc);flex:none}
+  /* plugin pas encore en vente (en attente de validation Moonbase) : liens d'achat désactivés */
+  .is-off{opacity:.4;pointer-events:none;cursor:not-allowed;text-decoration:line-through;filter:grayscale(1)}
+  .soon{display:inline-flex;align-items:center;gap:8px;font-family:"V3UV3 Hand","Nunito",sans-serif;text-transform:uppercase;letter-spacing:.06em;font-size:1.05rem;color:#fff;background:var(--acc,#E5322D);padding:7px 16px;border-radius:999px;margin:0 0 14px}
   .eyebrow{font-family:"Nunito";font-weight:700;font-size:.78rem;letter-spacing:.14em;text-transform:uppercase;color:var(--acc);display:flex;align-items:center;gap:14px}
   .eyebrow::before{content:"";width:34px;height:1px;background:var(--acc)}
 
@@ -870,7 +873,8 @@
           <p class="tagline" data-i18n="pm_tagline">Fait main. Sonne pro.</p>
           <p class="lede" data-i18n="pm_lede">Une chaîne de mastering complète en sept modules, avec un bouton AUTO qui règle toute la chaîne en écoutant ton morceau. Glisse une référence et il copie sa couleur, son volume et sa largeur stéréo.</p>
           <div class="tags"><span>VST3 · AU</span><span>macOS 11+ (Apple Silicon / Intel)</span><span>Windows 64 bits</span></div>
-          <a class="cta" href="https://v3uv3-prodution.moonbase.sh/download/v3uv3-master" target="_blank" rel="noopener" data-i18n="pm_trial">Essai gratuit 24 heures</a><a class="cta ghost" href="master.html" data-i18n="pm_more">Voir la fiche complète</a>
+          <div class="soon" data-i18n="pm_soon">Bientôt disponible</div>
+          <a class="cta is-off" data-href="https://v3uv3-prodution.moonbase.sh/download/v3uv3-master" aria-disabled="true" tabindex="-1" data-i18n="pm_trial">Essai gratuit 24 heures</a><a class="cta ghost" href="master.html" data-i18n="pm_more">Voir la fiche complète</a>
         </div>
       </article>
 
@@ -890,14 +894,14 @@
           <div class="sub" data-i18n="pm_buy_s">Licence à vie</div>
           <div class="amt">89 €<small data-i18n="pm_buy_u"> une fois</small></div>
           <ul><li data-i18n="pm_buy_l1">La licence est à toi pour toujours.</li><li data-i18n="pm_buy_l2">2 ordinateurs par licence.</li></ul>
-          <a class="cta" href="https://v3uv3-prodution.moonbase.sh/buy/v3uv3-master" target="_blank" rel="noopener" data-i18n="pm_buy_cta">Acheter</a>
+          <a class="cta is-off" data-href="https://v3uv3-prodution.moonbase.sh/buy/v3uv3-master" aria-disabled="true" tabindex="-1" data-i18n="pm_buy_cta">Acheter</a>
         </div>
         <div class="price reveal">
           <h3 data-i18n="pm_sub_t">Abonnement</h3>
           <div class="sub" data-i18n="pm_sub_s">Sans engagement</div>
           <div class="amt">9 €<small data-i18n="pm_sub_u"> / mois</small></div>
           <ul><li data-i18n="pm_sub_l1">Tu arrêtes quand tu veux.</li><li data-i18n="pm_sub_l2">Actif tant que l'abonnement l'est.</li></ul>
-          <a class="cta" href="https://v3uv3-prodution.moonbase.sh/buy/v3uv3-master?variation=mensuel" target="_blank" rel="noopener" data-i18n="pm_sub_cta">S'abonner</a>
+          <a class="cta is-off" data-href="https://v3uv3-prodution.moonbase.sh/buy/v3uv3-master?variation=mensuel" aria-disabled="true" tabindex="-1" data-i18n="pm_sub_cta">S'abonner</a>
         </div>
       </div>
       <div class="price-note reveal" data-i18n="pm_trial_note">Essai gratuit de 24 heures, sans créer de compte. Installe, ouvre le plugin dans ton logiciel, clique sur « Activer ».</div>
@@ -1043,6 +1047,7 @@
     pk_t:"Pack 5 tracks · Mix + Master",
     pk_d:"Ton EP complet mixé et masterisé, avec le même son du premier au dernier titre.",
     pk_save:"−50 €",
+    pm_soon:"Bientôt disponible",
     lang_label:"Langue"
   },
   "en":{
@@ -1119,6 +1124,7 @@
     pk_t:"5-track pack · Mix + Master",
     pk_d:"Your whole EP mixed and mastered, with the same sound from the first track to the last.",
     pk_save:"−€50",
+    pm_soon:"Coming soon",
     lang_label:"Language"
   },
   "es-ES":{
@@ -1195,6 +1201,7 @@
     pk_t:"Pack 5 tracks · Mezcla + Máster",
     pk_d:"Tu EP completo mezclado y masterizado, con el mismo sonido del primer al último tema.",
     pk_save:"−50 €",
+    pm_soon:"Próximamente",
     lang_label:"Idioma"
   },
   "es-419":{
@@ -1271,6 +1278,7 @@
     pk_t:"Pack 5 tracks · Mezcla + Máster",
     pk_d:"Tu EP completo mezclado y masterizado, con el mismo sonido del primer al último tema.",
     pk_save:"−50 €",
+    pm_soon:"Próximamente",
     lang_label:"Idioma"
   },
   "ru":{
@@ -1347,6 +1355,7 @@
     pk_t:"Пакет 5 треков · сведение + мастеринг",
     pk_d:"Весь твой EP сведён и отмастерен, с одинаковым звуком от первого до последнего трека.",
     pk_save:"−50 €",
+    pm_soon:"Скоро в продаже",
     lang_label:"Язык"
   },
   "ja":{
@@ -1423,6 +1432,7 @@
     pk_t:"5トラックパック · ミックス＋マスター",
     pk_d:"EP全体をミックス＆マスタリング。1曲目から最後まで同じサウンドで。",
     pk_save:"−50€",
+    pm_soon:"近日発売",
     lang_label:"言語"
   },
   "ko":{
@@ -1499,6 +1509,7 @@
     pk_t:"5트랙 패키지 · 믹스 + 마스터",
     pk_d:"EP 전체를 믹싱하고 마스터링해, 첫 곡부터 마지막 곡까지 같은 사운드로.",
     pk_save:"−50€",
+    pm_soon:"곧 출시",
     lang_label:"언어"
   },
   "zh":{
@@ -1575,6 +1586,7 @@
     pk_t:"5 首套餐 · 混音 + 母带",
     pk_d:"整张 EP 混音加母带，从第一首到最后一首声音统一。",
     pk_save:"−50€",
+    pm_soon:"即将上线",
     lang_label:"语言"
   }
 };
