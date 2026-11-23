@@ -80,8 +80,9 @@
     border-bottom:1px solid transparent;transition:border-color .4s var(--ease),padding .4s var(--ease)}
   header.scrolled{border-bottom-color:var(--line-2);padding:14px 5vw}
   .head__bg{position:absolute;inset:0;z-index:0;overflow:hidden;pointer-events:none}
-  .head__bg::after{content:"";position:absolute;inset:0;background:color-mix(in srgb,var(--bg) 78%,transparent);transition:background .4s var(--ease)}
-  header.scrolled .head__bg::after{background:color-mix(in srgb,var(--bg) 92%,transparent)}
+  .head__bg{background:linear-gradient(180deg,#050404 0%,#0b0908 100%)}
+  .head__bg::after{content:"";position:absolute;left:0;right:0;bottom:0;height:1px;background:linear-gradient(90deg,transparent,#d62828 30%,#d62828 70%,transparent);opacity:.55}
+  .head__art{display:none !important} /* barre du haut : noir uni, plus d'image derrière (23/11/2026) */
   .head__art{width:100%;height:100%;object-fit:cover;object-position:50% 45%;opacity:.8;
     transform:perspective(900px) scale(1.3) rotateX(var(--prx,0deg)) rotateY(var(--pry,0deg)) translate3d(var(--ptx,0px),var(--pty,0px),0) translateY(var(--spy,0px));
     transform-origin:center;transition:opacity .4s var(--ease);will-change:transform}
@@ -91,8 +92,8 @@
   .brand b{color:var(--acc)}
   .brand-text{display:none}
   .brand-logo{display:none}
-  .brand-logo img{height:58px;width:auto;display:block}
-  @media (max-width:600px){.brand-logo img{height:42px}}
+  .brand-logo img{height:78px;width:auto;display:block}
+  @media (max-width:600px){.brand-logo img{height:56px}}
   body[data-mode="jpeg"] .brand-logo[data-for="jpeg"],
   body[data-mode="wav"] .brand-logo[data-for="wav"],
   body[data-mode="plugin"] .brand-logo[data-for="plugin"]{display:block}
@@ -188,6 +189,18 @@
   .filters button.on,.filters button:hover{color:var(--acc-ink);background:var(--acc);border-color:var(--acc)}
 
   .works-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:24px}
+  .works-grid.reels{grid-template-columns:repeat(3,1fr);max-width:980px}
+  .works-cat{display:flex;align-items:center;gap:14px;font-family:"Nunito";font-weight:700;font-size:.78rem;letter-spacing:.16em;text-transform:uppercase;color:var(--acc);margin:56px 0 22px}
+  .works-cat:first-of-type{margin-top:8px}
+  .works-cat::after{content:"";flex:1;height:1px;background:var(--line-2)}
+  .work.tall .work__media{aspect-ratio:9/16}
+  .work.square .work__media{aspect-ratio:1/1}
+  .work.tall .work__meta{flex-direction:column;align-items:flex-start;padding:14px 16px}
+  .work.tall .work__meta h3{font-size:1.1rem}
+  .work__media video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+  .lb__inner video{display:none;width:100%;height:100%;background:#000;border-radius:var(--radius)}
+  .lb__inner.vid video{display:block}
+  .lb__inner.vid iframe{display:none}
   .work{position:relative;overflow:hidden;border:1px solid var(--line-2);background:var(--bg-2);text-align:left;width:100%;border-radius:var(--radius);transition:border-color .3s var(--ease),transform .3s var(--ease)}
   .work.hide{display:none}
   .work:hover{border-color:var(--acc);transform:translateY(-4px);box-shadow:0 20px 40px -22px rgba(0,0,0,.6)}
@@ -309,6 +322,13 @@
   .contact h2{font-family:"Space Grotesk";font-weight:700;font-size:clamp(2.4rem,8vw,6rem);text-transform:uppercase;line-height:.95;margin:26px 0 18px;color:var(--ink)}
   .contact .mail{display:inline-block;font-family:"Space Grotesk";font-weight:700;font-size:clamp(1.4rem,4vw,2.4rem);text-transform:uppercase;color:var(--acc);border-bottom:2px solid transparent;transition:border-color .3s var(--ease)}
   .contact .mail:hover{border-bottom-color:var(--acc)}
+  .ct-lead{max-width:560px;margin:18px auto 0;color:var(--dim);font-size:1rem;line-height:1.6}
+  .ct-ways{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin:26px 0 8px}
+  .ct-way{display:inline-flex;align-items:center;gap:10px;font-family:"Nunito";font-weight:700;font-size:.9rem;letter-spacing:.03em;color:var(--ink);border:1px solid var(--line);border-radius:999px;padding:12px 22px;transition:border-color .25s var(--ease),color .25s var(--ease),background .25s var(--ease)}
+  .ct-way:hover{border-color:var(--acc);color:var(--acc)}
+  .ct-way.main{background:var(--acc);border-color:var(--acc);color:var(--acc-ink)}
+  .ct-way.main:hover{background:transparent;color:var(--acc)}
+  .ct-way i{width:8px;height:8px;border-radius:50%;background:currentColor;opacity:.8}
   .socials{display:flex;gap:14px;justify-content:center;margin-top:40px;flex-wrap:wrap}
   .socials a,.socials button{display:inline-flex;align-items:center;gap:8px;font-family:"Nunito";font-weight:600;font-size:.85rem;letter-spacing:.03em;color:var(--ink);border:1px solid var(--line);border-radius:var(--radius);padding:11px 22px;transition:.25s var(--ease)}
   .socials a:hover,.socials button:hover{border-color:var(--acc);color:var(--acc)}
@@ -373,11 +393,40 @@
   .landing.leaving{opacity:0;filter:blur(22px);pointer-events:none}
   .landing::before{content:"";position:absolute;inset:0;pointer-events:none;opacity:.05;mix-blend-mode:overlay;
     background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='220'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")}
-  .landing__mark{width:min(1040px,92vw);height:min(572px,50.6vw);flex:none;position:relative;z-index:1}
-  .landing__video{display:block;width:100%;height:100%;object-fit:contain}
+  .landing{background:#000;justify-content:flex-end;padding:0 5vw 9vh}
+  .landing::before{display:none}
+  .landing__mark{position:absolute;inset:0;z-index:0}
+  .landing__video{display:block;width:100%;height:100%;object-fit:cover}
+  @media (max-aspect-ratio:4/3){.landing__video{object-fit:contain}}
   .landing__nav{display:flex;width:min(760px,90vw);justify-content:space-between;align-items:center;position:relative;z-index:1}
   .landing__btn{font-family:"Nunito";font-weight:700;font-size:.72rem;letter-spacing:.08em;text-transform:uppercase;color:var(--dim);border:1px solid var(--line);border-radius:var(--radius);padding:9px 24px;background:transparent;transition:border-color .2s var(--ease),color .2s var(--ease)}
   .landing__btn:hover{border-color:var(--btn-acc);color:var(--btn-acc)}
+
+  /* ---- couche premium (js/premium.js, 23/11/2026) ---- */
+  html.lenis,html.lenis body{height:auto}
+  .lenis.lenis-smooth{scroll-behavior:auto !important}
+  .lenis.lenis-stopped{overflow:hidden}
+  .cur{position:fixed;left:0;top:0;z-index:99999;pointer-events:none;width:34px;height:34px;margin:-17px 0 0 -17px;
+    border:1px solid rgba(255,244,230,.55);border-radius:50%;display:grid;place-items:center;opacity:0;
+    transition:width .3s var(--ease),height .3s var(--ease),margin .3s var(--ease),background .3s var(--ease),border-color .3s var(--ease),opacity .3s}
+  .cur.on{opacity:1}
+  .cur.link{width:54px;height:54px;margin:-27px 0 0 -27px;border-color:#d62828}
+  .cur.big{width:92px;height:92px;margin:-46px 0 0 -46px;background:#d62828;border-color:#d62828}
+  .cur__label{font-family:"Space Grotesk";font-weight:700;font-size:.78rem;letter-spacing:.14em;color:#fff;opacity:0;transition:opacity .2s}
+  .cur.big .cur__label{opacity:1}
+  .marquee{overflow:hidden;padding:46px 0;border-top:1px solid var(--line-2);border-bottom:1px solid var(--line-2);position:relative;z-index:1}
+  .marquee__track{display:flex;width:max-content;white-space:nowrap}
+  .marquee__track span{font-family:"Space Grotesk";font-weight:700;text-transform:uppercase;font-size:clamp(2.6rem,8vw,7.5rem);line-height:1;
+    padding-right:.45em;color:transparent;-webkit-text-stroke:1px color-mix(in srgb,var(--ink) 38%,transparent)}
+  .marquee__track span:nth-child(3n+2){color:var(--ink);-webkit-text-stroke:0}
+  .marquee__track span:nth-child(3n){color:#d62828;-webkit-text-stroke:0}
+  .hero__rays{position:absolute;inset:-20%;pointer-events:none;mix-blend-mode:screen;opacity:.16;
+    background:conic-gradient(from 200deg at 70% -10%,transparent 0deg,rgba(255,60,50,.55) 8deg,transparent 18deg,transparent 30deg,rgba(255,240,220,.35) 36deg,transparent 46deg,transparent 360deg);
+    filter:blur(28px);animation:rays 14s ease-in-out infinite alternate}
+  @keyframes rays{from{transform:rotate(-4deg) translateX(-2%)}to{transform:rotate(5deg) translateX(3%)}}
+  .dust{position:absolute;inset:0;pointer-events:none}
+  .modewipe img{position:absolute;left:50%;top:50%;width:min(340px,56vw);transform:translate(-50%,-50%);opacity:0}
+  .modewipe::after{content:"";position:absolute;left:0;right:0;bottom:0;height:3px;background:#d62828}
 
   footer{border-top:1px solid var(--line-2);position:relative;z-index:10}
   footer .inner{max-width:1180px;margin:0 auto;padding:30px 5vw;display:flex;justify-content:space-between;align-items:center;font-family:"Nunito";font-weight:600;font-size:.78rem;color:var(--dim-2);letter-spacing:.03em;flex-wrap:wrap;gap:12px}
@@ -388,7 +437,7 @@
   /* ---- motion design avancé (scroll) : voir js/motion.js ---- */
   .lmask{display:block;overflow:hidden}
   .lmask .lline{display:block;will-change:transform}
-  .modewipe{position:fixed;inset:0;z-index:5000;background:var(--acc);transform:scaleY(0);transform-origin:top;pointer-events:none}
+  .modewipe{position:fixed;inset:0;z-index:5000;background:#070606;clip-path:inset(0 0 100% 0);pointer-events:none}
   .wavebars{position:absolute;inset:0;display:flex;align-items:center;justify-content:space-between;gap:2%;padding:0 4%;pointer-events:none;opacity:.45}
   .wavebars span{display:block;width:3px;flex:none;border-radius:2px;background:linear-gradient(var(--acc),transparent);height:16px}
   @media(prefers-reduced-motion:reduce){.wavebars{display:none}}
@@ -396,7 +445,11 @@
   @media(max-width:860px){
     .navlinks{display:none}
     .about-grid{grid-template-columns:1fr;gap:40px}
-    .works-grid,.svc-grid,.price-grid,.plug-grid{grid-template-columns:1fr}
+    .svc-grid,.price-grid,.plug-grid{grid-template-columns:1fr}
+    .works-grid{grid-template-columns:1fr;gap:16px}
+    .works-grid.reels{grid-template-columns:repeat(2,1fr)}
+    .work.tall .work__meta{flex-direction:column;align-items:flex-start;padding:14px}
+    .work.tall .work__meta h3{font-size:1.05rem}
     .tool-row{grid-template-columns:1fr;gap:14px;padding:24px 6px}
     .tr-tags{justify-content:flex-start}
     .player{grid-template-columns:1fr}.player__art{max-width:140px}
@@ -417,7 +470,7 @@
 
 <body class="pre-entry" data-mode="jpeg" data-lang="fr">
 
-  <div class="modewipe" id="modewipe" aria-hidden="true"></div>
+  <div class="modewipe" id="modewipe" aria-hidden="true"><img src="img/logo-v3uv3.png" alt=""></div>
 
   <svg aria-hidden="true" style="position:absolute;width:0;height:0;overflow:hidden">
     <defs>
@@ -435,8 +488,8 @@
 
   <section class="landing" id="landing" aria-label="Accueil V3UV3">
     <div class="landing__mark" role="img" aria-label="V3UV3, studio créatif indépendant">
-      <video id="introGlass" class="landing__video" poster="img/landing-poster.jpg" muted playsinline preload="auto">
-        <source src="img/landing-break.mp4" type="video/mp4">
+      <video id="introGlass" class="landing__video" poster="img/landing-intro-poster.jpg" autoplay muted playsinline preload="auto">
+        <source src="img/landing-intro.mp4" type="video/mp4">
       </video>
     </div>
     <nav class="landing__nav">
@@ -448,21 +501,21 @@
 
   <header id="header">
     <div class="head__bg">
-      <img class="head__art" data-for="jpeg" src="img/hero-jpeg.jpg" alt="" loading="eager">
-      <img class="head__art" data-for="wav" src="img/hero-wav.jpg" alt="" loading="eager">
-      <img class="head__art" data-for="plugin" src="img/hero-plugin.jpg" alt="" loading="eager">
+      <img class="head__art" data-for="jpeg" src="img/fond-jpeg.jpg" alt="" loading="eager">
+      <img class="head__art" data-for="wav" src="img/fond-wav.jpg" alt="" loading="eager">
+      <img class="head__art" data-for="plugin" src="img/fond-plugin.jpg" alt="" loading="eager">
     </div>
     <div class="head-left">
       <a href="#top" class="brand brand-text">V3UV3<b id="ext">.JPEG</b></a>
-      <a href="#top" class="brand-logo" data-for="jpeg"><img src="img/logo-jpeg.png" alt="V3UV3" loading="eager"></a>
-      <a href="#top" class="brand-logo" data-for="wav"><img src="img/logo-wav.png" alt="V3UV3" loading="eager"></a>
-      <a href="#top" class="brand-logo" data-for="plugin"><img src="img/logo-plugin.png" alt="V3UV3" loading="eager"></a>
+      <a href="#top" class="brand-logo" data-for="jpeg"><img src="img/logo-v3uv3.png" alt="V3UV3" loading="eager"></a>
+      <a href="#top" class="brand-logo" data-for="wav"><img src="img/logo-v3uv3.png" alt="V3UV3" loading="eager"></a>
+      <a href="#top" class="brand-logo" data-for="plugin"><img src="img/logo-v3uv3.png" alt="V3UV3" loading="eager"></a>
     </div>
     <div class="head-right">
       <nav class="navlinks" data-for="jpeg">
-        <a href="#v-about"><span>01</span><i data-i18n="nav_info">Info</i></a>
-        <a href="#v-tools"><span>02</span><i data-i18n="nav_skills">Compétences</i></a>
-        <a href="#v-works"><span>03</span><i data-i18n="nav_works">Projets</i></a>
+        <a href="#v-works"><span>01</span><i data-i18n="nav_works">Réalisations</i></a>
+        <a href="#v-about"><span>02</span><i data-i18n="nav_info">Info</i></a>
+        <a href="#v-tools"><span>03</span><i data-i18n="nav_skills">Compétences</i></a>
         <a href="#contact-v"><span>04</span><i data-i18n="nav_contact">Contact</i></a>
       </nav>
       <nav class="navlinks" data-for="wav">
@@ -502,7 +555,7 @@
   <!-- ================= VUE VISUELLE (.JPEG) ================= -->
   <main class="view view-visual">
     <section class="hero" id="top">
-      <div class="hero__bg"><img src="img/hero-jpeg.jpg" alt="" loading="eager"></div>
+      <div class="hero__bg"><img src="img/fond-jpeg.jpg" alt="" loading="eager"></div>
       <div class="badge"><i></i><span data-i18n="hero_badge_v">Disponible pour collaborations</span></div>
       <h1>V3UV3.JPEG</h1>
       <div class="roles" data-i18n="hero_roles_v">3D VFX / Motion / Montage / Design</div>
@@ -510,6 +563,49 @@
       <div class="scrolldown" data-i18n="scroll">DÉFILER</div>
     </section>
 
+    <!-- RÉALISATIONS <<< MODIFIER : une vidéo = un bloc .work (data-video = fichier complet, <video> = aperçu en boucle). Paysage dans le 1er groupe, vertical (.tall) dans « Reels ». -->
+    <section id="v-works">
+      <div class="sec-head reveal"><div class="eyebrow" data-i18n="ey_works">01 / Réalisations</div><h2 data-i18n="works_h">Clips, VFX &amp; reels</h2></div>
+      <h3 class="works-cat reveal">Clips · VFX · 3D</h3>
+      <div class="works-grid">
+        <button class="work reveal" data-video="videos/pointcloud.mp4">
+          <div class="work__media"><video src="videos/pointcloud-apercu.mp4" poster="videos/pointcloud.jpg" muted loop playsinline autoplay preload="metadata" aria-hidden="true"></video><div class="work__play"><span class="icon-wrap"><svg class="icon icon-24" aria-hidden="true"><use href="#icon-play"></use></svg></span></div></div>
+          <div class="work__meta"><h3>Point Cloud<small>Nuage de points en temps réel</small></h3><span class="work__tag">TouchDesigner</span></div>
+        </button>
+        <button class="work reveal" data-video="videos/genery.mp4">
+          <div class="work__media"><video src="videos/genery-apercu.mp4" poster="videos/genery.jpg" muted loop playsinline autoplay preload="metadata" aria-hidden="true"></video><div class="work__play"><span class="icon-wrap"><svg class="icon icon-24" aria-hidden="true"><use href="#icon-play"></use></svg></span></div></div>
+          <div class="work__meta"><h3>Genery<small>Clip · nuage de points</small></h3><span class="work__tag">VFX</span></div>
+        </button>
+        <button class="work reveal" data-video="videos/carton.mp4">
+          <div class="work__media"><video src="videos/carton-apercu.mp4" poster="videos/carton.jpg" muted loop playsinline autoplay preload="metadata" aria-hidden="true"></video><div class="work__play"><span class="icon-wrap"><svg class="icon icon-24" aria-hidden="true"><use href="#icon-play"></use></svg></span></div></div>
+          <div class="work__meta"><h3>Carton<small>VFX 2D · découpe papier</small></h3><span class="work__tag">After Effects</span></div>
+        </button>
+      </div>
+      <h3 class="works-cat reveal">Reels</h3>
+      <div class="works-grid reels">
+        <button class="work reveal tall" data-video="videos/jabba360.mp4" data-portrait>
+          <div class="work__media"><video src="videos/jabba360-apercu.mp4" poster="videos/jabba360.jpg" muted loop playsinline autoplay preload="metadata" aria-hidden="true"></video><div class="work__play"><span class="icon-wrap"><svg class="icon icon-24" aria-hidden="true"><use href="#icon-play"></use></svg></span></div></div>
+          <div class="work__meta"><h3>JABBA360<small>Personnage 3D · reel</small></h3><span class="work__tag">Blender</span></div>
+        </button>
+        <button class="work reveal tall" data-video="videos/reel-master.mp4" data-portrait>
+          <div class="work__media"><video src="videos/reel-master-apercu.mp4" poster="videos/reel-master.jpg" muted loop playsinline autoplay preload="metadata" aria-hidden="true"></video><div class="work__play"><span class="icon-wrap"><svg class="icon icon-24" aria-hidden="true"><use href="#icon-play"></use></svg></span></div></div>
+          <div class="work__meta"><h3>V3UV3 Master<small>Reel promo du plugin</small></h3><span class="work__tag">Montage</span></div>
+        </button>
+        <button class="work reveal tall" data-video="videos/reel-twitch.mp4" data-portrait>
+          <div class="work__media"><video src="videos/reel-twitch-apercu.mp4" poster="videos/reel-twitch.jpg" muted loop playsinline autoplay preload="metadata" aria-hidden="true"></video><div class="work__play"><span class="icon-wrap"><svg class="icon icon-24" aria-hidden="true"><use href="#icon-play"></use></svg></span></div></div>
+          <div class="work__meta"><h3>Redif live Twitch<small>Montage vertical d'un live</small></h3><span class="work__tag">Montage</span></div>
+        </button>
+      </div>
+      <h3 class="works-cat reveal">Covers</h3>
+      <div class="works-grid reels">
+        <button class="work reveal square" data-cat="covers" data-img>
+          <div class="work__media"><img src="img/op5idor-cover.jpg" alt="J3YKO — OP5IDOR, cover"></div>
+          <div class="work__meta"><h3>J3YKO — OP5IDOR<small data-i18n="w_cov1_s">…</small></h3><span class="work__tag">Cover</span></div>
+        </button>
+      </div>
+    </section>
+
+    <div class="marquee" aria-hidden="true"><div class="marquee__track"><span>Clips</span><span>VFX</span><span>3D</span><span>Motion</span><span>Montage</span><span>Reims</span></div></div>
     <section id="v-about">
       <div class="eyebrow reveal" data-i18n="ey_info">01 / Info</div>
       <div class="about-grid">
@@ -540,21 +636,19 @@
       </div>
     </section>
 
-    <!-- PROJETS <<< MODIFIER (copie un bloc .work avec data-img et une image dans img/) -->
-    <section id="v-works">
-      <div class="sec-head reveal"><div class="eyebrow" data-i18n="ey_works">03 / Projets</div><h2 data-i18n="works_h">Travaux sélectionnés</h2></div>
-      <div class="works-grid">
-        <button class="work reveal" data-cat="covers" data-img>
-          <div class="work__media"><img src="img/op5idor-cover.jpg" alt="J3YKO — OP5IDOR, cover"></div>
-          <div class="work__meta"><h3>J3YKO — OP5IDOR<small data-i18n="w_cov1_s">…</small></h3><span class="work__tag">Cover</span></div>
-        </button>
-      </div>
-    </section>
 
+    <div class="marquee" aria-hidden="true"><div class="marquee__track"><span>On en parle ?</span><span>Studio</span><span>Reims</span><span>On en parle ?</span><span>Studio</span><span>Reims</span></div></div>
     <section id="contact-v" class="contact">
       <div class="eyebrow reveal" style="justify-content:center" data-i18n="ey_contact_v">04 / Contact</div>
       <h2 class="reveal" data-i18n="contact_v_h" data-i18n-html>Travaillons<br>ensemble</h2>
       <a class="mail reveal" href="mailto:V3UV3@proton.me">V3UV3@proton.me</a>
+      <p class="ct-lead reveal" data-i18n="ct_lead">On te répond vite. Et si c'est plus simple de se parler, on s'appelle ou on se voit en visio.</p>
+      <!-- MOYENS DE CONTACT <<< Discord : remplacer le href par le lien d'invitation quand il existe -->
+      <div class="ct-ways reveal">
+        <a class="ct-way main" href="https://wa.me/33695206025?text=Salut%20V3UV3%20%21%20Je%20viens%20du%20site%2C%20j%27ai%20un%20projet%20vid%C3%A9o%20%C3%A0%20vous%20pr%C3%A9senter." target="_blank" rel="noopener"><i></i><span data-i18n="ct_wa">WhatsApp</span></a>
+        <a class="ct-way" href="mailto:V3UV3@proton.me?subject=Visio%20Discord"><i></i><span data-i18n="ct_discord">Visio Discord</span></a>
+        <a class="ct-way" href="mailto:V3UV3@proton.me"><i></i><span data-i18n="ct_mail">E-mail</span></a>
+      </div>
       <div class="cform reveal" data-form>
         <input type="text" name="name" data-i18n-ph="cf_name" placeholder="Ton nom">
         <input type="email" name="email" data-i18n-ph="cf_email" placeholder="Ton email">
@@ -568,7 +662,7 @@
   <!-- ================= VUE AUDIO (.WAV) ================= -->
   <main class="view view-audio">
     <section class="hero" id="top-a">
-      <div class="hero__bg"><img src="img/hero-wav.jpg" alt="" loading="eager"></div>
+      <div class="hero__bg"><img src="img/fond-wav.jpg" alt="" loading="eager"></div>
       <div class="badge"><i></i><span data-i18n="hero_badge_a">Studio ouvert</span></div>
       <h1>V3UV3.WAV</h1>
       <div class="roles" data-i18n="hero_roles_a">Enregistrement / Mix & Mastering / Prod sur mesure</div>
@@ -603,6 +697,7 @@
       </div>
     </section>
 
+    <div class="marquee" aria-hidden="true"><div class="marquee__track"><span>Enregistrement</span><span>Mix</span><span>Mastering</span><span>Prod</span><span>Reims</span><span>Live</span></div></div>
     <section id="a-prices">
       <div class="sec-head reveal"><div class="eyebrow" data-i18n="ey_prices">03 / Tarifs</div><h2 data-i18n="prices_h">Grille tarifaire</h2></div>
       <div class="price-grid">
@@ -664,10 +759,18 @@
       <div class="embed reveal" data-i18n="embed_txt">Intègre ici ta playlist SoundCloud ou Spotify.</div>
     </section>
 
+    <div class="marquee" aria-hidden="true"><div class="marquee__track"><span>On réserve ?</span><span>Studio</span><span>Reims</span><span>On réserve ?</span><span>Studio</span><span>Reims</span></div></div>
     <section id="contact-a" class="contact">
       <div class="eyebrow reveal" style="justify-content:center" data-i18n="ey_contact_a">05 / Contact</div>
       <h2 class="reveal" data-i18n="contact_a_h" data-i18n-html>Réservons<br>une session</h2>
       <a class="mail reveal" href="mailto:V3UV3@proton.me">V3UV3@proton.me</a>
+      <p class="ct-lead reveal" data-i18n="ct_lead">On te répond vite. Et si c'est plus simple de se parler, on s'appelle ou on se voit en visio.</p>
+      <!-- MOYENS DE CONTACT <<< Discord : remplacer le href par le lien d'invitation quand il existe -->
+      <div class="ct-ways reveal">
+        <a class="ct-way main" href="https://wa.me/33695206025?text=Salut%20V3UV3%20%21%20Je%20viens%20du%20site%2C%20j%27aimerais%20r%C3%A9server%20une%20session%20au%20studio." target="_blank" rel="noopener"><i></i><span data-i18n="ct_wa">WhatsApp</span></a>
+        <a class="ct-way" href="mailto:V3UV3@proton.me?subject=Visio%20Discord"><i></i><span data-i18n="ct_discord">Visio Discord</span></a>
+        <a class="ct-way" href="mailto:V3UV3@proton.me"><i></i><span data-i18n="ct_mail">E-mail</span></a>
+      </div>
       <div class="cform reveal" data-form>
         <input type="text" name="name" data-i18n-ph="cf_name" placeholder="Ton nom">
         <input type="email" name="email" data-i18n-ph="cf_email" placeholder="Ton email">
@@ -681,7 +784,7 @@
   <!-- ================= VUE PLUGINS (.PLUGIN) ================= -->
   <main class="view view-plugin">
     <section class="hero" id="top-p">
-      <div class="hero__bg"><img src="img/hero-plugin.jpg" alt="" loading="eager"></div>
+      <div class="hero__bg"><img src="img/fond-plugin.jpg" alt="" loading="eager"></div>
       <div class="badge"><i></i><span data-i18n="hero_badge_p">Plugins disponibles</span></div>
       <h1>V3UV3.PLUGIN</h1>
       <div class="roles" data-i18n="hero_roles_p">Plugins audio / VST3 / AU</div>
@@ -733,6 +836,7 @@
       <div class="price-note reveal" data-i18n="pm_trial_note">Essai gratuit de 24 heures, sans créer de compte. Installe, ouvre le plugin dans ton logiciel, clique sur « Activer ».</div>
     </section>
 
+    <div class="marquee" aria-hidden="true"><div class="marquee__track"><span>Fait main</span><span>VST3</span><span>AU</span><span>Mac</span><span>Windows</span><span>Reims</span></div></div>
     <section id="p-info">
       <div class="sec-head reveal"><div class="eyebrow" data-i18n="ey_pinfo">02 / Infos</div><h2 data-i18n="pinfo_h">Ce que tu obtiens</h2></div>
       <div class="svc-grid">
@@ -751,10 +855,18 @@
       </div>
     </section>
 
+    <div class="marquee" aria-hidden="true"><div class="marquee__track"><span>Une question ?</span><span>Fait main</span><span>Reims</span><span>Une question ?</span><span>Fait main</span><span>Reims</span></div></div>
     <section id="contact-p" class="contact">
       <div class="eyebrow reveal" style="justify-content:center" data-i18n="ey_contact_p">04 / Contact</div>
       <h2 class="reveal" data-i18n="contact_p_h" data-i18n-html>Une question<br>sur un plugin ?</h2>
       <a class="mail reveal" href="mailto:V3UV3@proton.me">V3UV3@proton.me</a>
+      <p class="ct-lead reveal" data-i18n="ct_lead">On te répond vite. Et si c'est plus simple de se parler, on s'appelle ou on se voit en visio.</p>
+      <!-- MOYENS DE CONTACT <<< Discord : remplacer le href par le lien d'invitation quand il existe -->
+      <div class="ct-ways reveal">
+        <a class="ct-way main" href="https://wa.me/33695206025?text=Salut%20V3UV3%20%21%20Je%20viens%20du%20site%2C%20j%27ai%20une%20question%20sur%20un%20plugin." target="_blank" rel="noopener"><i></i><span data-i18n="ct_wa">WhatsApp</span></a>
+        <a class="ct-way" href="mailto:V3UV3@proton.me?subject=Visio%20Discord"><i></i><span data-i18n="ct_discord">Visio Discord</span></a>
+        <a class="ct-way" href="mailto:V3UV3@proton.me"><i></i><span data-i18n="ct_mail">E-mail</span></a>
+      </div>
       <div class="cform reveal" data-form>
         <input type="text" name="name" data-i18n-ph="cf_name" placeholder="Ton nom">
         <input type="email" name="email" data-i18n-ph="cf_email" placeholder="Ton email">
@@ -773,11 +885,14 @@
     <button class="mini__x" id="miniX" aria-label="Fermer le lecteur"><svg class="icon icon-16" aria-hidden="true"><use href="#icon-close"></use></svg></button>
   </div>
 
-  <div class="lb" id="lb"><div class="lb__inner" id="lbInner"><div class="lb__close" id="lbClose"><span data-i18n="lb_close">Fermer</span><svg class="icon icon-16" aria-hidden="true"><use href="#icon-close"></use></svg></div><iframe id="lbFrame" allow="autoplay; fullscreen" allowfullscreen></iframe><img id="lbImg" alt=""><a class="lb__ig" id="lbIg" target="_blank" rel="noopener"><span>Instagram</span><svg class="icon icon-16" aria-hidden="true"><use href="#icon-external"></use></svg></a></div></div>
+  <div class="lb" id="lb"><div class="lb__inner" id="lbInner"><div class="lb__close" id="lbClose"><span data-i18n="lb_close">Fermer</span><svg class="icon icon-16" aria-hidden="true"><use href="#icon-close"></use></svg></div><iframe id="lbFrame" allow="autoplay; fullscreen" allowfullscreen></iframe><video id="lbVid" controls playsinline></video><img id="lbImg" alt=""><a class="lb__ig" id="lbIg" target="_blank" rel="noopener"><span>Instagram</span><svg class="icon icon-16" aria-hidden="true"><use href="#icon-external"></use></svg></a></div></div>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
 <script type="module" src="js/motion.js"></script>
+<!-- Lenis 1.1.13 (MIT, darkroomengineering) copié en local : scroll fluide -->
+<script src="js/vendor/lenis.min.js"></script>
+<script src="js/premium.js" defer></script>
 <!-- Moonbase (vente du plugin V3UV3 MASTER) : optionnel, les liens d'achat/essai pointent
      directement vers Moonbase donc le site reste utilisable si ce script est hors-ligne.
      toolbar désactivée : sa barre flottante « Log in / Cart » (en haut à droite, z-index 9999)
@@ -794,18 +909,18 @@
   const I18N = {
   "fr":{
     landing_tag:"Choisis ton univers.",landing_jpeg:"Vidéo, VFX, montage",landing_wav:"Studio d'enregistrement",landing_plugin:"Plugins audio",
-    nav_info:"Info",nav_skills:"Compétences",nav_works:"Projets",nav_contact:"Contact",
+    nav_info:"Info",nav_skills:"Compétences",nav_works:"Réalisations",nav_contact:"Contact",
     nav_studio:"Studio",nav_services:"Services",nav_prices:"Tarifs",nav_listen:"Écouter",
-    hero_badge_v:"Disponible pour collaborations",
+    hero_badge_v:"Studio basé à Reims · on t'accompagne de A à Z",
     hero_roles_v:"3D VFX / Motion / Montage / Design",
-    hero_lead_v:"Artiste visuel. Clips, VFX, montage (format reel TikTok / réseaux & YouTube) et design graphique, de l'idée au rendu final.",
+    hero_lead_v:"On est un studio de production à Reims. Clips, VFX, montage pour les réseaux et YouTube, pochettes : on s'occupe de tout, de l'idée au fichier final, et on avance avec toi à chaque étape.",
     scroll:"DÉFILER",
-    ey_info:"01 / Info",about_v_h:"Créer des images<br>qui restent",
-    about_v_p1:"Je travaille la 3D, le motion design, le montage et le temps réel pour des artistes, des marques et des projets personnels, du clip à l'installation.",
-    about_v_p2:"Une chaîne complète, de l'idée au rendu final : direction artistique forte, matière soignée, et un résultat qui sert l'émotion plutôt que l'effet.",
+    ey_info:"02 / Info",about_v_h:"Des humains<br>derrière l'écran",
+    about_v_p1:"V3UV3, c'est un studio de production installé à Reims. On fait de la 3D, du motion design, du montage et du temps réel pour des artistes, des marques et des projets perso, du clip complet au reel de 30 secondes.",
+    about_v_p2:"On commence toujours par en parler avec toi, pour comprendre ce que tu veux vraiment. Ensuite on te montre l'avancement au fur et à mesure, et on ajuste ensemble jusqu'à ce que ça te ressemble. Tu n'es jamais seul face à un formulaire.",
     f_name:"Nom",f_spec:"Spécialité",f_status:"Statut",f_based:"Basé en",f_studio:"Studio son",
-    v_spec:"VFX / Clip",v_status:"Disponible",v_based:"France",
-    ey_skills:"02 / Compétences",skills_h:"Mon environnement",
+    v_spec:"VFX / Clip",v_status:"Disponible",v_based:"Reims, France",
+    ey_skills:"03 / Compétences",skills_h:"Nos outils",
     sk_blender_d:"Modélisation, simulation, lighting et rendu. Création de scènes 3D complètes.",
     sk_ae_d:"Compositing, motion design et intégration d'effets visuels.",
     sk_pr_d:"Montage clips, format reel (TikTok / réseaux) et YouTube : étalonnage, rythme, finition et export multi-formats.",
@@ -813,19 +928,19 @@
     sk_design_d:"Covers & pochettes d'album / track, affiches, stickers et slides réseaux sociaux. Réalisés sur Procreate Pro.",
     sk_ableton_d:"Sound design et production sonore : ambiances, design d'effets, mix.",
     sk_pro:"Niveau pro",
-    ey_works:"03 / Projets",works_h:"Travaux sélectionnés",f_all:"Tous",
+    ey_works:"01 / Réalisations",works_h:"Clips, VFX & reels",f_all:"Tous",
     w1_t:"Visualizer",w1_s:"Visualizer audio · 3D",w2_t:"Nervoso",w2_s:"Clip · effets spéciaux · réal. Thelemy Studio",
-    ey_contact_v:"04 / Contact",contact_v_h:"Travaillons<br>ensemble",
-    cf_name:"Ton nom",cf_email:"Ton email",cf_msg_v:"Ton projet...",cf_send:"Envoyer",lb_close:"Fermer",foot_legal:"Mentions légales",foot_privacy:"Confidentialité",
+    ey_contact_v:"04 / Contact",contact_v_h:"On en parle<br>ensemble ?",
+    cf_name:"Ton nom",cf_email:"Ton email",cf_msg_v:"Raconte-nous ton projet : l'idée, le délai, le budget si tu l'as déjà…",cf_send:"Envoyer",lb_close:"Fermer",foot_legal:"Mentions légales",foot_privacy:"Confidentialité",
     to_wav:"Studio V3UV3.WAV",to_jpeg:"Côté visuel V3UV3.JPEG",
-    hero_badge_a:"Studio ouvert · sessions sur rendez-vous",
+    hero_badge_a:"Studio à Reims · sessions sur rendez-vous",
     hero_roles_a:"Enregistrement / Mix & Mastering / Prod sur mesure",
-    hero_lead_a:"Studio de production musicale. De la prise de son au master final : un son propre, puissant et signé. Groupes rock / métal bienvenus.",
+    hero_lead_a:"Notre studio d'enregistrement est à Reims. De la prise de son au master final, on t'accompagne sur tout le morceau, avec un vrai échange à chaque étape. Groupes rock / métal bienvenus.",
     ey_studio:"01 / Studio",about_a_h:"Du micro<br>au master",
-    about_a_p1:"V3UV3.WAV accompagne artistes et projets sur toute la chaîne sonore : enregistrement, mixage, mastering et production originale.",
-    about_a_p2:"Configuration pensée pour les groupes rock et métal comme pour les productions électroniques : guitare, ampli, basse, voix, et une suite de plugins haut de gamme.",
+    about_a_p1:"Au studio V3UV3.WAV, on enregistre, on mixe, on masterise et on produit. Tu n'envoies pas tes pistes dans le vide : on écoute ton morceau avec toi avant de commencer, et on te fait des retours tout au long.",
+    about_a_p2:"Le studio est pensé pour les groupes rock et métal comme pour l'électro : guitare, ampli, basse, voix, et une suite de plugins haut de gamme. Tu peux venir sur place à Reims ou travailler à distance, on te suit de la même façon.",
     fa_studio:"Studio",fa_domain:"Domaine",fa_domain_v:"Musique",fa_sessions:"Sessions",fa_sessions_v:"Sur RDV",fa_genres:"Genres",fa_genres_v:"Rock / Métal / Élec",fa_visual:"Côté visuel",
-    ey_services:"02 / Services",services_h:"Ce que je propose",
+    ey_services:"02 / Services",services_h:"Ce qu'on te propose",
     sv_rec_t:"Enregistrement",sv_rec_d:"Prise de son voix, guitare, ampli et basse. Captation propre, direction artistique en session. Groupes rock / métal et productions électroniques.",
     sv_mix_t:"Mix & Mastering",sv_mix_d:"Mixage tous styles puis mastering final : équilibre, profondeur, largeur et niveau prêt pour la diffusion.",
     sv_prod_t:"Prod sur mesure",sv_prod_d:"Composition et production originales, tous styles : beats, instrus et arrangements taillés pour ton univers.",
@@ -837,7 +952,7 @@
     pr_pack_t:"Pack 5 tracks",pr_pack_s:"Mix + Master, tarif dégressif",pr_pack_u:" / 5 tracks",
     pr_pack_l1:"30 € le track (au lieu de 40 €)",pr_pack_l2:"Soit 50 € d'économie",pr_pack_l3:"Idéal EP / projet complet",
     pr_book:"Réserver",
-    pr_note:"<b>Prod sur mesure :</b> composition originale tous styles, sur devis selon le projet. <b>Dégressif :</b> à partir de 5 tracks, le mix + master passe à 30 € le track (5 tracks = 150 € au lieu de 200 €). Prix nets, TVA non applicable (art. 293 B du CGI).",
+    pr_note:"<b>Prod sur mesure :</b> composition originale tous styles, sur devis selon le projet. <b>Dégressif :</b> à partir de 5 tracks, le mix + master passe à 30 € le track (5 tracks = 150 € au lieu de 200 €). Pas sûr de ce qu'il te faut ? On en parle d'abord, sans engagement. Prix nets, TVA non applicable (art. 293 B du CGI).",
     g_mat:"Matériel",g_mat_s:"Studio",g_mat_d:"Drone électronique, guitare + ampli, basse. Micro voix de référence.",
     g_gtr:"Guitare",g_gtr_s:"Plugins",g_gtr_d:"Pour les tons saturés rock / métal comme pour les cleans.",
     g_bass:"Basse",g_bass_s:"Plugins",g_bass_d:"Basse virtuelle et ré-amplification.",
@@ -845,9 +960,10 @@
     g_mstr:"Mastering",g_mstr_s:"Plugins & écoute",g_mstr_d:"Chaîne de mastering complète et monitoring dédié.",
     ey_listen:"04 / Écouter",listen_h:"Productions",ab_lab:"A/B MASTERING :",ab_raw:"Brut",ab_master:"Masterisé",ab_play:"Écouter l'extrait",
     pl_select:"Sélectionne un titre",embed_txt:"Intègre ici ta playlist SoundCloud ou Spotify.",
-    ey_contact_a:"05 / Contact",contact_a_h:"Réservons<br>une session",cf_msg_a:"Ton projet musical, style, nombre de tracks...",
-    nav_catalog:"Catalogue",nav_pinfo:"Infos",nav_faq:"FAQ",hero_badge_p:"Plugins disponibles",hero_roles_p:"Plugins audio / VST3 / AU",hero_lead_p:"Des plugins audio conçus au studio V3UV3. Télécharge, installe, et fais sonner tes projets.",ey_catalog:"01 / Catalogue",catalog_h:"Les plugins",plug_soon_h:"Premiers plugins en préparation",plug_soon_p:"Le catalogue n'est pas encore en ligne. Écris-moi via le formulaire plus bas pour être prévenu dès la sortie du premier plugin.",ey_pinfo:"02 / Infos",pinfo_h:"Ce que tu obtiens",pi1_t:"Téléchargement instantané",pi1_d:"Dès l'achat, tu reçois ton lien de téléchargement.",pi2_t:"Mises à jour",pi2_d:"Les mises à jour du plugin sont incluses.",pi3_t:"Support direct",pi3_d:"Une question ou un souci ? Tu écris directement à la personne qui l'a créé.",ey_faq:"03 / FAQ",faq_h:"Questions fréquentes",q1:"Quels formats et systèmes sont compatibles ?",a1:"Pour V3UV3 MASTER : VST3 et AU sur macOS 11 ou plus récent (Apple Silicon et Intel), VST3 sur Windows 64 bits.",pm_brand:"V3UV3 PRODUCTION · PLUGIN DE MASTERING",pm_tagline:"Fait main. Sonne pro.",pm_lede:"Une chaîne de mastering complète en sept modules, avec un bouton AUTO qui règle toute la chaîne en écoutant ton morceau. Glisse une référence et il copie sa couleur, son volume et sa largeur stéréo.",pm_trial:"Essai gratuit 24 heures",pm_more:"Voir la fiche complète",pm_mod1_t:"Spectral",pm_mod1_d:"Cinq bandes qui coupent seulement quand une zone ressort trop. Tu les déplaces à la souris, directement sur le spectre.",pm_mod2_t:"Bus comp",pm_mod2_d:"Glue soude le mix sur trois bandes. Detail remonte les petits détails cachés sous le seuil.",pm_mod3_t:"Saturation",pm_mod3_d:"Quatre couleurs : Clean, Tube, Tape et Transfo. Un circuit à diodes modélisé, suréchantillonné 8 fois, à volume compensé.",pm_mod4_t:"Width",pm_mod4_d:"Élargit les médiums et les aigus sans toucher au centre. Un bouton met tout ce qui est sous 150 Hz en mono.",pm_mod5_t:"Low / Air",pm_mod5_d:"Low ajoute du poids avec des harmoniques, et Sub une octave plus bas. Air fait briller tout ce qui est au-dessus de 7 kHz.",pm_mod6_t:"Clipper",pm_mod6_d:"Arrondit les crêtes avant le limiteur, pour gagner du volume sans que le son pompe.",pm_mod7_t:"Limiteur true peak",pm_mod7_d:"Anticipe de 1,5 ms et mesure les crêtes comme un vrai compteur true peak : rien ne dépasse ton plafond.",pm_buy_t:"Achat",pm_buy_s:"Licence à vie",pm_buy_u:" une fois",pm_buy_l1:"La licence est à toi pour toujours.",pm_buy_l2:"2 ordinateurs par licence.",pm_buy_cta:"Acheter",pm_sub_t:"Abonnement",pm_sub_s:"Sans engagement",pm_sub_u:" / mois",pm_sub_l1:"Tu arrêtes quand tu veux.",pm_sub_l2:"Actif tant que l'abonnement l'est.",pm_sub_cta:"S'abonner",pm_trial_note:"Essai gratuit de 24 heures, sans créer de compte. Installe, ouvre le plugin dans ton logiciel, clique sur « Activer ».",q2:"Comment j'installe un plugin ?",a2:"Après l'achat, tu reçois un lien de téléchargement par e-mail. Lance l'installeur, puis ouvre le plugin dans ton DAW.",q3:"J'ai un problème, que faire ?",a3:"Écris-moi via le formulaire ci-dessous ou par e-mail, je te réponds dès que possible.",ey_contact_p:"04 / Contact",contact_p_h:"Une question<br>sur un plugin ?",cf_msg_p:"Ta question sur un plugin...",to_plugin:"Plugins V3UV3.PLUGIN",
+    ey_contact_a:"05 / Contact",contact_a_h:"On réserve<br>ta session ?",cf_msg_a:"Ton projet musical, style, nombre de tracks...",
+    nav_catalog:"Catalogue",nav_pinfo:"Infos",nav_faq:"FAQ",hero_badge_p:"Plugins faits main à Reims",hero_roles_p:"Plugins audio / VST3 / AU",hero_lead_p:"Des plugins audio conçus et codés dans notre studio à Reims. Derrière chaque plugin, il y a quelqu'un qui le connaît par cœur et qui te répond.",ey_catalog:"01 / Catalogue",catalog_h:"Les plugins",plug_soon_h:"Premiers plugins en préparation",plug_soon_p:"Le catalogue n'est pas encore en ligne. Écris-nous via le formulaire plus bas pour être prévenu dès la sortie du premier plugin.",ey_pinfo:"02 / Infos",pinfo_h:"Ce que tu obtiens",pi1_t:"Téléchargement instantané",pi1_d:"Dès l'achat, tu reçois ton lien de téléchargement.",pi2_t:"Mises à jour",pi2_d:"Les mises à jour du plugin sont incluses.",pi3_t:"Un vrai accompagnement",pi3_d:"Une question ou un souci ? Tu parles directement à la personne qui a codé le plugin, et on t'aide jusqu'à ce que ça marche chez toi.",ey_faq:"03 / FAQ",faq_h:"Questions fréquentes",q1:"Quels formats et systèmes sont compatibles ?",a1:"Pour V3UV3 MASTER : VST3 et AU sur macOS 11 ou plus récent (Apple Silicon et Intel), VST3 sur Windows 64 bits.",pm_brand:"V3UV3 PRODUCTION · PLUGIN DE MASTERING",pm_tagline:"Fait main. Sonne pro.",pm_lede:"Une chaîne de mastering complète en sept modules, avec un bouton AUTO qui règle toute la chaîne en écoutant ton morceau. Glisse une référence et il copie sa couleur, son volume et sa largeur stéréo.",pm_trial:"Essai gratuit 24 heures",pm_more:"Voir la fiche complète",pm_mod1_t:"Spectral",pm_mod1_d:"Cinq bandes qui coupent seulement quand une zone ressort trop. Tu les déplaces à la souris, directement sur le spectre.",pm_mod2_t:"Bus comp",pm_mod2_d:"Glue soude le mix sur trois bandes. Detail remonte les petits détails cachés sous le seuil.",pm_mod3_t:"Saturation",pm_mod3_d:"Quatre couleurs : Clean, Tube, Tape et Transfo. Un circuit à diodes modélisé, suréchantillonné 8 fois, à volume compensé.",pm_mod4_t:"Width",pm_mod4_d:"Élargit les médiums et les aigus sans toucher au centre. Un bouton met tout ce qui est sous 150 Hz en mono.",pm_mod5_t:"Low / Air",pm_mod5_d:"Low ajoute du poids avec des harmoniques, et Sub une octave plus bas. Air fait briller tout ce qui est au-dessus de 7 kHz.",pm_mod6_t:"Clipper",pm_mod6_d:"Arrondit les crêtes avant le limiteur, pour gagner du volume sans que le son pompe.",pm_mod7_t:"Limiteur true peak",pm_mod7_d:"Anticipe de 1,5 ms et mesure les crêtes comme un vrai compteur true peak : rien ne dépasse ton plafond.",pm_buy_t:"Achat",pm_buy_s:"Licence à vie",pm_buy_u:" une fois",pm_buy_l1:"La licence est à toi pour toujours.",pm_buy_l2:"2 ordinateurs par licence.",pm_buy_cta:"Acheter",pm_sub_t:"Abonnement",pm_sub_s:"Sans engagement",pm_sub_u:" / mois",pm_sub_l1:"Tu arrêtes quand tu veux.",pm_sub_l2:"Actif tant que l'abonnement l'est.",pm_sub_cta:"S'abonner",pm_trial_note:"Essai gratuit de 24 heures, sans créer de compte. Installe, ouvre le plugin dans ton logiciel, clique sur « Activer ».",q2:"Comment j'installe un plugin ?",a2:"Après l'achat, tu reçois un lien de téléchargement par e-mail. Lance l'installeur, puis ouvre le plugin dans ton DAW.",q3:"J'ai un problème, que faire ?",a3:"Écris-nous depuis le bas de la page : on te répond vite, et si c'est plus simple, on règle ça ensemble en direct.",ey_contact_p:"04 / Contact",contact_p_h:"Une question<br>sur un plugin ?",cf_msg_p:"Ta question sur un plugin...",to_plugin:"Plugins V3UV3.PLUGIN",
     f_reels:"Reels",f_covers:"Covers",w_reel_b:"Extrait Blender · format reel",w_reel_ae:"After Effects + Blender · format reel",w_cov1_s:"Cover d'album · Trap / DMV",w_cov2_s:"Visuel tracklist · Trap / DMV",
+    ct_lead:"On te répond vite. Et si c'est plus simple de se parler, on s'appelle ou on se voit en visio.",ct_wa:"WhatsApp",ct_discord:"Visio Discord",ct_mail:"E-mail",
     lang_label:"Langue"
   },
   "en":{
@@ -858,12 +974,12 @@
     hero_roles_v:"3D VFX / Motion / Editing / Design",
     hero_lead_v:"Visual artist. Music videos, VFX, editing (reel format for TikTok / socials & YouTube) and graphic design, from concept to final render.",
     scroll:"SCROLL",
-    ey_info:"01 / Info",about_v_h:"Making images<br>that last",
+    ey_info:"02 / Info",about_v_h:"Making images<br>that last",
     about_v_p1:"I work in 3D, motion design, editing and real-time for artists, brands and personal projects, from music videos to installations.",
     about_v_p2:"A full pipeline, from idea to final render: a strong art direction, refined texture, and a result that serves emotion rather than effect.",
     f_name:"Name",f_spec:"Specialty",f_status:"Status",f_based:"Based in",f_studio:"Sound studio",
     v_spec:"VFX / Music video",v_status:"Available",v_based:"France",
-    ey_skills:"02 / Skills",skills_h:"My toolkit",
+    ey_skills:"03 / Skills",skills_h:"My toolkit",
     sk_blender_d:"Modeling, simulation, lighting and rendering. Building complete 3D scenes.",
     sk_ae_d:"Compositing, motion design and visual effects integration.",
     sk_pr_d:"Editing music videos, reel format (TikTok / socials) and YouTube: grading, pacing, finishing and multi-format export.",
@@ -871,7 +987,7 @@
     sk_design_d:"Album / track covers, posters, stickers and social media slides. Made in Procreate Pro.",
     sk_ableton_d:"Sound design and audio production: atmospheres, effect design, mixing.",
     sk_pro:"Pro level",
-    ey_works:"03 / Work",works_h:"Selected work",f_all:"All",
+    ey_works:"01 / Work",works_h:"Clips, VFX & reels",f_all:"All",
     w1_t:"Visualizer",w1_s:"Audio visualizer · 3D",w2_t:"Nervoso",w2_s:"Music video · VFX · dir. Thelemy Studio",
     ey_contact_v:"04 / Contact",contact_v_h:"Let's work<br>together",
     cf_name:"Your name",cf_email:"Your email",cf_msg_v:"Your project...",cf_send:"Send",lb_close:"Close",foot_legal:"Legal notice",foot_privacy:"Privacy",
@@ -916,12 +1032,12 @@
     hero_roles_v:"3D VFX / Motion / Montaje / Diseño",
     hero_lead_v:"Artista visual. Videoclips, VFX, montaje (formato reel para TikTok / redes y YouTube) y diseño gráfico, de la idea al render final.",
     scroll:"DESLIZA",
-    ey_info:"01 / Info",about_v_h:"Crear imágenes<br>que perduran",
+    ey_info:"02 / Info",about_v_h:"Crear imágenes<br>que perduran",
     about_v_p1:"Trabajo el 3D, el motion design, el montaje y el tiempo real para artistas, marcas y proyectos personales, del videoclip a la instalación.",
     about_v_p2:"Una cadena completa, de la idea al render final: una dirección artística sólida, materia cuidada y un resultado que sirve a la emoción más que al efecto.",
     f_name:"Nombre",f_spec:"Especialidad",f_status:"Estado",f_based:"Ubicación",f_studio:"Estudio de sonido",
     v_spec:"VFX / Videoclip",v_status:"Disponible",v_based:"Francia",
-    ey_skills:"02 / Habilidades",skills_h:"Mi entorno",
+    ey_skills:"03 / Habilidades",skills_h:"Mi entorno",
     sk_blender_d:"Modelado, simulación, iluminación y render. Creación de escenas 3D completas.",
     sk_ae_d:"Composición, motion design e integración de efectos visuales.",
     sk_pr_d:"Montaje de videoclips, formato reel (TikTok / redes) y YouTube: corrección de color, ritmo, acabado y exportación multiformato.",
@@ -929,7 +1045,7 @@
     sk_design_d:"Portadas de álbum / track, carteles, pegatinas y slides para redes sociales. Hechos en Procreate Pro.",
     sk_ableton_d:"Diseño de sonido y producción: ambientes, diseño de efectos, mezcla.",
     sk_pro:"Nivel pro",
-    ey_works:"03 / Proyectos",works_h:"Trabajos seleccionados",f_all:"Todos",
+    ey_works:"01 / Proyectos",works_h:"Trabajos seleccionados",f_all:"Todos",
     w1_t:"Visualizer",w1_s:"Visualizador de audio · 3D",w2_t:"Nervoso",w2_s:"Videoclip · VFX · dir. Thelemy Studio",
     ey_contact_v:"04 / Contacto",contact_v_h:"Trabajemos<br>juntos",
     cf_name:"Tu nombre",cf_email:"Tu email",cf_msg_v:"Tu proyecto...",cf_send:"Enviar",lb_close:"Cerrar",foot_legal:"Aviso legal",foot_privacy:"Privacidad",
@@ -974,12 +1090,12 @@
     hero_roles_v:"3D VFX / Motion / Edición / Diseño",
     hero_lead_v:"Artista visual. Videos musicales, VFX, edición (formato reel para TikTok / redes y YouTube) y diseño gráfico, de la idea al render final.",
     scroll:"DESLIZA",
-    ey_info:"01 / Info",about_v_h:"Crear imágenes<br>que perduran",
+    ey_info:"02 / Info",about_v_h:"Crear imágenes<br>que perduran",
     about_v_p1:"Trabajo el 3D, el motion design, la edición y el tiempo real para artistas, marcas y proyectos personales, del video musical a la instalación.",
     about_v_p2:"Una cadena completa, de la idea al render final: una dirección de arte sólida, textura cuidada y un resultado que sirve a la emoción más que al efecto.",
     f_name:"Nombre",f_spec:"Especialidad",f_status:"Estado",f_based:"Ubicación",f_studio:"Estudio de sonido",
     v_spec:"VFX / Video musical",v_status:"Disponible",v_based:"Francia",
-    ey_skills:"02 / Habilidades",skills_h:"Mi entorno",
+    ey_skills:"03 / Habilidades",skills_h:"Mi entorno",
     sk_blender_d:"Modelado, simulación, iluminación y render. Creación de escenas 3D completas.",
     sk_ae_d:"Composición, motion design e integración de efectos visuales.",
     sk_pr_d:"Edición de videos musicales, formato reel (TikTok / redes) y YouTube: colorización, ritmo, acabado y exportación multiformato.",
@@ -987,7 +1103,7 @@
     sk_design_d:"Portadas de álbum / track, afiches, calcomanías y slides para redes sociales. Hechos en Procreate Pro.",
     sk_ableton_d:"Diseño de sonido y producción: ambientes, diseño de efectos, mezcla.",
     sk_pro:"Nivel pro",
-    ey_works:"03 / Proyectos",works_h:"Trabajos seleccionados",f_all:"Todos",
+    ey_works:"01 / Proyectos",works_h:"Trabajos seleccionados",f_all:"Todos",
     w1_t:"Visualizer",w1_s:"Visualizador de audio · 3D",w2_t:"Nervoso",w2_s:"Video musical · VFX · dir. Thelemy Studio",
     ey_contact_v:"04 / Contacto",contact_v_h:"Trabajemos<br>juntos",
     cf_name:"Tu nombre",cf_email:"Tu correo",cf_msg_v:"Tu proyecto...",cf_send:"Enviar",lb_close:"Cerrar",foot_legal:"Aviso legal",foot_privacy:"Privacidad",
@@ -1032,12 +1148,12 @@
     hero_roles_v:"3D VFX / Моушн / Монтаж / Дизайн",
     hero_lead_v:"Визуальный художник. Клипы, VFX, монтаж (формат reel для TikTok / соцсетей и YouTube) и графический дизайн, от идеи до финального рендера.",
     scroll:"ВНИЗ",
-    ey_info:"01 / Инфо",about_v_h:"Образы,<br>что остаются",
+    ey_info:"02 / Инфо",about_v_h:"Образы,<br>что остаются",
     about_v_p1:"Работаю с 3D, моушн-дизайном, монтажом и реальным временем для артистов, брендов и личных проектов, от клипа до инсталляции.",
     about_v_p2:"Полный цикл, от идеи до финального рендера: сильная арт-дирекция, тщательная фактура и результат, который служит эмоции, а не эффекту.",
     f_name:"Имя",f_spec:"Специализация",f_status:"Статус",f_based:"Локация",f_studio:"Звуковая студия",
     v_spec:"VFX / Клип",v_status:"Доступен",v_based:"Франция",
-    ey_skills:"02 / Навыки",skills_h:"Мои инструменты",
+    ey_skills:"03 / Навыки",skills_h:"Мои инструменты",
     sk_blender_d:"Моделирование, симуляция, свет и рендер. Создание полных 3D-сцен.",
     sk_ae_d:"Композитинг, моушн-дизайн и интеграция визуальных эффектов.",
     sk_pr_d:"Монтаж клипов, формат reel (TikTok / соцсети) и YouTube: цветокоррекция, ритм, финиш и экспорт в разных форматах.",
@@ -1045,7 +1161,7 @@
     sk_design_d:"Обложки альбомов / треков, постеры, стикеры и слайды для соцсетей. Сделано в Procreate Pro.",
     sk_ableton_d:"Саунд-дизайн и продакшн: атмосферы, дизайн эффектов, сведение.",
     sk_pro:"Про-уровень",
-    ey_works:"03 / Проекты",works_h:"Избранные работы",f_all:"Все",
+    ey_works:"01 / Проекты",works_h:"Избранные работы",f_all:"Все",
     w1_t:"Visualizer",w1_s:"Аудио-визуализатор · 3D",w2_t:"Nervoso",w2_s:"Клип · VFX · реж. Thelemy Studio",
     ey_contact_v:"04 / Контакт",contact_v_h:"Давай<br>работать вместе",
     cf_name:"Ваше имя",cf_email:"Ваш email",cf_msg_v:"Ваш проект...",cf_send:"Отправить",lb_close:"Закрыть",foot_legal:"Юридическая информация",foot_privacy:"Конфиденциальность",
@@ -1090,12 +1206,12 @@
     hero_roles_v:"3D VFX / モーション / 編集 / デザイン",
     hero_lead_v:"ビジュアルアーティスト。MV、VFX、編集（TikTok・SNS向けリール／YouTube）、グラフィックデザイン, アイデアから最終レンダーまで。",
     scroll:"スクロール",
-    ey_info:"01 / 情報",about_v_h:"心に残る<br>映像をつくる",
+    ey_info:"02 / 情報",about_v_h:"心に残る<br>映像をつくる",
     about_v_p1:"アーティスト、ブランド、個人プロジェクトのために3D・モーションデザイン・編集・リアルタイムを手がけます, MVからインスタレーションまで。",
     about_v_p2:"アイデアから最終レンダーまでの一貫した制作：力強いアートディレクション、丁寧な質感、効果よりも感情に寄り添う仕上がり。",
     f_name:"名前",f_spec:"専門",f_status:"状況",f_based:"拠点",f_studio:"音響スタジオ",
     v_spec:"VFX / MV",v_status:"対応可",v_based:"フランス",
-    ey_skills:"02 / スキル",skills_h:"制作環境",
+    ey_skills:"03 / スキル",skills_h:"制作環境",
     sk_blender_d:"モデリング、シミュレーション、ライティング、レンダリング。完全な3Dシーン制作。",
     sk_ae_d:"コンポジット、モーションデザイン、VFXの統合。",
     sk_pr_d:"MV・リール（TikTok／SNS）・YouTubeの編集：カラーグレーディング、テンポ、仕上げ、マルチフォーマット書き出し。",
@@ -1103,7 +1219,7 @@
     sk_design_d:"アルバム／トラックのカバー、ポスター、ステッカー、SNSスライド。Procreate Proで制作。",
     sk_ableton_d:"サウンドデザインと音響制作：アンビエンス、エフェクト設計、ミックス。",
     sk_pro:"プロレベル",
-    ey_works:"03 / 作品",works_h:"選抜作品",f_all:"すべて",
+    ey_works:"01 / 作品",works_h:"選抜作品",f_all:"すべて",
     w1_t:"Visualizer",w1_s:"オーディオビジュアライザー · 3D",w2_t:"Nervoso",w2_s:"MV · VFX · 監督 Thelemy Studio",
     ey_contact_v:"04 / 連絡",contact_v_h:"一緒に<br>つくろう",
     cf_name:"お名前",cf_email:"メール",cf_msg_v:"プロジェクト内容...",cf_send:"送信",lb_close:"閉じる",foot_legal:"法的情報",foot_privacy:"プライバシー",
@@ -1148,12 +1264,12 @@
     hero_roles_v:"3D VFX / 모션 / 편집 / 디자인",
     hero_lead_v:"비주얼 아티스트. 뮤직비디오, VFX, 편집(TikTok·SNS용 릴/YouTube), 그래픽 디자인, 아이디어부터 최종 렌더까지.",
     scroll:"스크롤",
-    ey_info:"01 / 정보",about_v_h:"오래 남는<br>이미지를 만들다",
+    ey_info:"02 / 정보",about_v_h:"오래 남는<br>이미지를 만들다",
     about_v_p1:"아티스트, 브랜드, 개인 프로젝트를 위해 3D·모션 디자인·편집·실시간 작업을 합니다, 뮤직비디오부터 설치까지.",
     about_v_p2:"아이디어에서 최종 렌더까지 완결된 파이프라인: 강한 아트 디렉션, 정교한 질감, 효과보다 감정을 위한 결과.",
     f_name:"이름",f_spec:"전문",f_status:"상태",f_based:"위치",f_studio:"사운드 스튜디오",
     v_spec:"VFX / 뮤직비디오",v_status:"가능",v_based:"프랑스",
-    ey_skills:"02 / 역량",skills_h:"작업 환경",
+    ey_skills:"03 / 역량",skills_h:"작업 환경",
     sk_blender_d:"모델링, 시뮬레이션, 라이팅, 렌더링. 완전한 3D 씬 제작.",
     sk_ae_d:"합성, 모션 디자인, 시각 효과 통합.",
     sk_pr_d:"뮤직비디오·릴(TikTok/SNS)·YouTube 편집: 색보정, 리듬, 마무리, 멀티 포맷 내보내기.",
@@ -1161,7 +1277,7 @@
     sk_design_d:"앨범/트랙 커버, 포스터, 스티커, SNS 슬라이드. Procreate Pro로 제작.",
     sk_ableton_d:"사운드 디자인과 음향 제작: 분위기, 이펙트 디자인, 믹스.",
     sk_pro:"프로 레벨",
-    ey_works:"03 / 작업",works_h:"선별 작업",f_all:"전체",
+    ey_works:"01 / 작업",works_h:"선별 작업",f_all:"전체",
     w1_t:"Visualizer",w1_s:"오디오 비주얼라이저 · 3D",w2_t:"Nervoso",w2_s:"뮤직비디오 · VFX · 연출 Thelemy Studio",
     ey_contact_v:"04 / 연락",contact_v_h:"함께<br>작업해요",
     cf_name:"이름",cf_email:"이메일",cf_msg_v:"프로젝트 내용...",cf_send:"보내기",lb_close:"닫기",foot_legal:"법적 고지",foot_privacy:"개인정보",
@@ -1206,12 +1322,12 @@
     hero_roles_v:"3D VFX / 动态 / 剪辑 / 设计",
     hero_lead_v:"视觉艺术家。MV、VFX、剪辑（TikTok/社交 reel 与 YouTube）和平面设计, 从概念到最终渲染。",
     scroll:"向下滚动",
-    ey_info:"01 / 信息",about_v_h:"创造<br>留存的影像",
+    ey_info:"02 / 信息",about_v_h:"创造<br>留存的影像",
     about_v_p1:"为艺术家、品牌和个人项目从事 3D、动态设计、剪辑与实时制作, 从 MV 到装置。",
     about_v_p2:"从创意到最终渲染的完整流程：强烈的艺术指导、精致的质感，以及服务于情感而非炫技的成果。",
     f_name:"姓名",f_spec:"专长",f_status:"状态",f_based:"所在地",f_studio:"声音工作室",
     v_spec:"VFX / MV",v_status:"可接单",v_based:"法国",
-    ey_skills:"02 / 技能",skills_h:"我的工具",
+    ey_skills:"03 / 技能",skills_h:"我的工具",
     sk_blender_d:"建模、模拟、灯光与渲染。制作完整的 3D 场景。",
     sk_ae_d:"合成、动态设计与视觉特效整合。",
     sk_pr_d:"MV、reel（TikTok/社交）与 YouTube 剪辑：调色、节奏、收尾与多格式导出。",
@@ -1219,7 +1335,7 @@
     sk_design_d:"专辑/单曲封面、海报、贴纸与社交媒体幻灯片。使用 Procreate Pro 制作。",
     sk_ableton_d:"声音设计与音频制作：氛围、效果设计、混音。",
     sk_pro:"专业级",
-    ey_works:"03 / 作品",works_h:"精选作品",f_all:"全部",
+    ey_works:"01 / 作品",works_h:"精选作品",f_all:"全部",
     w1_t:"Visualizer",w1_s:"音频可视化 · 3D",w2_t:"Nervoso",w2_s:"MV · 视觉特效 · 导演 Thelemy Studio",
     ey_contact_v:"04 / 联系",contact_v_h:"一起<br>合作",
     cf_name:"你的名字",cf_email:"你的邮箱",cf_msg_v:"你的项目...",cf_send:"发送",lb_close:"关闭",foot_legal:"法律声明",foot_privacy:"隐私政策",
@@ -1432,12 +1548,14 @@
       modeBusy=true;
       const tl=gsap.timeline({onComplete:()=>{modeBusy=false;}});
       tl.to(prevView,{opacity:0,x:-40*dir,duration:.3,ease:'power2.in'},0)
-        .set(modewipe,{background:MODE_ACC[m],transformOrigin:'top',scaleY:0},0)
-        .to(modewipe,{scaleY:1,duration:.3,ease:'power3.inOut'},0)
+        .set(modewipe,{clipPath:'inset(0% 0% 100% 0%)'},0)
+        .set(modewipe.firstChild,{opacity:0,scale:.9},0)
+        .to(modewipe,{clipPath:'inset(0% 0% 0% 0%)',duration:.45,ease:'power3.inOut'},0)
+        .to(modewipe.firstChild,{opacity:1,scale:1,duration:.35,ease:'power2.out'},.2)
         .add(()=>{gsap.set(prevView,{clearProps:'opacity,transform'});apply();})
-        .set(modewipe,{transformOrigin:'bottom'})
-        .to(modewipe,{scaleY:0,duration:.35,ease:'power3.inOut'},'+=0.02');
-      setTimeout(()=>{if(tl.progress()<1)tl.progress(1);modeBusy=false;},500); // shortcut: filet de sécurité si l'onglet est masqué/throttle navigateur
+        .to(modewipe.firstChild,{opacity:0,scale:1.04,duration:.25,ease:'power2.in'},'+=0.25')
+        .to(modewipe,{clipPath:'inset(100% 0% 0% 0%)',duration:.5,ease:'power3.inOut'},'-=0.1');
+      setTimeout(()=>{if(tl.progress()<1)tl.progress(1);modeBusy=false;},1900); // shortcut: filet de sécurité si l'onglet est masqué/throttle navigateur
     }else{
       apply();
     }
@@ -1448,7 +1566,7 @@
   });
   $$('[data-goto]').forEach(b=>b.addEventListener('click',()=>setMode(b.dataset.goto)));
 
-  // ---- Page d'accueil : le logo éclate (vidéo Blender) pendant que la page choisie apparaît derrière ----
+  // ---- Page d'accueil : la vidéo d'intro joue en plein écran, un clic sur .JPEG / .WAV / .PLUGIN fond l'accueil ----
   (function(){
     const landing=$('#landing');
     if(!landing)return;
@@ -1458,16 +1576,9 @@
       setMode(m,true);
       document.body.classList.remove('pre-entry');
       document.dispatchEvent(new CustomEvent('v3:modechange',{detail:{mode:m}}));
-      if(reduced||!vid){landing.remove();return;}
-      vid.play();
-      let left=false;
-      const leave=()=>{
-        if(left)return;left=true;
-        landing.classList.add('leaving');
-        setTimeout(()=>landing.remove(),550);
-      };
-      vid.addEventListener('timeupdate',()=>{if(vid.duration&&vid.currentTime>=vid.duration*.55)leave();});
-      setTimeout(leave,1100);
+      if(reduced){landing.remove();return;}
+      landing.classList.add('leaving');
+      setTimeout(()=>landing.remove(),550);
     }));
   })();
   // Lien direct vers le mode plugin (ex. index.html#p-catalog depuis master.html) : on saute l'écran d'accueil
@@ -1495,14 +1606,16 @@
   function lockScroll(){scrollLocks++;document.body.style.overflow='hidden';}
   function unlockScroll(){scrollLocks=Math.max(0,scrollLocks-1);if(scrollLocks===0)document.body.style.overflow='';}
 
-  const lb=$('#lb'),lbf=$('#lbFrame'),lbi=$('#lbInner'),lbImg=$('#lbImg'),lbIg=$('#lbIg');
+  const lb=$('#lb'),lbf=$('#lbFrame'),lbi=$('#lbInner'),lbImg=$('#lbImg'),lbIg=$('#lbIg'),lbV=$('#lbVid');
   function showLB(cls){lbi.className='lb__inner'+(cls?' '+cls:'');lb.classList.add('open');lockScroll();}
   function openVid(id){lbf.src='https://www.youtube-nocookie.com/embed/'+id+'?autoplay=1&rel=0';showLB('');}
   function openIG(id){lbf.src='https://www.instagram.com/p/'+id+'/embed/';lbIg.href='https://www.instagram.com/p/'+id+'/';showLB('portrait');}
   function openImg(src,alt){lbImg.src=src;lbImg.alt=alt||'';showLB('pic');}
-  function closeLB(){if(!lb.classList.contains('open'))return;lb.classList.remove('open');lbf.src='';lbImg.removeAttribute('src');unlockScroll();}
+  function openFile(src,portrait){lbV.src=src;showLB('vid'+(portrait?' portrait':''));lbV.play().catch(()=>{});}
+  function closeLB(){if(!lb.classList.contains('open'))return;lb.classList.remove('open');lbf.src='';lbImg.removeAttribute('src');lbV.pause();lbV.removeAttribute('src');lbV.load();unlockScroll();}
   $$('.work[data-yt]').forEach(w=>w.addEventListener('click',()=>openVid(w.dataset.yt)));
   $$('.work[data-ig]').forEach(w=>w.addEventListener('click',()=>openIG(w.dataset.ig)));
+  $$('.work[data-video]').forEach(w=>w.addEventListener('click',()=>openFile(w.dataset.video,w.hasAttribute('data-portrait'))));
   $$('.work[data-img]').forEach(w=>w.addEventListener('click',()=>{const im=w.querySelector('img');openImg(im.src,im.alt);}));
   $('#lbClose').addEventListener('click',closeLB);
   lb.addEventListener('click',e=>{if(e.target===lb)closeLB();});

@@ -153,7 +153,8 @@ if (GSAP_OK && !REDUCED) {
         ScrollTrigger.matchMedia({
             '(min-width: 861px)': () => {
                 gsap.set(track, { display: 'flex', flexWrap: 'nowrap', width: 'max-content' });
-                gsap.set([...track.children], { flex: 'none', width: 'min(74vw,640px)' });
+                // même hauteur d'image pour toutes les cartes : les vidéos verticales (.tall) sont étroites, les horizontales larges
+                gsap.set([...track.children], { flex: 'none', width: (i, el) => el.classList.contains('tall') ? 'calc(min(56vh,460px) * 9 / 16)' : 'min(74vw, calc(min(56vh,460px) * 16 / 9))' });
                 const dist = () => Math.max(0, track.scrollWidth - window.innerWidth + 80);
                 const tween = gsap.to(track, {
                     x: () => -dist(), ease: 'none',
@@ -216,7 +217,8 @@ if (GSAP_OK && !REDUCED) {
         root.querySelectorAll('.about-grid h2, .sec-head h2').forEach(h => { revealHeading(h, { from: dir % 2 === 0 ? 'left' : 'right' }); dir++; });
         root.querySelectorAll('.contact h2').forEach(h => revealHeading(h, { from: 'bottom' }));
         root.querySelectorAll('.work__media img').forEach((img, i) => revealImage(img, ['bottom', 'left', 'right', 'top'][i % 4]));
-        if (mode === 'jpeg') initWorksGallery();
+        // galerie horizontale désactivée (23/11/2026) : réalisations en grille, paysage et vertical séparés
+        // if (mode === 'jpeg') initWorksGallery();
         if (mode === 'wav') initCardCascade('#a-services', 'wav');
         if (mode === 'plugin') initCardCascade('#p-info', 'plugin');
         ScrollTrigger.refresh();
