@@ -71,17 +71,26 @@ if (GSAP_OK && !REDUCED) {
     }
     function cardTilt(el, { lift = -4, max = 7 } = {}) {
         if (!FINE_HOVER) return;
-        gsap.set(el, { transformPerspective: 900 });
-        const qx = gsap.quickTo(el, 'rotationY', { duration: .4, ease: 'power3.out' });
-        const qy = gsap.quickTo(el, 'rotationX', { duration: .4, ease: 'power3.out' });
-        const qz = gsap.quickTo(el, 'y', { duration: .4, ease: 'power3.out' });
+        // GSAP ne prend la main qu'au premier survol, quand la carte est posée : lancé au
+        // chargement, il recopiait en inline l'état d'avant apparition de .reveal
+        // (translateY 64px, scale .94) et la carte restait décalée sur le bloc suivant (corrigé le 2026-11-23).
+        // shortcut: un survol pendant la transition d'apparition (0,9 s) fige encore l'état du moment ; rare, à revoir si ça se voit.
+        let qx, qy, qz;
+        el.addEventListener('mouseenter', () => {
+            if (qx) return;
+            gsap.set(el, { transformPerspective: 900 });
+            qx = gsap.quickTo(el, 'rotationY', { duration: .4, ease: 'power3.out' });
+            qy = gsap.quickTo(el, 'rotationX', { duration: .4, ease: 'power3.out' });
+            qz = gsap.quickTo(el, 'y', { duration: .4, ease: 'power3.out' });
+            pressFeedback(el);
+        });
         el.addEventListener('mousemove', e => {
+            if (!qx) return;
             const r = el.getBoundingClientRect();
             const px = (e.clientX - r.left) / r.width - .5, py = (e.clientY - r.top) / r.height - .5;
             qx(px * max); qy(py * -max); qz(lift);
         });
-        el.addEventListener('mouseleave', () => { qx(0); qy(0); qz(0); });
-        pressFeedback(el);
+        el.addEventListener('mouseleave', () => { if (qx) { qx(0); qy(0); qz(0); } });
     }
     function magnetic(el, strength = 12) {
         if (!FINE_HOVER) return;

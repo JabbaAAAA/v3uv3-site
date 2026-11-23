@@ -85,6 +85,8 @@
   .ct-lead{font-size:1.1rem;line-height:1.5;color:var(--ink)}
   /* 23/11/2026 : gros titres de parties, outils et contact dans la typo manuscrite ; badge et catégories plus visibles */
   main section h2,.tr-name,.tr-name small,.contact h2{font-family:"V3UV3 Hand","Space Grotesk",sans-serif !important;font-weight:400 !important;text-transform:uppercase;letter-spacing:.03em}
+  /* la typo manuscrite a des accents hauts et des virgules qui descendent : sur deux lignes, il lui faut plus d'interligne (23/11/2026) */
+  main section h2,.contact h2,.tr-name{line-height:1.18 !important}
   .tr-name small{letter-spacing:.06em}
   .hero .badge{font-size:1.28rem !important;color:#fff !important;padding:9px 18px;border-radius:999px;
     background:color-mix(in srgb,var(--acc) 24%,rgba(8,6,6,.72));border:1px solid color-mix(in srgb,var(--acc) 70%,transparent);
@@ -93,7 +95,7 @@
   .works-cat::before{content:"";width:10px;height:10px;border-radius:2px;background:var(--acc);flex:none}
   /* plugin pas encore en vente (en attente de validation Moonbase) : liens d'achat désactivés */
   .is-off{opacity:.4;pointer-events:none;cursor:not-allowed;text-decoration:line-through;filter:grayscale(1)}
-  .soon{display:inline-flex;align-items:center;gap:8px;font-family:"V3UV3 Hand","Nunito",sans-serif;text-transform:uppercase;letter-spacing:.06em;font-size:1.05rem;color:#fff;background:var(--acc,#E5322D);padding:7px 16px;border-radius:999px;margin:0 0 14px}
+  .soon{display:inline-flex;align-items:center;gap:8px;font-family:"V3UV3 Hand","Nunito",sans-serif;text-transform:uppercase;letter-spacing:.06em;font-size:1.05rem;color:#fff;background:var(--acc,#E5322D);padding:7px 16px;border-radius:999px;margin:16px 0 14px}
   .eyebrow{font-family:"Nunito";font-weight:700;font-size:.78rem;letter-spacing:.14em;text-transform:uppercase;color:var(--acc);display:flex;align-items:center;gap:14px}
   .eyebrow::before{content:"";width:34px;height:1px;background:var(--acc)}
 
@@ -197,6 +199,8 @@
 
   .tool-list{border-top:1px solid var(--line)}
   .tool-row{display:grid;grid-template-columns:54px minmax(190px,1.1fr) 2fr auto;gap:30px;align-items:center;padding:26px 8px;border-bottom:1px solid var(--line-2);transition:.3s var(--ease)}
+  /* colonne des tags à largeur fixe : sinon chaque ligne a ses propres colonnes et les descriptions ne s'alignent pas */
+  .tool-row:has(> .tr-tags){grid-template-columns:54px minmax(190px,1.1fr) 2fr 260px}
   .tool-row:hover{background:color-mix(in srgb,var(--acc) 6%,transparent);padding-left:22px}
   .tr-n{font-family:"Nunito";font-weight:700;font-size:.85rem;color:var(--acc)}
   .tr-name{font-family:"Space Grotesk";font-weight:700;font-size:clamp(1.5rem,3vw,2.2rem);text-transform:uppercase;line-height:1;color:var(--ink)}
@@ -512,7 +516,7 @@
     .works-grid.reels{grid-template-columns:repeat(2,1fr)}
     .work.tall .work__meta{flex-direction:column;align-items:flex-start;padding:14px}
     .work.tall .work__meta h3{font-size:1.05rem}
-    .tool-row{grid-template-columns:1fr;gap:14px;padding:24px 6px}
+    .tool-row,.tool-row:has(> .tr-tags){grid-template-columns:1fr;gap:14px;padding:24px 6px}
     .tr-tags{justify-content:flex-start}
     .player{grid-template-columns:1fr}.player__art{max-width:140px}
     section{padding:110px 6vw}
@@ -693,7 +697,7 @@
         <div class="tool-row reveal"><div class="tr-n">01</div><div class="tr-name">Blender<small>3D</small></div><div class="tr-desc" data-i18n="sk_blender_d">...</div><div class="tr-tags"><span>Modélisation</span><span>Simulation</span><span>Rendu</span></div></div>
         <div class="tool-row reveal"><div class="tr-n">02</div><div class="tr-name">After Effects<small>Motion / Compositing</small></div><div class="tr-desc" data-i18n="sk_ae_d">...</div><div class="tr-tags"><span>Compositing</span><span>Motion</span><span>FX</span></div></div>
         <div class="tool-row reveal"><div class="tr-n">03</div><div class="tr-name">Premiere Pro<small>Montage</small></div><div class="tr-desc" data-i18n="sk_pr_d">...</div><div class="tr-tags"><span>Clip</span><span>Reel / TikTok</span><span>YouTube</span></div></div>
-        <div class="tool-row reveal"><div class="tr-n">04</div><div class="tr-name">TouchDesigner<small>Temps réel</small></div><div class="tr-desc" data-i18n="sk_td_d">...</div><div class="tr-tags"><span>Génératif</span><span>Audio-réactif</span></div></div>
+        <div class="tool-row reveal"><div class="tr-n">04</div><div class="tr-name">Touch<br>Designer<small>Temps réel</small></div><div class="tr-desc" data-i18n="sk_td_d">...</div><div class="tr-tags"><span>Génératif</span><span>Audio-réactif</span></div></div>
         <div class="tool-row reveal"><div class="tr-n">05</div><div class="tr-name">Procreate Pro<small>Cover / Print / Social</small></div><div class="tr-desc" data-i18n="sk_design_d">...</div><div class="tr-tags"><span>Pochette</span><span>Affiche</span><span>Sticker</span><span>Slide réseaux</span></div></div>
         <div class="tool-row reveal"><div class="tr-n">06</div><div class="tr-name">Ableton Live<small>Sound design</small></div><div class="tr-desc" data-i18n="sk_ableton_d">...</div><div class="tr-tags"><span>Sound design</span><span class="pro" data-i18n="sk_pro">Niveau pro</span></div></div>
       </div>
