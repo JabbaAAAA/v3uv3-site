@@ -111,7 +111,10 @@
   body[data-mode="jpeg"] .head__art:not([data-for="jpeg"]),
   body[data-mode="wav"] .head__art:not([data-for="wav"]),
   body[data-mode="plugin"] .head__art:not([data-for="plugin"]){display:none}
-  .wheel{width:34px;height:34px;flex:none}
+  .modes{display:flex;gap:4px;padding:3px;border:1px solid var(--line);border-radius:999px;flex:none}
+  .mode-btn{font-family:"Space Grotesk";font-weight:700;font-size:.68rem;letter-spacing:.06em;color:var(--dim);padding:7px 11px;border-radius:999px;transition:color .2s var(--ease),background .2s var(--ease)}
+  .mode-btn:hover{color:var(--ink)}
+  .mode-btn.on{background:var(--acc);color:#fff}
   .wheel__seg{fill:var(--seg-acc);fill-opacity:.2;transition:fill-opacity .25s,transform .25s;transform-origin:50% 50%;cursor:pointer}
   .wheel__seg:hover{fill-opacity:.45}
   .wheel__seg.on{fill-opacity:1}
@@ -459,7 +462,7 @@
     header,header.scrolled{padding-left:4vw;padding-right:4vw}
     .head-right{gap:10px}.head-left{gap:8px}
     .brand{font-size:.8rem}
-    .wheel{width:26px;height:26px}
+    .mode-btn{font-size:.6rem;padding:6px 8px}
     .lang__btn{padding:6px 10px}
   }
 </style>
@@ -498,9 +501,9 @@
 
   <header id="header">
     <div class="head__bg">
-      <img class="head__art" data-for="jpeg" src="img/fond-jpeg.jpg" alt="" loading="eager">
-      <img class="head__art" data-for="wav" src="img/fond-wav.jpg" alt="" loading="eager">
-      <img class="head__art" data-for="plugin" src="img/fond-plugin.jpg" alt="" loading="eager">
+      <img class="head__art" data-for="jpeg" src="img/fond3d-jpeg.jpg" alt="" loading="eager">
+      <img class="head__art" data-for="wav" src="img/fond3d-wav.jpg" alt="" loading="eager">
+      <img class="head__art" data-for="plugin" src="img/fond3d-plugin.jpg" alt="" loading="eager">
     </div>
     <div class="head-left">
       <a href="#top" class="brand brand-text">V3UV3<b id="ext">.JPEG</b></a>
@@ -541,18 +544,19 @@
           <button data-lang="zh">中文 <span class="code">ZH</span></button>
         </div>
       </div>
-      <svg class="wheel" viewBox="0 0 100 100" role="group" aria-label="Changer de mode">
-        <path class="wheel__seg on" data-mode="jpeg" style="--seg-acc:#E5322D" role="button" tabindex="0" aria-label=".JPEG" d="M50,50 L50,2 A48,48 0 0,1 91.57,74 Z"></path>
-        <path class="wheel__seg" data-mode="wav" style="--seg-acc:#E5322D" role="button" tabindex="0" aria-label=".WAV" d="M50,50 L91.57,74 A48,48 0 0,1 8.43,74 Z"></path>
-        <path class="wheel__seg" data-mode="plugin" style="--seg-acc:#E5322D" role="button" tabindex="0" aria-label=".PLUGIN" d="M50,50 L8.43,74 A48,48 0 0,1 50,2 Z"></path>
-      </svg>
+      <!-- sélecteur de partie : 3 boutons écrits (remplace la roue sans texte, 23/11/2026) -->
+      <div class="modes" role="group" aria-label="Changer de partie">
+        <button class="wheel__seg mode-btn on" data-mode="jpeg" type="button">.JPEG</button>
+        <button class="wheel__seg mode-btn" data-mode="wav" type="button">.WAV</button>
+        <button class="wheel__seg mode-btn" data-mode="plugin" type="button">.PLUGIN</button>
+      </div>
     </div>
   </header>
 
   <!-- ================= VUE VISUELLE (.JPEG) ================= -->
   <main class="view view-visual">
     <section class="hero" id="top">
-      <div class="hero__bg"><img src="img/fond-jpeg.jpg" alt="" loading="eager"></div>
+      <div class="hero__bg"><img src="img/fond3d-jpeg.jpg" alt="" loading="eager"></div>
       <div class="badge"><i></i><span data-i18n="hero_badge_v">Disponible pour collaborations</span></div>
       <h1>V3UV3.JPEG</h1>
       <div class="roles" data-i18n="hero_roles_v">3D VFX / Motion / Montage / Design</div>
@@ -659,7 +663,7 @@
   <!-- ================= VUE AUDIO (.WAV) ================= -->
   <main class="view view-audio">
     <section class="hero" id="top-a">
-      <div class="hero__bg"><img src="img/fond-wav.jpg" alt="" loading="eager"></div>
+      <div class="hero__bg"><img src="img/fond3d-wav.jpg" alt="" loading="eager"></div>
       <div class="badge"><i></i><span data-i18n="hero_badge_a">Studio ouvert</span></div>
       <h1>V3UV3.WAV</h1>
       <div class="roles" data-i18n="hero_roles_a">Enregistrement / Mix & Mastering / Prod sur mesure</div>
@@ -781,7 +785,7 @@
   <!-- ================= VUE PLUGINS (.PLUGIN) ================= -->
   <main class="view view-plugin">
     <section class="hero" id="top-p">
-      <div class="hero__bg"><img src="img/fond-plugin.jpg" alt="" loading="eager"></div>
+      <div class="hero__bg"><img src="img/fond3d-plugin.jpg" alt="" loading="eager"></div>
       <div class="badge"><i></i><span data-i18n="hero_badge_p">Plugins disponibles</span></div>
       <h1>V3UV3.PLUGIN</h1>
       <div class="roles" data-i18n="hero_roles_p">Plugins audio / VST3 / AU</div>
