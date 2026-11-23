@@ -1,4 +1,4 @@
-// Couche « premium » (23/11/2026) : scroll fluide, bandeaux défilants,
+// Couche « premium » (23/11/2026) : bandeaux défilants,
 // fond qui vit au scroll (zoom + assombrissement, poussière, rayons).
 // Tout se coupe si le visiteur a demandé « réduire les animations ».
 (function () {
@@ -9,34 +9,8 @@
   const VIEW = { jpeg: 'visual', wav: 'audio', plugin: 'plugin' };
   const activeView = () => $('.view-' + VIEW[document.body.dataset.mode || 'jpeg']);
 
-  // ---------- 1. Scroll fluide (Lenis) ----------
-  let lenis = null;
-  if (!reduced && window.Lenis && G && ST) {
-    lenis = new window.Lenis({ lerp: 0.1, smoothWheel: true });
-    lenis.on('scroll', ST.update);
-    G.ticker.add((t) => lenis.raf(t * 1000));
-    G.ticker.lagSmoothing(0);
-    // l'accueil et la visionneuse bloquent le scroll : Lenis s'arrête avec eux
-    const sync = () => {
-      const locked = document.body.classList.contains('pre-entry') || document.body.style.overflow === 'hidden';
-      locked ? lenis.stop() : lenis.start();
-    };
-    new MutationObserver(sync).observe(document.body, { attributes: true, attributeFilter: ['class', 'style'] });
-    sync();
-    // changement de partie : on repart du haut, sans animation
-    document.addEventListener('v3:modechange', () => lenis.scrollTo(0, { immediate: true, force: true }));
-    // liens du menu (#section) : défilement doux
-    document.addEventListener('click', (e) => {
-      const a = e.target.closest('a[href^="#"]');
-      if (!a || a.getAttribute('href').length < 2) return;
-      const target = document.querySelector(a.getAttribute('href'));
-      if (!target || !target.offsetParent) return;
-      e.preventDefault();
-      lenis.scrollTo(target, { offset: -90, duration: 1.2 });
-    });
-  }
-
-  // (curseur maison retiré le 23/11/2026 à la demande de Loïc : souris normale)
+  // (scroll fluide Lenis et curseur maison retirés le 23/11/2026 à la demande de Loïc :
+  //  molette et souris normales)
 
   // ---------- 3. Bandeaux défilants ----------
   $$('.marquee').forEach((m, i) => {
