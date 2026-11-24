@@ -488,6 +488,16 @@
   .landing__nav:hover .landing__btn:not(:hover){opacity:.35}
   @media (max-width:640px){.landing__nav{flex-direction:column;align-items:center;gap:4px}.landing__btn{align-items:center;text-align:center}
     .landing__btn::after{left:20%;right:20%}.lb__name{font-size:2.6rem}}
+  /* téléphone en portrait : la vidéo du logo en haut, les 3 boutons juste en dessous (plus rien ne se chevauche) */
+  @media (max-aspect-ratio:4/5){
+    .landing{justify-content:center;gap:2vh;padding:0 5vw 2vh}
+    .landing__mark{position:relative;inset:auto;flex:none;width:100vw;height:min(68vw,40vh)}
+    .landing__video{object-fit:cover}
+    .landing__btn{padding:6px 6px 12px}
+  }
+  @media (max-aspect-ratio:4/5) and (max-height:700px){.lb__name{font-size:2.2rem}.landing__btn{gap:3px}}
+  img.landing__video{object-fit:contain}
+  @media (max-aspect-ratio:4/5){img.landing__video{object-fit:cover}}
 
   /* ---- couche premium (js/premium.js, 23/11/2026) ---- */
   .marquee{overflow:hidden;padding:46px 0;border-top:1px solid var(--line-2);border-bottom:1px solid var(--line-2);position:relative;z-index:1}
@@ -1842,6 +1852,21 @@
     const landing=$('#landing');
     if(!landing)return;
     const vid=$('#introGlass');
+    // iPhone en économie d'énergie (ou autoplay refusé) : la vidéo reste figée. On la remplace par la même animation en WebP animé,
+    // que Safari joue toujours (img/landing-intro.webp, jouée une fois comme la vidéo).
+    if(vid){
+      let swapped=false;
+      const swap=()=>{
+        if(swapped||!vid.isConnected||vid.currentTime>0.05)return;
+        swapped=true;
+        const img=new Image();img.className='landing__video';img.alt='';img.src='img/landing-intro.webp';
+        img.onload=()=>vid.replaceWith(img);
+      };
+      vid.muted=true;vid.playsInline=true;
+      const p=vid.play();
+      if(p)p.catch(e=>{if(e&&e.name==='NotAllowedError')swap();});
+      setTimeout(()=>{if(vid.paused&&vid.readyState>=2)swap();},2500);
+    }
     $$('.landing__btn').forEach(b=>b.addEventListener('click',()=>{
       if(window.gsap){gsap.timeline().to(b,{scaleX:1.12,scaleY:.86,duration:.08}).to(b,{scaleX:.94,scaleY:1.08,duration:.1}).to(b,{scaleX:1,scaleY:1,duration:.5,ease:'elastic.out(1.2,0.3)'});}
       const m=b.dataset.enter,reduced=matchMedia('(prefers-reduced-motion:reduce)').matches;
