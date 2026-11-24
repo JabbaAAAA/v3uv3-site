@@ -8,7 +8,7 @@
   // FormSubmit : le tout premier envoi déclenche un e-mail d'activation à cliquer dans Proton.
   const ENDPOINT = 'https://formsubmit.co/ajax/' + MAIL;
   const KEY = 'v3uv3-goutte';
-  const FIRST = [8000, 13000], NEXT = [22000, 34000]; // délai avant la 1re goutte, puis entre deux gouttes (ms)
+  const FIRST = [15000, 25000], NEXT = [35000, 60000]; // délai avant la 1re goutte, puis entre deux gouttes (ms)
 
   const T = {
     fr: { drop: 'Une goutte de sang', bravo: 'Bravo !', caught: 'Tu as attrapé la goutte.', prize: '2 h de rec offertes', where: 'au studio V3UV3.WAV, à Reims', ask: 'Laisse ton prénom et un moyen de te joindre : on te recontacte pour caler ta session.', name: 'Ton prénom', contact: 'Ton e-mail ou ton numéro', send: 'Je réclame ma session', sending: 'Envoi…', sent: "C'est envoyé ! On te recontacte très vite.", err: "L'envoi n'est pas passé. Écris-nous avec ton code :", missing: 'Indique ton prénom et un moyen de te joindre.', rules: 'Une session par personne, sur rendez-vous. Garde ton code.', close: 'Fermer' },
@@ -28,8 +28,8 @@
 
   const css = document.createElement('style');
   css.textContent = `
-  .goutte{position:absolute;z-index:6;width:56px;height:64px;padding:0;border:0;background:none;cursor:pointer;transform-origin:50% 0;-webkit-tap-highlight-color:transparent}
-  .goutte svg{display:block;width:18px;height:26px;margin:0 auto;filter:drop-shadow(0 4px 6px rgba(0,0,0,.65))}
+  .goutte{position:absolute;z-index:6;width:30px;height:34px;padding:0;border:0;background:none;cursor:default;transform-origin:50% 0;-webkit-tap-highlight-color:transparent}
+  .goutte svg{display:block;width:8px;height:11px;margin:0 auto}
   .goutte:focus-visible{outline:2px solid #E5322D;outline-offset:2px;border-radius:50%}
   .goutte-win{position:fixed;inset:0;z-index:9600;display:flex;align-items:center;justify-content:center;background:#000;color:#f3efe9;overflow-y:auto;padding:78px 6vw 48px}
   .goutte-win>video{position:fixed;inset:0;width:100%;height:100%;object-fit:cover;object-position:67% 50%;opacity:.5;pointer-events:none}
@@ -66,27 +66,40 @@
   const canDrop = () => document.body.dataset.mode === 'wav' && !document.getElementById('landing') &&
     !document.hidden && !winEl && hero.getBoundingClientRect().bottom > innerHeight * 0.55 && title() && title().getBoundingClientRect().width > 0;
 
+  // bouts des coulures de sang du micro dans videos/fond-wav.mp4 (fraction de largeur, de hauteur de l'image)
+  const TIPS = [[0.775, 0.458], [0.798, 0.40], [0.748, 0.257], [0.81, 0.22]];
+  // point de l'image vidéo → coordonnées écran, en tenant compte de object-fit:cover, object-position et du zoom
+  function tipOnScreen() {
+    const v = hero.querySelector('.hero__bg video');
+    if (!v || !v.videoWidth) return null;
+    const r = v.getBoundingClientRect(), s = Math.max(r.width / v.videoWidth, r.height / v.videoHeight);
+    const W = v.videoWidth * s, H = v.videoHeight * s;
+    const [px, py] = getComputedStyle(v).objectPosition.split(' ').map((p) => parseFloat(p) / 100);
+    const [fx, fy] = TIPS[Math.floor(Math.random() * TIPS.length)];
+    const x = r.left + (r.width - W) * px + fx * W, y = r.top + (r.height - H) * py + fy * H;
+    return x > 10 && x < innerWidth - 10 && y > 60 && y < innerHeight - 80 ? { x, y } : null;
+  }
+
   function drop() {
+    const p = tipOnScreen();
+    if (!p) { nextAt = Date.now() + 5000; return; }
     falling = true;
-    const hr = hero.getBoundingClientRect(), tr = title().getBoundingClientRect();
-    const x = tr.left - hr.left + tr.width * (0.12 + Math.random() * 0.76);
-    const y = tr.top - hr.top + tr.height * 0.72;
-    const floor = Math.min(hr.bottom, innerHeight) - hr.top - 70;
-    const d = Math.max(120, floor - y);
+    const hr = hero.getBoundingClientRect();
+    const x = p.x - hr.left, y = p.y - hr.top - 4;
+    const d = 45 + Math.random() * 50; // courte chute : une coulure de plus qui se détache du micro
     const g = document.createElement('button');
     g.type = 'button'; g.className = 'goutte'; g.setAttribute('aria-label', t().drop);
-    g.style.left = (x - 28) + 'px'; g.style.top = y + 'px';
-    g.innerHTML = '<svg viewBox="0 0 20 28" aria-hidden="true"><defs><linearGradient id="gG" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#ff4a3d"/><stop offset=".55" stop-color="#c3140f"/><stop offset="1" stop-color="#5c0303"/></linearGradient></defs><path d="M10 0C10 0 0 13 0 18.5a10 10 0 0 0 20 0C20 13 10 0 10 0Z" fill="url(#gG)"/><ellipse cx="6.4" cy="17" rx="2.1" ry="3.6" fill="#fff" opacity=".55"/></svg>';
+    g.style.left = (x - 15) + 'px'; g.style.top = y + 'px';
+    g.innerHTML = '<svg viewBox="0 0 20 28" aria-hidden="true"><defs><linearGradient id="gG" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#d8261c"/><stop offset=".55" stop-color="#8e0d09"/><stop offset="1" stop-color="#3d0202"/></linearGradient></defs><path d="M10 0C10 0 0 13 0 18.5a10 10 0 0 0 20 0C20 13 10 0 10 0Z" fill="url(#gG)"/><ellipse cx="6.4" cy="17" rx="1.8" ry="3" fill="#fff" opacity=".35"/></svg>';
     hero.appendChild(g);
     const end = () => { g.remove(); falling = false; nextAt = Date.now() + rand(NEXT); };
-    // pend sous le titre, se détache, tombe en accélérant, s'écrase en flaque qui s'efface
+    // gonfle lentement au bout de la coulure, se détache, tombe un peu et s'efface dans le noir
     const a = g.animate([
-      { transform: 'translateY(0) scale(.25,.1)', offset: 0 },
-      { transform: 'translateY(0) scale(1,1)', offset: 0.3, easing: 'cubic-bezier(.55,0,1,.45)' },
-      { transform: `translateY(${d}px) scale(.85,1.25)`, offset: 0.82, easing: 'ease-out' },
-      { transform: `translateY(${d + 8}px) scale(2.4,.2)`, opacity: 0.9, offset: 0.88 },
-      { transform: `translateY(${d + 8}px) scale(2.6,.18)`, opacity: 0, offset: 1 }
-    ], { duration: 3600, fill: 'forwards' });
+      { transform: 'translateY(0) scale(.2,.1)', opacity: 0, offset: 0 },
+      { transform: 'translateY(0) scale(1,1)', opacity: 0.62, offset: 0.45, easing: 'cubic-bezier(.55,0,1,.45)' },
+      { transform: `translateY(${d}px) scale(.85,1.2)`, opacity: 0.55, offset: 0.82, easing: 'ease-out' },
+      { transform: `translateY(${d + 14}px) scale(.6,.9)`, opacity: 0, offset: 1 }
+    ], { duration: 4200, fill: 'forwards' });
     a.onfinish = end;
     g.addEventListener('pointerdown', (e) => {
       e.preventDefault(); a.pause();
