@@ -271,6 +271,7 @@ footer { border-top: 2px dashed var(--light); padding-top: 22px; display: flex; 
   const pad = (n) => String(n).padStart(2, '0');
   const iso = (d) => d.getFullYear() + '-' + pad(d.getMonth() + 1) + '-' + pad(d.getDate());
   const range = (r) => { const [a, b] = r.split('-').map(Number); const h = []; for (let i = a; i < b; i++) h.push(i); return h; };
+  const hh = (h) => (h % 24) + ' h'; // après minuit, 24 h, 25 h s'affichent 0 h, 1 h (séance commencée la veille)
   const now = new Date();
   const monday = new Date(now.getFullYear(), now.getMonth(), now.getDate() - ((now.getDay() + 6) % 7));
 
@@ -321,9 +322,9 @@ footer { border-top: 2px dashed var(--light); padding-top: 22px; display: flex; 
       const isToday = date === iso(now), pastDay = d < new Date(now.getFullYear(), now.getMonth(), now.getDate());
       const chips = hours.map((h) => {
         const past = pastDay || (isToday && h <= now.getHours());
-        const tk = !past && taken(date, h), key = date + '|' + h, on = picked.has(key);
-        if (past || tk) return `<span class="chip ${past ? 'past' : 'taken'}" aria-label="${h} h, ${past ? 'passé' : 'déjà pris'}">${h} h</span>`;
-        return `<button class="chip" type="button" data-key="${key}" aria-pressed="${on}" aria-label="${name} ${d.getDate()}, ${h} h">${h} h</button>`;
+        const tk = !past && taken(date, h), key = date + '|' + h, on = picked.has(key), lab = hh(h);
+        if (past || tk) return `<span class="chip ${past ? 'past' : 'taken'}" aria-label="${lab}, ${past ? 'passé' : 'déjà pris'}">${lab}</span>`;
+        return `<button class="chip" type="button" data-key="${key}" aria-pressed="${on}" aria-label="${name} ${d.getDate()}, ${lab}${h >= 24 ? ' (dans la nuit)' : ''}">${lab}</button>`;
       }).join('');
       html += `<div class="day pen${hours.length ? '' : ' off'}${isToday ? ' today' : ''}">
         <h3>${name.slice(0, 3)}. ${d.getDate()}<small>${MONTHS[d.getMonth()]}</small></h3>
@@ -347,7 +348,7 @@ footer { border-top: 2px dashed var(--light); padding-top: 22px; display: flex; 
       hs.forEach((h) => { const r = runs[runs.length - 1]; if (r && r[1] === h) r[1] = h + 1; else runs.push([h, h + 1]); });
       const dt = new Date(d + 'T12:00:00');
       return DAYS[dt.getDay()] + ' ' + dt.getDate() + ' ' + MONTHS[dt.getMonth()] + ' : ' +
-        runs.map(([a, b]) => a + ' h → ' + b + ' h (' + (b - a) + ' h)').join(', ');
+        runs.map(([a, b]) => hh(a) + ' → ' + hh(b) + (b > 24 ? ' du matin' : '') + ' (' + (b - a) + ' h)').join(', ');
     });
   }
 
