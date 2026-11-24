@@ -1631,8 +1631,14 @@
   // Vidéos muettes (intro, fonds, aperçus) : elles doivent toujours tourner, à la demande de Loïc (23/11/2026),
   // même avec « réduire les animations ». Sur iPhone, l'autoplay peut être refusé (mode économie d'énergie) :
   // on relance la lecture au chargement, au premier contact avec la page et à chaque changement de partie.
-  const kickVideos=()=>$$('video[autoplay]').forEach(v=>{v.muted=true;v.playsInline=true;if(v.paused)v.play().catch(()=>{});});
-  kickVideos();
+  // Seules les vidéos à l'écran tournent (24/11/2026) : les 9 en même temps saturaient le réseau et le fond saccadait.
+  const onScreen=new Set();
+  const play=v=>{v.muted=true;v.playsInline=true;if(v.paused)v.play().catch(()=>{});};
+  const vio=new IntersectionObserver(es=>es.forEach(e=>{
+    if(e.isIntersecting){onScreen.add(e.target);play(e.target);}else{onScreen.delete(e.target);e.target.pause();}
+  }));
+  $$('video[autoplay]').forEach(v=>vio.observe(v));
+  const kickVideos=()=>onScreen.forEach(play);
   addEventListener('load',kickVideos);
   ['touchend','click','keydown'].forEach(ev=>addEventListener(ev,kickVideos,{passive:true}));
   addEventListener('scroll',kickVideos,{passive:true,once:true});
