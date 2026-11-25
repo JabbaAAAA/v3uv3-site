@@ -231,6 +231,13 @@ h3 { font-size: 30px; }
 .checks svg { width: 26px; height: 26px; margin-top: 1px; }
 .footlinks { display: flex; gap: 18px; flex-wrap: wrap; font-family: var(--text); font-size: 14px; text-transform: none; }
 
+/* ---------- Mac warning: the unsigned .pkg is blocked the first time, so this must be seen before downloading ---------- */
+.mac { padding: 18px 22px; display: grid; grid-template-columns: 44px minmax(0, 1fr); gap: 6px 16px; align-items: start; max-width: 720px; }
+.mac::before { border-width: 3px; background: var(--wash); }
+.mac svg { width: 40px; height: 40px; grid-row: span 3; }
+.mac strong { font-family: var(--hand); font-weight: 400; font-size: 24px; text-transform: uppercase; line-height: 1.1; }
+.mac p { font-size: 16px; }
+.mac a { font-family: var(--hand); font-size: 20px; text-transform: uppercase; justify-self: start; }
 footer { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 10px; font-family: var(--hand); font-size: 20px; color: var(--pencil); border-top: 1.5px solid var(--light); padding-top: 22px; }
 .sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
   /* plugin pas encore en vente (en attente de validation Moonbase) : liens d'achat désactivés */
@@ -267,6 +274,12 @@ footer { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 10
       <a class="btn pen" href="#prix">VOIR LES PRIX</a>
     </div>
     <div class="formats"><span>VST3 - AU</span><span>MACOS (APPLE SILICON ET INTEL)</span><span>WINDOWS</span></div>
+    <div class="mac pen" role="note">
+      <svg viewBox="0 0 40 40" aria-hidden="true"><path d="M20 4 L36 32 L4 32 Z" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linejoin="round"/><path d="M20 14 L20 23 M20 27.5 L20 28" stroke="currentColor" stroke-width="3" stroke-linecap="round"/></svg>
+      <strong>Sur Mac : lis ça avant d'ouvrir l'installeur</strong>
+      <p>La première fois, macOS bloque l'installeur (« Apple n'a pas pu confirmer… »). C'est normal : va dans <b>Réglages Système &gt; Confidentialité et sécurité</b>, descends jusqu'à <b>Sécurité</b> et clique sur <b>Ouvrir quand même</b>. À faire une seule fois.</p>
+      <a href="installer-mac.html">Le guide en images &rarr;</a>
+    </div>
   </section>
 
   <section class="plugin" aria-labelledby="plugin-h">
@@ -528,6 +541,12 @@ footer { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 10
     <div class="trial">
       <a class="btn pen solid" href="https://v3uv3-prodution.moonbase.sh/download/v3uv3-master">ESSAI GRATUIT 24 HEURES</a>
       <p class="note">Installe, ouvre le plugin dans ton logiciel, clique sur « Activer ». Pas de clé à taper.</p>
+    </div>
+    <div class="mac pen" role="note">
+      <svg viewBox="0 0 40 40" aria-hidden="true"><path d="M20 4 L36 32 L4 32 Z" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linejoin="round"/><path d="M20 14 L20 23 M20 27.5 L20 28" stroke="currentColor" stroke-width="3" stroke-linecap="round"/></svg>
+      <strong>Sur Mac : lis ça avant d'ouvrir l'installeur</strong>
+      <p>La première fois, macOS bloque l'installeur (« Apple n'a pas pu confirmer… »). C'est normal : va dans <b>Réglages Système &gt; Confidentialité et sécurité</b>, descends jusqu'à <b>Sécurité</b> et clique sur <b>Ouvrir quand même</b>. À faire une seule fois.</p>
+      <a href="installer-mac.html">Le guide en images &rarr;</a>
     </div>
   </section>
 
